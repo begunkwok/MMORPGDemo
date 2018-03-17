@@ -59,17 +59,29 @@
     <Compile Include="Base\GameEntry.Custom.cs" />
     <Compile Include="Base\MonoSingleton.cs" />
     <Compile Include="Base\Singleton.cs" />
-    <Compile Include="Config\AppConfigComponent.cs" />
-    <Compile Include="Config\DeviceModelConfig.cs" />
+    <Compile Include="AppConfig\AppConfigComponent.cs" />
+    <Compile Include="AppConfig\DeviceModelConfig.cs" />
+    <Compile Include="Camera\CameraComponent.cs" />
+    <Compile Include="Camera\CameraEffect\BlurRadialEffect.cs" />
+    <Compile Include="Camera\CameraEffect\CameraEffectBase.cs" />
+    <Compile Include="Camera\CameraEffect\ICameraEffect.cs" />
+    <Compile Include="Camera\CameraEffect\BlurMovieEffect.cs" />
+    <Compile Include="Camera\CameraEffect\OilPaintEffect.cs" />
+    <Compile Include="Camera\CameraEffect\ScreenFadeEffect.cs" />
+    <Compile Include="Camera\CameraEffect\ScreenGrayEffect.cs" />
+    <Compile Include="Camera\CameraEffect\WaterDropEffect.cs" />
     <Compile Include="Debugger\ChangeLanguageDebuggerWindow.cs" />
     <Compile Include="Debugger\DataTableDebuggerWindow.cs" />
     <Compile Include="Debugger\LuaDebuggerWindow.cs" />
+    <Compile Include="Definition\Constant\Constant.Depth.cs" />
     <Compile Include="Definition\Constant\Constant.Layer.cs" />
     <Compile Include="Definition\DataStruct\VersionInfo.cs" />
+    <Compile Include="Definition\Enum\CameraEffectType.cs" />
+    <Compile Include="Definition\Enum\Tags.cs" />
     <Compile Include="Editor\DeviceModelConfigEditorWindow.cs" />
     <Compile Include="Editor\DeviceModelConfigInspector.cs" />
     <Compile Include="Editor\MMORPGDemoBuildEventHandler.cs" />
-    <Compile Include="Config\PathConfigs.cs" />
+    <Compile Include="AppConfig\PathConfigs.cs" />
     <Compile Include="Editor\ProjectSaver.cs" />
     <Compile Include="Lua\CoroutineRunner.cs" />
     <Compile Include="Lua\XLuaGenConfig.cs" />
@@ -135,6 +147,7 @@
     <Compile Include="UI\UIForm\NativeForm\UpdateResourceForm.cs" />
     <Compile Include="UI\UIForm\RoleCreate\RoleCreateForm.cs" />
     <Compile Include="Utility\AssetUtility.cs" />
+    <Compile Include="Utility\GlobalTools.cs" />
     <Compile Include="Utility\LitJsonHelper.cs" />
     <Compile Include="Utility\WebUtility.cs" />
   </ItemGroup>
@@ -160,6 +173,7 @@
       <Name>XLuaSrc</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>cd $(SolutionDir)Build

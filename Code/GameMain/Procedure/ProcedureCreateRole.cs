@@ -1,6 +1,7 @@
 ﻿using GameFramework;
 using GameFramework.DataTable;
 using System.Collections.Generic;
+using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
 
 namespace GameMain
@@ -15,6 +16,8 @@ namespace GameMain
             }
         }
 
+        private ProcedureOwner m_ProcedureOwner = null;
+
         private PoseRoleData warriorData = null;
         private PoseRoleData masterData = null;
         private PoseRoleData shooterData = null;
@@ -22,6 +25,7 @@ namespace GameMain
         protected override void OnEnter(ProcedureOwner procedureOwner)
         {
             base.OnEnter(procedureOwner);
+            m_ProcedureOwner = procedureOwner;
 
             //初始化数据
             InitData();
@@ -98,6 +102,12 @@ namespace GameMain
         private void OnClickCreateRole(string roleName)
         {
             Log.Info("create role ,name : " + roleName);
+
+            if (m_ProcedureOwner != null)
+            {
+                m_ProcedureOwner.SetData<VarInt>(Constant.ProcedureData.NextSceneId, (int) SceneId.MainCity);
+                ChangeState<ProcedureChangeScene>(m_ProcedureOwner);
+            }
         }
 
     }

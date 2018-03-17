@@ -5,6 +5,20 @@
     /// </summary>
     public partial class GameEntry
     {
+        private static void InitCustomComponents()
+        {
+            AppConfig = UnityGameFramework.Runtime.GameEntry.GetComponent<AppConfigComponent>();
+            FairyGui = UnityGameFramework.Runtime.GameEntry.GetComponent<FairyGuiComponent>();
+            Lua = UnityGameFramework.Runtime.GameEntry.GetComponent<LuaComponent>();
+            Camera = UnityGameFramework.Runtime.GameEntry.GetComponent<CameraComponent>();
+            Input = UnityGameFramework.Runtime.GameEntry.GetComponent<InputComponent>();
+
+            FairyGui.Init();
+            Lua.Init();
+            Camera.Init();
+            Input.Init();
+        }
+
         public static FairyGuiComponent FairyGui
         {
             get;
@@ -23,14 +37,17 @@
             private set;
         }
 
-        private static void InitCustomComponents()
+        public static CameraComponent Camera
         {
-            AppConfig = UnityGameFramework.Runtime.GameEntry.GetComponent<AppConfigComponent>();
-            FairyGui = UnityGameFramework.Runtime.GameEntry.GetComponent<FairyGuiComponent>();
-            Lua = UnityGameFramework.Runtime.GameEntry.GetComponent<LuaComponent>();
-
-            FairyGui.Init();
-            Lua.Init();
+            get;
+            private set;
         }
+
+        public static InputComponent Input
+        {
+            get;
+            private set;
+        }
+
     }
 }
