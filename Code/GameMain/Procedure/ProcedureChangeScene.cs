@@ -5,6 +5,7 @@ using GameFramework.Event;
 using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
 using FairyGUI;
+using UnityEngine;
 
 namespace GameMain
 {
@@ -15,6 +16,7 @@ namespace GameMain
         private bool m_IsChangeSceneComplete = false;
         private int m_BackgroundMusicId = 0;    
         private string m_SceneName = String.Empty;
+        private Vector3 m_PlayerPos = Vector3.zero;
 
         public override bool UseNativeDialog
         {
@@ -67,6 +69,8 @@ namespace GameMain
 
             m_BackgroundMusicId = drScene.BackgroundMusicId;
             m_SceneName = drScene.SceneName;
+            m_PlayerPos = drScene.PlayerSpawn;
+            GameEntry.Scene.SetCurSceneSpawnPos(m_PlayerPos);
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
@@ -101,6 +105,9 @@ namespace GameMain
                 case SceneId.CreateRole:
                     ChangeState<ProcedureCreateRole>(procedureOwner);
                     break;
+                case SceneId.MainCity:
+                    ChangeState<ProcedureMain>(procedureOwner);
+                    break;
             }
         }
 
@@ -120,6 +127,7 @@ namespace GameMain
             }
 
             m_IsChangeSceneComplete = true;
+            //关闭进度界面
             GameEntry.UI.CloseUIForm(UIFormId.LoadingForm);
         }
 

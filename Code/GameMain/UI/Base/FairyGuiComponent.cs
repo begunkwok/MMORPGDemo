@@ -9,6 +9,7 @@ using UnityGameFramework.Runtime;
 namespace GameMain
 {
     [DisallowMultipleComponent]
+    [AddComponentMenu("Game Framework/FairyGui")]
     public class FairyGuiComponent : GameFrameworkComponent
     {
         private Dictionary<string, MyUIPackage> m_UIPackages = null;

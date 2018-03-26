@@ -18,7 +18,7 @@
         /// <summary>
         /// 创建角色
         /// </summary>
-        CreateRoleForm = 1001,
+        CreateRoleForm = 1002,
 
         /// <summary>
         /// 加载进度界面

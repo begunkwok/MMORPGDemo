@@ -18,9 +18,11 @@ namespace GameMain
 
         private ProcedureOwner m_ProcedureOwner = null;
 
-        private PoseRoleData warriorData = null;
-        private PoseRoleData masterData = null;
-        private PoseRoleData shooterData = null;
+        private PoseRoleData m_WarriorData = null;
+        private PoseRoleData m_MasterData = null;
+        private PoseRoleData m_ShooterData = null;
+
+        private int m_SelectRoleTypeId = 0;
 
         protected override void OnEnter(ProcedureOwner procedureOwner)
         {
@@ -31,7 +33,8 @@ namespace GameMain
             InitData();
 
             //显示第一个职业
-            GameEntry.Entity.ShowPoseRole(warriorData);
+            GameEntry.Entity.ShowPoseRole(m_WarriorData);
+            m_SelectRoleTypeId = (int)EntityTypeId.PlayerWarrior;
 
             //打开创建角色界面
             RoleCreateFormParams data = new RoleCreateFormParams();
@@ -62,9 +65,9 @@ namespace GameMain
 
         private void InitData()
         {
-            warriorData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), 10001, ProfessionType.Warrior);
-            masterData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), 10002, ProfessionType.Master);
-            shooterData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), 10003, ProfessionType.Shoooter);
+            m_WarriorData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), (int)EntityTypeId.PoseWarrior, ProfessionType.Warrior);
+            m_MasterData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), (int)EntityTypeId.PoseMaster, ProfessionType.Master);
+            m_ShooterData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), (int)EntityTypeId.PoseShooter, ProfessionType.Shoooter);
         }
 
         private void OnClickRoleType(int type)
@@ -73,28 +76,31 @@ namespace GameMain
             switch (pfType)
             {
                 case ProfessionType.Warrior:
-                    GameEntry.Entity.ShowPoseRole(warriorData);
+                    GameEntry.Entity.ShowPoseRole(m_WarriorData);
+                    m_SelectRoleTypeId = (int)EntityTypeId.PlayerWarrior;
 
-                    if (GameEntry.Entity.HasEntity(masterData.Id))
-                        GameEntry.Entity.HideEntity(masterData.Id);
-                    if (GameEntry.Entity.HasEntity(shooterData.Id))
-                        GameEntry.Entity.HideEntity(shooterData.Id);
+                    if (GameEntry.Entity.HasEntity(m_MasterData.Id))
+                        GameEntry.Entity.HideEntity(m_MasterData.Id);
+                    if (GameEntry.Entity.HasEntity(m_ShooterData.Id))
+                        GameEntry.Entity.HideEntity(m_ShooterData.Id);
                     break;
                 case ProfessionType.Master:
-                    GameEntry.Entity.ShowPoseRole(masterData);
+                    GameEntry.Entity.ShowPoseRole(m_MasterData);
+                    m_SelectRoleTypeId = (int)EntityTypeId.PlayerMaster;
 
-                    if (GameEntry.Entity.HasEntity(warriorData.Id))
-                        GameEntry.Entity.HideEntity(warriorData.Id);
-                    if (GameEntry.Entity.HasEntity(shooterData.Id))
-                        GameEntry.Entity.HideEntity(shooterData.Id);
+                    if (GameEntry.Entity.HasEntity(m_WarriorData.Id))
+                        GameEntry.Entity.HideEntity(m_WarriorData.Id);
+                    if (GameEntry.Entity.HasEntity(m_ShooterData.Id))
+                        GameEntry.Entity.HideEntity(m_ShooterData.Id);
                     break;
                 case ProfessionType.Shoooter:
-                    GameEntry.Entity.ShowPoseRole(shooterData);
+                    GameEntry.Entity.ShowPoseRole(m_ShooterData);
+                    m_SelectRoleTypeId = (int)EntityTypeId.PlayerShooter;
 
-                    if(GameEntry.Entity.HasEntity(masterData.Id))
-                        GameEntry.Entity.HideEntity(masterData.Id);
-                    if (GameEntry.Entity.HasEntity(warriorData.Id))
-                        GameEntry.Entity.HideEntity(warriorData.Id);
+                    if (GameEntry.Entity.HasEntity(m_MasterData.Id))
+                        GameEntry.Entity.HideEntity(m_MasterData.Id);
+                    if (GameEntry.Entity.HasEntity(m_WarriorData.Id))
+                        GameEntry.Entity.HideEntity(m_WarriorData.Id);
                     break;
             }
         }
@@ -105,6 +111,20 @@ namespace GameMain
 
             if (m_ProcedureOwner != null)
             {
+                //创建角色数据
+                string userId = m_ProcedureOwner.GetData<VarString>(Constant.ProcedureData.UserId);
+                int playerId = GameEntry.Entity.GenerateSerialId();
+                DBPlayer dbPlayer = new DBPlayer(playerId, userId);
+                dbPlayer.EntityTypeId = m_SelectRoleTypeId;
+                dbPlayer.Name = roleName;
+                dbPlayer.Level = 1;
+                dbPlayer.Insert();
+                GameEntry.Database.AddDBRow<DBPlayer>(dbPlayer.Id, dbPlayer);
+
+                DBUser dbUser = GameEntry.Database.GetDBRow<DBUser>(int.Parse(userId));
+                dbUser.Player = dbPlayer.Id;
+
+                m_ProcedureOwner.SetData<VarInt>(Constant.ProcedureData.PlayerId, dbUser.Player);
                 m_ProcedureOwner.SetData<VarInt>(Constant.ProcedureData.NextSceneId, (int) SceneId.MainCity);
                 ChangeState<ProcedureChangeScene>(m_ProcedureOwner);
             }

@@ -6,6 +6,7 @@
 
 using System.Collections.Generic;
 using GameFramework.DataTable;
+using UnityEngine;
 
 namespace GameMain
 {
@@ -31,6 +32,11 @@ namespace GameMain
 		/// </summary>
 		public int BackgroundMusicId { get; private set; }
 
+		/// <summary>
+		/// 玩家出生点
+		/// </summary>
+		public Vector3 PlayerSpawn { get; private set; }
+
 
 		public DRScene()
 		{
@@ -44,6 +50,8 @@ namespace GameMain
 			SceneName = text[++index];
 			AssetName = text[++index];
 			BackgroundMusicId = int.Parse(text[++index]);
+			string[] vector3Value = text[++index].Split(';');
+			PlayerSpawn = new Vector3(float.Parse(vector3Value[0]), float.Parse(vector3Value[1]), float.Parse(vector3Value[2]));
 		}
 
 		private void AvoidJIT()

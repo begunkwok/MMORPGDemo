@@ -794,7 +794,7 @@ MonoBehaviour:
   m_EntityGroupHelperTypeName: UnityGameFramework.Runtime.DefaultEntityGroupHelper
   m_CustomEntityGroupHelper: {fileID: 0}
   m_EntityGroups:
-  - m_Name: PoseRole
+  - m_Name: Role
     m_InstanceAutoReleaseInterval: 600
     m_InstanceCapacity: 3
     m_InstanceExpireTime: 600
@@ -852,7 +852,7 @@ MonoBehaviour:
   m_JsonHelperTypeName: GameMain.LitJsonHelper
   m_ProfilerHelperTypeName: UnityGameFramework.Runtime.ProfilerHelper
   m_FrameRate: 30
-  m_GameSpeed: 1
+  m_GameSpeed: 0.25
   m_RunInBackground: 1
   m_NeverSleep: 1
 --- !u!1001 &100100000
@@ -981,9 +981,9 @@ MonoBehaviour:
   m_EnableOpenUIFormUpdateEvent: 0
   m_EnableOpenUIFormDependencyAssetEvent: 0
   m_EnableCloseUIFormCompleteEvent: 1
-  m_InstanceAutoReleaseInterval: 60
+  m_InstanceAutoReleaseInterval: 10
   m_InstanceCapacity: 16
-  m_InstanceExpireTime: 60
+  m_InstanceExpireTime: 10
   m_InstancePriority: 0
   m_InstanceRoot: {fileID: 0}
   m_UIFormHelperTypeName: UnityGameFramework.Runtime.DefaultUIFormHelper

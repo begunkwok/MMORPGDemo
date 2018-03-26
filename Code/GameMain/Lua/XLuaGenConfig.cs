@@ -60,6 +60,7 @@ public static class XLuaGenConfig
         #region ***** GameMain *****
                 //---GameFramework---
                 typeof(Log),
+                typeof(DatabaseComponent),
                 typeof(DataTableComponent),
                 typeof(EntityComponent),
                 typeof(EventComponent),

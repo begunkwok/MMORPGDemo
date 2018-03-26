@@ -7,6 +7,8 @@ using XLua;
 
 namespace GameMain
 {
+    [DisallowMultipleComponent]
+    [AddComponentMenu("Game Framework/Lua")]
     public class LuaComponent : GameFrameworkComponent
     {
         private LuaEnv m_luaEnv = null;

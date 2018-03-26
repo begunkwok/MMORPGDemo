@@ -5,7 +5,7 @@ using UnityGameFramework.Runtime;
 namespace GameMain
 {
     /// <summary>
-    /// 技能特效
+    /// 特效
     /// </summary>
     public class Effect : EntityBase
     {
@@ -25,12 +25,6 @@ namespace GameMain
                 return;
             }
 
-            Name = string.Format("{0}[{1}]", m_effectData.TypeId, m_effectData.Id);
-
-            CachedTransform.position = m_effectData.Position;
-            CachedTransform.localPosition = m_effectData.LocalPosition;
-            CachedTransform.rotation = m_effectData.Rotation;
-            CachedTransform.localScale = m_effectData.Scale;
             m_ElapseSeconds = 0f;
         }
 

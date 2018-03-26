@@ -7,16 +7,24 @@
     {
         private static void InitCustomComponents()
         {
-            AppConfig = UnityGameFramework.Runtime.GameEntry.GetComponent<AppConfigComponent>();
+            Database = UnityGameFramework.Runtime.GameEntry.GetComponent<DatabaseComponent>();
             FairyGui = UnityGameFramework.Runtime.GameEntry.GetComponent<FairyGuiComponent>();
+            AppConfig = UnityGameFramework.Runtime.GameEntry.GetComponent<AppConfigComponent>();
             Lua = UnityGameFramework.Runtime.GameEntry.GetComponent<LuaComponent>();
             Camera = UnityGameFramework.Runtime.GameEntry.GetComponent<CameraComponent>();
             Input = UnityGameFramework.Runtime.GameEntry.GetComponent<InputComponent>();
 
+            Database.Init();
             FairyGui.Init();
             Lua.Init();
             Camera.Init();
             Input.Init();
+        }
+
+        public static DatabaseComponent Database
+        {
+            get;
+            private set;
         }
 
         public static FairyGuiComponent FairyGui

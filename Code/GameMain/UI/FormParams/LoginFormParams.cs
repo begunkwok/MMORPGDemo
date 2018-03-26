@@ -1,4 +1,5 @@
-﻿using GameFramework;
+﻿using System;
+using GameFramework;
 
 namespace GameMain
 {
@@ -26,18 +27,18 @@ namespace GameMain
         }
 
         /// <summary>
-        /// 点击登陆
+        /// 点击登陆(返回账号和密码)
         /// </summary>
-        public GameFrameworkAction<object> OnClickLogin
+        public GameFrameworkAction<string,string> OnClickLogin
         {
             get;
             set;
         }
 
         /// <summary>
-        /// 点击注册
+        /// 点击注册(返回账号和密码)
         /// </summary>
-        public GameFrameworkAction<object> OnClickRegister
+        public GameFrameworkAction<string,string,Action> OnClickRegister
         {
             get;
             set;

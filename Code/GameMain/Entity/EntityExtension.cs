@@ -12,9 +12,10 @@ namespace GameMain
         // 正值用于和服务器通信的实体（如玩家角色、NPC、怪等，服务器只产生正值）
         // 负值用于本地生成的临时实体（如特效、FakeObject等）
         private static int s_SerialId = 0;
+        private static int s_TempSerialId = 0;
 
         /// <summary>
-        /// 生成实体序列ID（正值）
+        /// 生成实体序列ID（由服务器产生，目前先本地产生）
         /// </summary>
         public static int GenerateSerialId(this EntityComponent entityComponent)
         {
@@ -26,7 +27,7 @@ namespace GameMain
         /// </summary>
         public static int GenerateTempSerialId(this EntityComponent entityComponent)
         {
-            return --s_SerialId;
+            return --s_TempSerialId;
         }
 
         public static EntityBase GetGameEntity(this EntityComponent entityComponent, int entityId)
@@ -85,7 +86,26 @@ namespace GameMain
 
         public static void ShowPoseRole(this EntityComponent entityComponent,PoseRoleData data)
         {
-            entityComponent.ShowEntity(typeof(PoseRole), "PoseRole", data);
+            entityComponent.ShowEntity(typeof(PoseRole), "Role", data);
+        }
+
+        public static void ShowPlayer(this EntityComponent entityComponent, PlayerData data)
+        {
+            entityComponent.ShowEntity(typeof (PlayerRole), "Role", data);
+        }
+
+        public static EntityBase GetEntity(this EntityComponent entityComponent, int serialId)
+        {
+            Entity playerEntity = entityComponent.GetEntity(serialId);
+            if (playerEntity != null)
+            {
+                EntityBase entity = (EntityBase) playerEntity.Logic;
+                return entity;
+            }
+            else
+            {
+                return null;
+            }
         }
 
     }

@@ -4,6 +4,8 @@ using UnityGameFramework.Runtime;
 
 namespace GameMain
 {
+    [DisallowMultipleComponent]
+    [AddComponentMenu("Game Framework/AppConfig")]
     public class AppConfigComponent : GameFrameworkComponent
     {
         [SerializeField]

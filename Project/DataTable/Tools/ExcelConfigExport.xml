@@ -2,12 +2,12 @@
 <ExcelConfigExport>
   <ConfigItem ExcelFile="../Excel/UI界面配置表.xlsx" SheetName="UI界面配置表">
     <ConfigInfo>
-      <Client>../DataTableOutput/UIForm.txt</Client>
+      <Client>../../Assets/GameMain/DataTables/UIForm.txt</Client>
       <Server>../../ServerRun/LogicSettings/</Server>
     </ConfigInfo>
     <SourceInfo>
       <CS ClassName="DRUIForm" Manager="None">
-        <FilePath>../CodeOutput/DRUIForm.cs</FilePath>
+        <FilePath>../../../Code/GameMain/DataTable/DRUIForm.cs</FilePath>
       </CS>
       <CPP ClassName="" Manager="None" Capacity="1024" StepSize="512" KeyCount="64" GroupSize="64">
         <FilePath>../../Server/Servers/GameLogic/GameConfig/</FilePath>
@@ -30,12 +30,12 @@
   </ConfigItem>
   <ConfigItem ExcelFile="../Excel/场景配置表.xlsx" SheetName="场景配置">
     <ConfigInfo>
-      <Client>../DataTableOutput/Scene.txt</Client>
+      <Client>../../Assets/GameMain/DataTables/Scene.txt</Client>
       <Server />
     </ConfigInfo>
     <SourceInfo>
       <CS ClassName="DRScene" Manager="None">
-        <FilePath>../CodeOutput/DRScene.cs</FilePath>
+        <FilePath>../../../Code/GameMain/DataTable/DRScene.cs</FilePath>
       </CS>
       <CPP ClassName="" Manager="None" Capacity="1024" StepSize="512" KeyCount="64" GroupSize="64">
         <FilePath>../../Server/Servers/GameLogic/GameConfig/</FilePath>
@@ -58,7 +58,7 @@
   </ConfigItem>
   <ConfigItem ExcelFile="../Excel/实体配置表.xlsx" SheetName="实体配置表">
     <ConfigInfo>
-      <Client>../DataTableOutput/Entity.txt</Client>
+      <Client>../../Assets/GameMain/DataTables/Entity.txt</Client>
       <Server />
     </ConfigInfo>
     <SourceInfo>

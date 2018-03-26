@@ -1,27 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
+using FairyGUI;
 using GameFramework;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
 namespace GameMain
 {
+    [DisallowMultipleComponent]
+    [AddComponentMenu("Game Framework/Camera")]
     public class CameraComponent : GameFrameworkComponent
     {
-        private Dictionary<CameraEffectType, CameraEffectBase> m_CameraEffects = new Dictionary<CameraEffectType, CameraEffectBase>();
+        private Dictionary<CameraEffectType, ICameraEffect> m_CameraEffects = new Dictionary<CameraEffectType, ICameraEffect>();
+        private List<ICameraBehaviour> m_CameraBehaviour = new List<ICameraBehaviour>(); 
 
 
         public Camera MainCamera { get; set; }
         public Camera UICamera { get; set; }
+        public Transform Pivot { get; set; }
+
+        [SerializeField]
+        private Vector3 m_PivotOffset = new Vector3(0,2,0);
+        [SerializeField]
+        private Vector3 m_CameraOffset = new Vector3(0,0,-4);
+
 
         private CameraEffectType curEffectType = CameraEffectType.ScreenFade;
         private float fadeTime = 1.5f;
+ 
 
         public void Init()
         {
+            Pivot = transform.Find("Pivot");
+            if (Pivot == null)
+            {
+                Pivot = new GameObject("Pivot").transform;
+                Pivot.parent = transform;
+                Pivot.localPosition = m_PivotOffset;
+            }
+
             CreateMainCamera();
 
+            InitUICamera();
+
             InitCameraEffect();
+
+            InitCameraBehaviour();
         }
 
         /// <summary>
@@ -32,8 +56,8 @@ namespace GameMain
         public Camera CreateCamera(string name)
         {
             GameObject go = new GameObject(name);
-            go.transform.parent = transform;
-            go.transform.localPosition = Vector3.zero;
+            go.transform.parent = Pivot;
+            go.transform.localPosition = m_CameraOffset;
             go.transform.localRotation = Quaternion.identity;
             go.transform.localScale = Vector3.one;
             return go.AddComponent<Camera>();
@@ -52,8 +76,17 @@ namespace GameMain
             MainCamera.renderingPath = RenderingPath.Forward;
             MainCamera.depth = Constant.Depth.MainCameraDepth;
 
-            MainCamera.transform.position = Vector3.zero;
-            MainCamera.transform.rotation = Quaternion.identity;
+            MainCamera.transform.parent = Pivot;
+            MainCamera.transform.localPosition = m_CameraOffset;
+            MainCamera.transform.localRotation = Quaternion.identity;
+        }
+
+        /// <summary>
+        /// 设置相机结点位置
+        /// </summary>
+        public void SetCameraRigPos(Vector3 pos)
+        {
+            transform.position = pos;
         }
 
         /// <summary>
@@ -68,7 +101,7 @@ namespace GameMain
                 return;
             }
 
-            CameraEffectBase cameraEffect;
+            ICameraEffect cameraEffect;
             m_CameraEffects.TryGetValue(effectType, out cameraEffect);
             if (cameraEffect == null)
             {
@@ -85,7 +118,7 @@ namespace GameMain
         /// <param name="effectType">特效类型</param>
         public void HideEffect(CameraEffectType effectType)
         {
-            CameraEffectBase cameraEffect;
+            ICameraEffect cameraEffect;
             m_CameraEffects.TryGetValue(effectType, out cameraEffect);
             if (cameraEffect == null)
             {
@@ -101,7 +134,7 @@ namespace GameMain
         /// </summary>
         public void HideAllEffect()
         {
-            foreach (KeyValuePair<CameraEffectType, CameraEffectBase> effect in m_CameraEffects)
+            foreach (KeyValuePair<CameraEffectType, ICameraEffect> effect in m_CameraEffects)
             {
                 effect.Value.Hide();
             }
@@ -115,7 +148,7 @@ namespace GameMain
         /// <param name="callback">回调</param>
         public void FadeInEffect(CameraEffectType effectType, float fadeTime, Action callback = null)
         {
-            CameraEffectBase cameraEffect;
+            ICameraEffect cameraEffect;
             m_CameraEffects.TryGetValue(effectType, out cameraEffect);
             if (cameraEffect == null)
             {
@@ -134,7 +167,7 @@ namespace GameMain
         /// <param name="callback">回调</param>
         public void FadeOutEffect(CameraEffectType effectType, float fadeTime, Action callback = null)
         {
-            CameraEffectBase cameraEffect;
+            ICameraEffect cameraEffect;
             m_CameraEffects.TryGetValue(effectType, out cameraEffect);
             if (cameraEffect == null)
             {
@@ -145,26 +178,48 @@ namespace GameMain
             cameraEffect.FadeOut(fadeTime, callback);
         }
 
+        /// <summary>
+        /// 切换相机行为
+        /// </summary>
+        /// <param name="behaviourType">行为类型</param>
+        public void SwitchCameraBehaviour(CameraBehaviourType behaviourType)
+        {
+            foreach (var cameraBehaviour in m_CameraBehaviour)
+            {
+                if (cameraBehaviour.Type == behaviourType)
+                {
+                    cameraBehaviour.Enable();
+                }
+                else
+                {
+                    cameraBehaviour.Disable();
+                }
+            }
+        }
+
+
         private void InitCameraEffect()
         {
-            CameraEffectBase blurMovieEffect = MainCamera.gameObject.GetOrAddComponent<BlurMovieEffect>();
+            ICameraEffect blurMovieEffect = MainCamera.gameObject.GetOrAddComponent<BlurMovieEffect>();
             m_CameraEffects.Add(CameraEffectType.BlurMovie, blurMovieEffect);
 
-            CameraEffectBase blurRadialEffect = MainCamera.gameObject.GetOrAddComponent<BlurRadialEffect>();
+            ICameraEffect blurRadialEffect = MainCamera.gameObject.GetOrAddComponent<BlurRadialEffect>();
             m_CameraEffects.Add(CameraEffectType.BlurRadial, blurRadialEffect);
 
-            CameraEffectBase waterDropEffect = MainCamera.gameObject.GetOrAddComponent<WaterDropEffect>();
+            ICameraEffect waterDropEffect = MainCamera.gameObject.GetOrAddComponent<WaterDropEffect>();
             m_CameraEffects.Add(CameraEffectType.WaterDrop, waterDropEffect);
 
-            CameraEffectBase screenGray = MainCamera.gameObject.GetOrAddComponent<ScreenGrayEffect>();
+            ICameraEffect screenGray = MainCamera.gameObject.GetOrAddComponent<ScreenGrayEffect>();
             m_CameraEffects.Add(CameraEffectType.ScreenGray, screenGray);
 
-            CameraEffectBase oilPaint = MainCamera.gameObject.GetOrAddComponent<OilPaintEffect>();
+            ICameraEffect oilPaint = MainCamera.gameObject.GetOrAddComponent<OilPaintEffect>();
             m_CameraEffects.Add(CameraEffectType.OilPaint, oilPaint);
 
-            CameraEffectBase screenFade = MainCamera.gameObject.GetOrAddComponent<ScreenFadeEffect>();
+            ICameraEffect screenFade = MainCamera.gameObject.GetOrAddComponent<ScreenFadeEffect>();
             m_CameraEffects.Add(CameraEffectType.ScreenFade, screenFade);
 
+
+            HideAllEffect();
         }
 
         private void CreateMainCamera()
@@ -174,35 +229,57 @@ namespace GameMain
             {
                 GameObject cameraGo = new GameObject("MainCamera");
                 MainCamera = cameraGo.AddComponent<Camera>();
-                GlobalTools.SetTag(cameraGo,Tags.MainCamera);
+                GlobalTools.SetTag(cameraGo,Constant.Tags.MainCamera);
                 MainCamera.gameObject.GetOrAddComponent<AudioListener>();
             }
 
             ResetMainCamera();
         }
 
+        private void InitCameraBehaviour()
+        {
+            ICameraBehaviour freeLook = gameObject.GetOrAddComponent<CameraFreeLook>();
+            m_CameraBehaviour.Add(freeLook);
+
+            ICameraBehaviour lockLook = gameObject.GetOrAddComponent<CameraLockLook>();
+            m_CameraBehaviour.Add(lockLook);
+
+            SwitchCameraBehaviour(CameraBehaviourType.Default);
+        }
+
+        private void InitUICamera()
+        {
+            UICamera = GameObject.FindObjectOfType<StageCamera>()?.GetComponent<Camera>();
+            if (UICamera == null)
+            {
+                Log.Error("Please Add UI Camera To The Scene.");
+                return;
+            }
+
+            UICamera.depth = Constant.Depth.UICameraDepth;
+        }
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                ShowEffect(curEffectType);
-            }
-            else if (Input.GetKeyDown(KeyCode.B))
-            {
-                HideEffect(curEffectType);
-            }
-            else if (Input.GetKeyDown(KeyCode.C))
-            {
-                FadeInEffect(curEffectType, fadeTime, () =>
-                {
-                    Debug.Log("Fade in");
-                });
-            }
-            else if (Input.GetKeyDown(KeyCode.D))
-            {
-                FadeOutEffect(curEffectType, fadeTime, () => Debug.Log("Fade out"));
-            }
+            //if (Input.GetKeyDown(KeyCode.A))
+            //{
+            //    ShowEffect(curEffectType);
+            //}
+            //else if (Input.GetKeyDown(KeyCode.B))
+            //{
+            //    HideEffect(curEffectType);
+            //}
+            //else if (Input.GetKeyDown(KeyCode.C))
+            //{
+            //    FadeInEffect(curEffectType, fadeTime, () =>
+            //    {
+            //        Debug.Log("Fade in");
+            //    });
+            //}
+            //else if (Input.GetKeyDown(KeyCode.D))
+            //{
+            //    FadeOutEffect(curEffectType, fadeTime, () => Debug.Log("Fade out"));
+            //}
         }
 
     }

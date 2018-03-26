@@ -36,6 +36,7 @@
     <Reference Include="LitJson">
       <HintPath>..\Libs\LitJson.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Data.Sqlite" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -61,6 +62,10 @@
     <Compile Include="Base\Singleton.cs" />
     <Compile Include="AppConfig\AppConfigComponent.cs" />
     <Compile Include="AppConfig\DeviceModelConfig.cs" />
+    <Compile Include="Camera\CameraBehaviour\AbstractTargetFollowerCamera.cs" />
+    <Compile Include="Camera\CameraBehaviour\CameraFreeLook.cs" />
+    <Compile Include="Camera\CameraBehaviour\CameraLockLook.cs" />
+    <Compile Include="Camera\CameraBehaviour\ICameraBehaviour.cs" />
     <Compile Include="Camera\CameraComponent.cs" />
     <Compile Include="Camera\CameraEffect\BlurRadialEffect.cs" />
     <Compile Include="Camera\CameraEffect\CameraEffectBase.cs" />
@@ -70,27 +75,53 @@
     <Compile Include="Camera\CameraEffect\ScreenFadeEffect.cs" />
     <Compile Include="Camera\CameraEffect\ScreenGrayEffect.cs" />
     <Compile Include="Camera\CameraEffect\WaterDropEffect.cs" />
+    <Compile Include="Camera\ProtectCameraFromWallClip.cs" />
+    <Compile Include="Database\Base\DatabaseRowAttribute.cs" />
+    <Compile Include="Database\Base\DBTableBase.cs" />
+    <Compile Include="Database\Base\IDBTableManager.cs" />
+    <Compile Include="Database\Data\DBPlayer.cs" />
+    <Compile Include="Database\Data\DBUser.cs" />
+    <Compile Include="Database\Base\IDBRow.cs" />
+    <Compile Include="Database\DatabaseComponent.cs" />
+    <Compile Include="Database\Base\IDBTable.cs" />
+    <Compile Include="Database\DBTableManager.cs" />
+    <Compile Include="Database\DBTableManager.DBTable.cs" />
     <Compile Include="Debugger\ChangeLanguageDebuggerWindow.cs" />
     <Compile Include="Debugger\DataTableDebuggerWindow.cs" />
     <Compile Include="Debugger\LuaDebuggerWindow.cs" />
     <Compile Include="Definition\Constant\Constant.Depth.cs" />
     <Compile Include="Definition\Constant\Constant.Layer.cs" />
+    <Compile Include="Definition\Constant\Constant.Tags.cs" />
     <Compile Include="Definition\DataStruct\VersionInfo.cs" />
+    <Compile Include="Definition\Enum\CameraActionType.cs" />
     <Compile Include="Definition\Enum\CameraEffectType.cs" />
-    <Compile Include="Definition\Enum\Tags.cs" />
+    <Compile Include="Editor\ClearMissComponent.cs" />
     <Compile Include="Editor\DeviceModelConfigEditorWindow.cs" />
     <Compile Include="Editor\DeviceModelConfigInspector.cs" />
     <Compile Include="Editor\MMORPGDemoBuildEventHandler.cs" />
     <Compile Include="AppConfig\PathConfigs.cs" />
     <Compile Include="Editor\ProjectSaver.cs" />
+    <Compile Include="Entity\Define\EntityTypeId.cs" />
+    <Compile Include="Entity\EntityComponent\PlayerController.cs" />
+    <Compile Include="Entity\EntityData\PlayerData.cs" />
+    <Compile Include="Entity\EntityLogic\PlayerRole.cs" />
+    <Compile Include="Input\CrossPlatformInputManager.cs" />
+    <Compile Include="Input\InputComponent.cs" />
+    <Compile Include="Input\PlatformSpecific\MobileInput.cs" />
+    <Compile Include="Input\PlatformSpecific\StandaloneInput.cs" />
+    <Compile Include="Input\VirtualInput.cs" />
+    <Compile Include="Input\VirtualAxisBase.cs" />
+    <Compile Include="Input\VirtualButton.cs" />
     <Compile Include="Lua\CoroutineRunner.cs" />
     <Compile Include="Lua\XLuaGenConfig.cs" />
     <Compile Include="Lua\LuaComponent.cs" />
     <Compile Include="Lua\XLuaHelper.cs" />
     <Compile Include="Procedure\ProcedureCheckVersion.cs" />
     <Compile Include="Procedure\ProcedureInitResource.cs" />
+    <Compile Include="Procedure\ProcedureMain.cs" />
     <Compile Include="Procedure\ProcedureUpdateResource.cs" />
     <Compile Include="Resource\ResourceComponentExtension.cs" />
+    <Compile Include="Scene\SceneComponentExtension.cs" />
     <Compile Include="UI\Base\FairyGuiComponent.cs" />
     <Compile Include="DataTable\DataTableExtension.cs" />
     <Compile Include="DataTable\DREntity.cs" />
@@ -115,7 +146,7 @@
     <Compile Include="Entity\EntityExtension.cs" />
     <Compile Include="Entity\EntityLogic\EntityBase.cs" />
     <Compile Include="Entity\EntityLogic\PoseRole.cs" />
-    <Compile Include="Entity\EntityLogic\Role.cs" />
+    <Compile Include="Entity\EntityLogic\RoleEntity.cs" />
     <Compile Include="Entity\EntityLogic\Effect.cs" />
     <Compile Include="Localization\LocalizationExtension.cs" />
     <Compile Include="Localization\XmlLocalizationHelper.cs" />
@@ -140,8 +171,11 @@
     <Compile Include="UI\Define\UIFormId.cs" />
     <Compile Include="UI\FormParams\RoleCreateFormParams.cs" />
     <Compile Include="UI\Extension\UIExtension.cs" />
+    <Compile Include="UI\UIForm\Battle\ControllerForm.cs" />
+    <Compile Include="UI\UIForm\Battle\TouchPadModule.cs" />
     <Compile Include="UI\UIForm\CommonForm\DialogForm.cs" />
     <Compile Include="UI\UIForm\CommonForm\LoadingForm.cs" />
+    <Compile Include="UI\UIForm\Battle\JoystickModule.cs" />
     <Compile Include="UI\UIForm\Login\LoginForm.cs" />
     <Compile Include="UI\UIForm\NativeForm\NativeDialogForm.cs" />
     <Compile Include="UI\UIForm\NativeForm\UpdateResourceForm.cs" />
@@ -173,7 +207,9 @@
       <Name>XLuaSrc</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Entity\EventArgs\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>cd $(SolutionDir)Build

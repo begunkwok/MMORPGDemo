@@ -14,7 +14,6 @@ namespace GameMain
         [SerializeField]
         private PoseRoleData m_PoseRoleData = null;
 
-        private Animator m_Animator = null;
         private bool m_IsShowing = false;
         private Coroutine m_showCoroutine = null;
 
@@ -27,18 +26,12 @@ namespace GameMain
                 Log.Error("PoseRole data is invalid.");
                 return;
             }
-
-            m_Animator = CachedTransform.GetComponent<Animator>();
+            
         }
 
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
-
-            Name = string.Format("{0}[{1}]", m_PoseRoleData.TypeId, m_PoseRoleData.Id);
-            CachedTransform.position = Vector3.zero;
-            CachedTransform.rotation = Quaternion.identity;
-            CachedTransform.localScale = Vector3.one;
 
             if (!m_IsShowing)
             {
@@ -67,7 +60,7 @@ namespace GameMain
         IEnumerator ShowPose()
         {
             m_IsShowing = true;
-            m_Animator.SetTrigger("pose");
+            CachedAnimator.SetTrigger("pose");
             float delay01 = m_PoseRoleData.Effect01Data.DelayTime;
             float delay02 = m_PoseRoleData.Effect02Data.DelayTime;
             if (delay01 >= delay02)

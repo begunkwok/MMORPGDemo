@@ -16,7 +16,7 @@ namespace GameMain
             }
         }
 
-        public Animator CachedAnimation
+        public Animator CachedAnimator
         {
             get;
             private set;
@@ -25,7 +25,7 @@ namespace GameMain
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
-            CachedAnimation = GetComponent<Animator>();
+            CachedAnimator = GetComponent<Animator>();
         }
 
         protected override void OnShow(object userData)
@@ -39,7 +39,7 @@ namespace GameMain
                 return;
             }
 
-            Name = string.Format("[Entity {0}]", Id.ToString());
+            Name = string.Format("{0}[{1}][{2}]",gameObject.name,m_EntityData.TypeId,Id);
             CachedTransform.localPosition = m_EntityData.Position;
             CachedTransform.localRotation = m_EntityData.Rotation;
             CachedTransform.localScale = Vector3.one;
@@ -75,6 +75,34 @@ namespace GameMain
             base.OnUpdate(elapseSeconds, realElapseSeconds);
         }
 
+        public virtual void SetPosition(Vector3 Position,bool isLocal = false)
+        {
+            if (isLocal)
+            {
+                CachedTransform.localPosition = Position;
+            }
+            else
+            {
+                CachedTransform.position = Position;
+            }
+        }
+
+        public virtual void SetRotation(Quaternion rotation,bool isLocal = false)
+        {
+            if (isLocal)
+            {
+                CachedTransform.localRotation = rotation;
+            }
+            else
+            {
+                CachedTransform.rotation = rotation;
+            }
+        }
+
+        public virtual void SetScale(Vector3 scale)
+        {
+            CachedTransform.localScale = scale;
+        }
 
     }
 }
