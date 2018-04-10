@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+using GameFramework;
 using GameMain;
 
 [RequireComponent(typeof(CharacterController))]
@@ -15,7 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float backpedalSpeed = 1;
     [SerializeField]
-    private float turnSpeed = 4;
+    private float turnSpeed = 3;
     [SerializeField]
     private float gravity = 20;
     [SerializeField]
@@ -41,6 +42,10 @@ public class PlayerController : MonoBehaviour
 	private float m_last_distance = 0;
 
 	private CharacterController m_controller;
+
+    public event Action<Vector3> OnMove;
+    public event Action OnIdle;
+
 
     public Vector3 Velocity
 	{
@@ -80,9 +85,14 @@ public class PlayerController : MonoBehaviour
 		set { m_controllable = value; }
 	}
 
-	void Start()
+	public void Init(CharacterController cc)
 	{
-		m_controller = GetComponent<CharacterController>();
+	    if (cc == null)
+	    {
+	        Log.Error("Init playerController fail. CharacterController is null.");
+            return;
+	    }
+		m_controller = cc;
 
 		m_controller.slopeLimit = slopeLimit;
 		m_wanted_position = transform.position;
@@ -143,7 +153,7 @@ public class PlayerController : MonoBehaviour
 
         if (m_input_x != 0 && m_input_s == 0)
         {
-            transform.Rotate(new Vector3(0, m_input_x*(turnSpeed/2.0f), 0));
+            transform.Rotate(new Vector3(0, m_input_x * (turnSpeed / 2.0f), 0));
             m_rotation = m_input_x;
             m_input_x = 0;
         }
@@ -151,6 +161,19 @@ public class PlayerController : MonoBehaviour
         {
             m_rotation = 0;
         }
+
+        //if (m_input_x > 0)
+        //{
+        //    transform.localEulerAngles = new Vector3(0, 90, 0);
+        //}
+        //else if(m_input_x < 0)
+        //{
+        //    transform.localEulerAngles = new Vector3(0, -90, 0);
+        //}
+        //else
+        //{
+        //    transform.localEulerAngles = Vector3.zero;
+        //}
 
         if (m_input_y < 0)
         {
@@ -190,12 +213,21 @@ public class PlayerController : MonoBehaviour
         }
 
         m_velocity = new Vector3(m_input_x*input_modifier, -antiBunny, m_input_y*input_modifier);
-        m_velocity = transform.TransformDirection(m_velocity)*m_speed;
+        //m_velocity = transform.TransformDirection(m_velocity);
 
-        m_move_speed = (transform.position - m_last_position).magnitude;
-        m_last_position = transform.position;
+        //m_move_speed = (transform.position - m_last_position).magnitude;
+        //m_last_position = transform.position;
 
-        m_velocity.y -= gravity*Time.deltaTime;
-        m_controller.Move(m_velocity*Time.deltaTime);
+        if (Mathf.Abs(m_input_x) > 0.01f || Mathf.Abs(m_input_y) > 0.01f)
+        {
+            //m_velocity.y -= gravity*Time.deltaTime;
+            //m_controller.Move(m_velocity*Time.deltaTime);
+            OnMove?.Invoke(m_velocity*Time.deltaTime);
+        }
+        else
+        {
+            OnIdle?.Invoke();
+        }
+
     }
 }

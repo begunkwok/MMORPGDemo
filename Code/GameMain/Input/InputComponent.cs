@@ -4,16 +4,46 @@ using UnityGameFramework.Runtime;
 
 namespace GameMain
 {
+    public delegate void OnInputAxis(Vector2 delta);
+    public delegate void OnEndInputAxis();
+
     [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Input")]
     public class InputComponent : GameFrameworkComponent
     {
+        public event OnInputAxis OnInputAxis;
+        public event OnEndInputAxis OnEndInputAxis;
+
         [SerializeField]
         private CrossPlatformInputManager.ActiveInputMethod InputType = CrossPlatformInputManager.ActiveInputMethod.Hardware;
+
+        private float m_InputX = 0;
+        private float m_InputY = 0;
+        private bool m_LastInputEnable = false;
 
         public void Init()
         {
             SwitchActiveInput();
+        }
+
+        void Update()
+        {
+            m_InputX = GetAxis("Horizontal");
+            m_InputY = GetAxis("Vertical");
+
+            if (Mathf.Abs(m_InputX) > 0.05f || Mathf.Abs(m_InputY) > 0.05f)
+            {
+                OnInputAxis?.Invoke(new Vector2(m_InputX, m_InputY));
+                m_LastInputEnable = true;
+            }
+            else
+            {
+                if (m_LastInputEnable)
+                {
+                    OnEndInputAxis?.Invoke();
+                }
+                m_LastInputEnable = false;
+            }
         }
 
         /// <summary>

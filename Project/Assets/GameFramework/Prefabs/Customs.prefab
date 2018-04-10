@@ -53,9 +53,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4377534748435590}
-  - component: {fileID: 114369445873677638}
+  - component: {fileID: 114109079502266630}
   m_Layer: 0
-  m_Name: SQLite
+  m_Name: Database
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -188,7 +188,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1105390048528630}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -2}
+  m_LocalPosition: {x: 0, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4891938578118138}
@@ -272,14 +272,14 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1531456286908540}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4327237861314588}
   m_Father: {fileID: 4608526811991894}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
 --- !u!20 &20394683345072054
 Camera:
   m_ObjectHideFlags: 1
@@ -322,6 +322,19 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1105390048528630}
   m_Enabled: 1
+--- !u!114 &114109079502266630
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1111424461785560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1949914940, guid: a9142b59253c13b4dafb66aa3ef17c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DBName: userData.db
+  SaveInterval: 60
 --- !u!114 &114160833603172686
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -344,18 +357,6 @@ MonoBehaviour:
   m_Script: {fileID: 279000035, guid: a9142b59253c13b4dafb66aa3ef17c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114369445873677638
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1111424461785560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 689912252, guid: a9142b59253c13b4dafb66aa3ef17c8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DBName: userData.db
 --- !u!114 &114374437683837680
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -399,8 +400,8 @@ MonoBehaviour:
   m_Script: {fileID: -2035424662, guid: a9142b59253c13b4dafb66aa3ef17c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PivotOffset: {x: 0, y: 1, z: 0}
-  m_CameraOffset: {x: 0, y: 0, z: -2}
+  m_PivotOffset: {x: 0, y: 2, z: 0}
+  m_CameraOffset: {x: 0, y: 0, z: -4}
 --- !u!124 &124745990896649606
 Behaviour:
   m_ObjectHideFlags: 1

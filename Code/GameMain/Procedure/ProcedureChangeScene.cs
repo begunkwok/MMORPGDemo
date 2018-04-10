@@ -154,9 +154,8 @@ namespace GameMain
 
             string description = string.Format("正在加载场景：[{0}],加载进度：[{1}]。", m_SceneName, ne.Progress.ToString("P2"));
             float progress = ne.Progress * 100;
-            LoadingFormUpdateProgressEventArgs uiArgs = new LoadingFormUpdateProgressEventArgs();
-            uiArgs.Fill(description, progress, null);
 
+            LoadingFormUpdateProgressEventArgs uiArgs = ReferencePool.Acquire<LoadingFormUpdateProgressEventArgs>().Fill(description, progress, null);
             GameEntry.Event.Fire(this, uiArgs);
         }
 

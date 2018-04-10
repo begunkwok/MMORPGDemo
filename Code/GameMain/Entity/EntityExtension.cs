@@ -52,7 +52,7 @@ namespace GameMain
             entityComponent.AttachEntity(entity.Entity, ownerId, parentTransformPath, userData);
         }
 
-        public static void ShowEntity(this EntityComponent entityComponent, Type logicType, string entityGroup, EntityData data)
+        public static void ShowEntity(this EntityComponent entityComponent, Type logicType, EntityData data)
         {
             if (data == null)
             {
@@ -74,38 +74,57 @@ namespace GameMain
                 return;
             }
 
-            entityComponent.ShowEntity(data.Id, logicType, AssetUtility.GetEntityAsset(drEntity.AssetName), entityGroup, data);
+            entityComponent.ShowEntity(data.Id, logicType, AssetUtility.GetEntityAsset(drEntity.AssetName),
+                drEntity.Group, data);         
         }
 
+        public static void ShowActorEntity(this EntityComponent entityComponent, Type logicType, EntityData data)
+        {
+            if (data == null)
+            {
+                Log.Warning("Data is invalid.");
+                return;
+            }
+
+            if (entityComponent.HasEntity(data.Id))
+            {
+                Log.Warning(string.Format("Entity {0} is exist.", data.Id));
+                return;
+            }
+
+            IDataTable<DRActorEntity> dtActorEntity = GameEntry.DataTable.GetDataTable<DRActorEntity>();
+            DRActorEntity drActorEntity = dtActorEntity.GetDataRow(data.TypeId);
+            if (drActorEntity == null)
+            {
+                Log.Warning("Can not load entity id '{0}' from data table.", data.TypeId.ToString());
+                return;
+            }
+            entityComponent.ShowEntity(data.Id, logicType, AssetUtility.GetEntityAsset(drActorEntity.ModelAsset),
+                drActorEntity.Group, data);
+        }
 
         //-----------------简化调用函数----------------
         public static void ShowEffect(this EntityComponent entityComponent, EffectData data)
         {
-            entityComponent.ShowEntity(typeof(Effect), "Effect", data);
+            entityComponent.ShowEntity(typeof (Effect), data);
         }
 
         public static void ShowPoseRole(this EntityComponent entityComponent,PoseRoleData data)
         {
-            entityComponent.ShowEntity(typeof(PoseRole), "Role", data);
+            entityComponent.ShowEntity(typeof (PoseRole), data);
         }
 
-        public static void ShowPlayer(this EntityComponent entityComponent, PlayerData data)
+        public static void ShowPlayer(this EntityComponent entityComponent, PlayerEntityData data)
         {
-            entityComponent.ShowEntity(typeof (PlayerRole), "Role", data);
+            entityComponent.ShowActorEntity(typeof (PlayerRole), data);
+
         }
 
         public static EntityBase GetEntity(this EntityComponent entityComponent, int serialId)
         {
             Entity playerEntity = entityComponent.GetEntity(serialId);
-            if (playerEntity != null)
-            {
-                EntityBase entity = (EntityBase) playerEntity.Logic;
-                return entity;
-            }
-            else
-            {
-                return null;
-            }
+            EntityBase entity = (EntityBase) playerEntity?.Logic;
+            return entity;
         }
 
     }

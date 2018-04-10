@@ -73,6 +73,7 @@ namespace GameMain
             //----预加载数据表----
             LoadDataTable("Scene");
             LoadDataTable("Entity");
+            LoadDataTable("ActorEntity");
             LoadDataTable("Music");
             LoadDataTable("Sound");
             LoadDataTable("UIForm");

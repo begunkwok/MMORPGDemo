@@ -605,6 +605,7 @@ MonoBehaviour:
   - GameMain.ProcedureCreateRole
   - GameMain.ProcedureLaunch
   - GameMain.ProcedureLogin
+  - GameMain.ProcedureMain
   - GameMain.ProcedurePreload
   - GameMain.ProcedureShowDialog
   - GameMain.ProcedureSplash
@@ -794,12 +795,17 @@ MonoBehaviour:
   m_EntityGroupHelperTypeName: UnityGameFramework.Runtime.DefaultEntityGroupHelper
   m_CustomEntityGroupHelper: {fileID: 0}
   m_EntityGroups:
-  - m_Name: Role
-    m_InstanceAutoReleaseInterval: 600
-    m_InstanceCapacity: 3
-    m_InstanceExpireTime: 600
+  - m_Name: Default
+    m_InstanceAutoReleaseInterval: 60
+    m_InstanceCapacity: 20
+    m_InstanceExpireTime: 60
     m_InstancePriority: 0
   - m_Name: Effect
+    m_InstanceAutoReleaseInterval: 60
+    m_InstanceCapacity: 10
+    m_InstanceExpireTime: 60
+    m_InstancePriority: 0
+  - m_Name: Actor
     m_InstanceAutoReleaseInterval: 60
     m_InstanceCapacity: 10
     m_InstanceExpireTime: 60

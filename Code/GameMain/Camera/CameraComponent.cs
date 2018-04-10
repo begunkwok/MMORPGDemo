@@ -244,6 +244,9 @@ namespace GameMain
             ICameraBehaviour lockLook = gameObject.GetOrAddComponent<CameraLockLook>();
             m_CameraBehaviour.Add(lockLook);
 
+            //ICameraBehaviour smartLook = gameObject.GetOrAddComponent<CameraSmartLook>();
+            //m_CameraBehaviour.Add(smartLook);
+
             SwitchCameraBehaviour(CameraBehaviourType.Default);
         }
 

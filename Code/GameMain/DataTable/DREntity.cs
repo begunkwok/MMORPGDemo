@@ -6,6 +6,7 @@
 
 using System.Collections.Generic;
 using GameFramework.DataTable;
+using UnityEngine;
 
 namespace GameMain
 {
@@ -15,6 +16,11 @@ namespace GameMain
 		/// 实体编号
 		/// </summary>
 		public int Id { get; private set; }
+
+		/// <summary>
+		/// 所属组
+		/// </summary>
+		public string Group { get; private set; }
 
 		/// <summary>
 		/// 资源名称
@@ -31,6 +37,7 @@ namespace GameMain
 			string[] text = DataTableExtension.SplitDataRow(dataRowText);
 			int index = -1;
 			Id = int.Parse(text[++index]);
+			Group = text[++index];
 			AssetName = text[++index];
 		}
 

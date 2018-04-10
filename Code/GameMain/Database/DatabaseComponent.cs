@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using GameFramework;
+﻿using GameFramework;
 using Mono.Data.Sqlite;
 using UnityEngine;
 using UnityGameFramework.Runtime;
@@ -52,7 +46,7 @@ namespace GameMain
             m_ElapseSeconds += Time.deltaTime;
             if (m_ElapseSeconds > SaveInterval)
             {
-                SaveDatabase(); //一定时间间隔，自动保存数据
+                //SaveDatabase(); //一定时间间隔，自动保存数据
                 m_ElapseSeconds = 0;
             }
         }

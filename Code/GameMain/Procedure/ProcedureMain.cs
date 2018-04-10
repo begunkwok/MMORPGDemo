@@ -34,8 +34,8 @@ namespace GameMain
             int playerId = m_ProcedureOwner.GetData<VarInt>(Constant.ProcedureData.PlayerId);
             DBPlayer dbPlayer = GameEntry.Database.GetDBRow<DBPlayer>(playerId);
 
-            GameEntry.Entity.ShowPlayer(new PlayerData(dbPlayer.Id, dbPlayer.EntityTypeId));
-            GameEntry.Camera.SwitchCameraBehaviour(CameraBehaviourType.FreeLook);
+            GameEntry.Entity.ShowPlayer(new PlayerEntityData(dbPlayer.Id, dbPlayer.EntityTypeId));
+            GameEntry.Camera.SwitchCameraBehaviour(CameraBehaviourType.LockLook);
      
         }
 

@@ -8,7 +8,7 @@ namespace GameMain
     /// </summary>
     public class CameraFreeLook : AbstractTargetFollowerCamera, ICameraBehaviour
     {
-        [SerializeField]private float m_MoveSpeed = 3f; 
+        [SerializeField]private float m_MoveSpeed = 5f; 
         [Range(0f, 10f)][SerializeField]private float m_TurnSpeed = 2f;   
         [SerializeField]private float m_TurnSmoothing = 0.0f; 
         [SerializeField]private float m_TiltMax = 75f; 

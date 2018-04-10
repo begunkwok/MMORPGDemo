@@ -65,9 +65,9 @@ namespace GameMain
 
         private void InitData()
         {
-            m_WarriorData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), (int)EntityTypeId.PoseWarrior, ProfessionType.Warrior);
-            m_MasterData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), (int)EntityTypeId.PoseMaster, ProfessionType.Master);
-            m_ShooterData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), (int)EntityTypeId.PoseShooter, ProfessionType.Shoooter);
+            m_WarriorData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), 10001, ProfessionType.Warrior);
+            m_MasterData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), 10002, ProfessionType.Master);
+            m_ShooterData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), 10003, ProfessionType.Shoooter);
         }
 
         private void OnClickRoleType(int type)

@@ -44,6 +44,8 @@ namespace GameMain
 
         public int Level { get; set; } = 0;
 
+
+
         private string[] m_Items;
         private string[] m_Values;
         private string[] m_SelectKeys;
