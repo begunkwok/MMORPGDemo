@@ -19,6 +19,8 @@ namespace GameMain
 
         public GameObject EntityGo { get; }
 
+        public int Id { get; }
+
         public int EntityId { get; }
 
         public ActorType ActorType { get; }
@@ -87,6 +89,7 @@ namespace GameMain
         protected ActorBase m_Host;
         protected IFsm<ActorBase> m_ActorFsm;
         protected IActorAI m_ActorAI;
+        protected IActorSkill m_ActorSkill;
         protected IAnimController m_AnimController;
         protected IAIPathFinding m_ActorPathFinding;
         protected IBuffCtrl m_BuffCtrl;
@@ -97,14 +100,17 @@ namespace GameMain
 
 
 
-        protected ActorBase(int entityId, GameObject go, ActorType type, ActorBattleCampType camp,
+        protected ActorBase(int entityId,int id, GameObject go, ActorType type, ActorBattleCampType camp,
             CharacterController cc, Animator anim)
         {
-            if (entityId == 0 || go == null || cc == null || anim == null)
+            if (id == 0 || go == null || cc == null || anim == null)
             {
                 throw new GameFrameworkException("Construct Actor Fail.");
             }
 
+            m_ActorSkill = new ActorSkill(this);
+
+            Id = id;
             EntityId = entityId;
             ActorType = type;
             Camp = camp;
@@ -437,6 +443,11 @@ namespace GameMain
             //TODO
         }
 
+        public void GotoEmptyFsm()
+        {
+            ChangeState<ActorEmptyFsm>();
+        }
+
         public void SetActorState(ActorStateType type, bool flag)
         {
             m_ActorStates[type] = flag;
@@ -759,6 +770,10 @@ namespace GameMain
                 new ActorEmptyFsm(),
                 new ActorIdleFsm(),
                 new ActorRunFsm(), 
+                new ActorWalkFsm(), 
+                new ActorTurnFsm(), 
+                new ActorSkillFsm(), 
+                new ActorDeadFsm(), 
             };
             m_ActorFsm = GameEntry.Fsm.CreateFsm(this, states);
             m_ActorFsm.Start<ActorIdleFsm>();
@@ -776,12 +791,12 @@ namespace GameMain
         {
             m_CommandReceiver = new CommandReceiver();
             m_CommandReceiver.AddCommand<IdleCommand>(CommandType.Idle, CheckIdle);
-            m_CommandReceiver.AddCommand<MoveCommand>(CommandType.Moveto, CheckMoveTo);
+            m_CommandReceiver.AddCommand<MoveCommand>(CommandType.Moveto, CheckRunTo);
         }
 
         #region Command
         //空闲
-        protected virtual CommandReplyType CheckIdle(ICommand cmd)
+        protected virtual CommandReplyType CheckIdle(IdleCommand cmd)
         {
             if (CacheTransform == null)
             {
@@ -800,8 +815,115 @@ namespace GameMain
             return CommandReplyType.YES;
         }
 
+        //寻路至
+        protected virtual CommandReplyType CheckRunTo(MoveCommand cmd)
+        {
+            if (CannotControlSelf())
+            {
+                return CommandReplyType.NO;
+            }
+            if (CurFsmStateType == ActorFsmStateType.FSM_SKILL)
+            {
+                return CommandReplyType.NO;
+            }
+            if (GetAIFeature(AIFeatureType.CanMove) == false)
+            {
+                return CommandReplyType.NO;
+            }
+            //TODO
+            //if (m_Vehicle.GetActorPathFinding().CanReachPosition(cmd.DestPosition) == false)
+            //{
+            //    ShowWarning("300001");
+            //    return CommandReplyType.NO;
+            //}
+            m_ActorAI.ChangeAIMode(AIModeType.Auto);
+            ChangeState<ActorRunFsm>(cmd);
+            return CommandReplyType.YES; ;
+        }
+
+        //使用技能
+        protected virtual CommandReplyType CheckUseSkill(UseSkillCommand cmd)
+        {
+            if (CacheTransform == null)
+            {
+                return CommandReplyType.NO;
+            }
+            if (CannotControlSelf())
+            {
+                ShowWarning("100012");
+                return CommandReplyType.NO;
+            }
+            if (CurFsmStateType == ActorFsmStateType.FSM_SKILL)
+            {
+                return CommandReplyType.NO;
+            }
+            if (GetActorState(ActorStateType.IsRide))
+            {
+                ShowWarning("100011");
+                return CommandReplyType.NO;
+            }
+
+            SkillTree skill = m_ActorSkill.GetSkill(cmd.SkillPos);
+            if (skill == null) return CommandReplyType.NO;
+            if (skill.IsInCD()) return CommandReplyType.NO;
+            switch (skill.CostType)
+            {
+                case SkillCostType.Hp:
+                {
+                    bool success = UseHp(skill.CostNum);
+                    if (!success)
+                    {
+                        return CommandReplyType.NO;
+                    }
+                }
+                    break;
+                case SkillCostType.Mp:
+                {
+                    bool success = UseMp(skill.CostNum);
+                    if (!success)
+                    {
+                        return CommandReplyType.NO;
+                    }
+                }
+                    break;
+            }
+            cmd.LastTime = skill.StateTime;
+
+            ChangeState<ActorSkillFsm>(cmd);
+            return CommandReplyType.YES;
+        }
+
+        //死亡
+        protected virtual CommandReplyType CheckDead(DeadCommand cmd)
+        {
+            m_ActorSkill.Clear();
+            if (GetActorState(ActorStateType.IsRide))
+            {
+                OnEndRide();
+            }
+
+            ChangeState<ActorDeadFsm>(cmd);
+            return CommandReplyType.YES;
+        }
+
+        //转向
+        protected virtual CommandReplyType CheckTurnTo(TurnToCommand cmd)
+        {
+            if (GetAIFeature(AIFeatureType.CanTurn) == false)
+            {
+                return CommandReplyType.NO;
+            }
+            if (CannotControlSelf())
+            {
+                return CommandReplyType.NO;
+            }
+
+            ChangeState<ActorTurnFsm>(cmd);
+            return CommandReplyType.YES;
+        }
+
         //强制移动
-        protected virtual CommandReplyType CheckMoveTo(ICommand cmd)
+        protected virtual CommandReplyType CheckMoveTo(MoveCommand cmd)
         {
             if (CannotControlSelf())
             {
@@ -817,66 +939,368 @@ namespace GameMain
             }
             if (this is ActorPlayer)
             {
-                this.m_ActorAI.ChangeAIMode(AIModeType.Hand);
+                m_ActorAI.ChangeAIMode(AIModeType.Hand);
+
                 ChangeState<ActorRunFsm>(cmd);
                 return CommandReplyType.YES;
             }
             return CommandReplyType.NO;
         }
 
+        //交谈
+        protected virtual CommandReplyType CheckTalk(TalkCommand cmd)
+        {
+            ChangeState<ActorTalkFsm>(cmd);
+            return CommandReplyType.YES;
+        }
+
+        //冰冻
+        protected virtual CommandReplyType CheckFrost(FrostCommand cmd)
+        {
+            if (CannotControlSelf())
+            {
+                return CommandReplyType.NO;
+            }
+            if (GetActorState(ActorStateType.IsDivine) == true)
+            {
+                return CommandReplyType.NO;
+            }
+            m_ActorSkill.Clear();
+
+            ChangeState<ActorFrostFsm>(cmd);
+            return CommandReplyType.YES;
+        }
+
+        //昏迷
+        protected virtual CommandReplyType CheckStun(StunCommand cmd)
+        {
+            if (CannotControlSelf())
+            {
+                return CommandReplyType.NO;
+            }
+            if (GetActorState(ActorStateType.IsDivine))
+            {
+                return CommandReplyType.NO;
+            }
+            m_ActorSkill.Clear();
+
+            ChangeState<ActorStunFsm>(cmd);
+            return CommandReplyType.YES;
+        }
+
+        ////麻痹
+        //protected virtual CommandReplyType CheckPalsy(MBCommand cmd)
+        //{
+        //    if (CannotControlSelf())
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (GetActorEffect(EActorEffect.Is_Divine) == true)
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    mActorSkill.Clear();
+        //    SendStateMessage(ActorFsmStateType.FSM_PARALY, cmd);
+        //    return CommandReplyType.YES;
+        //}
+
+        ////睡眠
+        //protected virtual CommandReplyType CheckSleep(SPCommand cmd)
+        //{
+        //    if (CannotControlSelf())
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (GetActorEffect(EActorEffect.Is_Divine) == true)
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    mActorSkill.Clear();
+        //    SendStateMessage(ActorFsmStateType.FSM_SLEEP, cmd);
+        //    return CommandReplyType.YES;
+        //}
+
+        ////致盲
+        //protected virtual CommandReplyType CheckBlind(ZMCommand cmd)
+        //{
+        //    if (CannotControlSelf())
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (GetActorEffect(EActorEffect.Is_Divine) == true)
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    mActorSkill.Clear();
+        //    SendStateMessage(ActorFsmStateType.FSM_BLIND, cmd);
+        //    return CommandReplyType.YES;
+        //}
+
+        ////恐惧
+        //protected virtual CommandReplyType CheckFear(FRCommand cmd)
+        //{
+        //    if (CannotControlSelf())
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (GetActorEffect(EActorEffect.Is_Divine) == true)
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    mActorSkill.Clear();
+        //    SendStateMessage(ActorFsmStateType.FSM_FEAR, cmd);
+        //    return CommandReplyType.YES;
+        //}
+
+        ////定身
+        //protected virtual CommandReplyType CheckFixBody(FBCommand cmd)
+        //{
+        //    if (CannotControlSelf())
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (GetActorEffect(EActorEffect.Is_Divine) == true)
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    SendStateMessage(ActorFsmStateType.FSM_FIXBODY, cmd);
+        //    return CommandReplyType.YES;
+        //}
+
+        ////受击
+        //protected virtual CommandReplyType CheckWound(WDCommand cmd)
+        //{
+        //    if (CannotControlSelf())
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (GetActorEffect(EActorEffect.Is_Divine) == true)
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    mActorSkill.Clear();
+        //    cmd.LastTime = mActorAction.GetAnimLength("hit");
+        //    SendStateMessage(ActorFsmStateType.FSM_WOUND, cmd);
+        //    return CommandReplyType.YES;
+        //}
+
+        ////击退
+        //protected virtual CommandReplyType CheckBeatBack(BBCommand cmd)
+        //{
+        //    if (CannotControlSelf())
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (GetActorEffect(EActorEffect.Is_Divine) == true)
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    mActorSkill.Clear();
+        //    SendStateMessage(ActorFsmStateType.FSM_BEATBACK, cmd);
+        //    return CommandReplyType.YES;
+        //}
+
+        ////击飞
+        //protected virtual CommandReplyType CheckBeatFly(BFCommand cmd)
+        //{
+        //    if (CannotControlSelf())
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (GetActorEffect(EActorEffect.Is_Divine) == true)
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    mActorSkill.Clear();
+        //    cmd.LastTime = mActorAction.GetAnimLength("fly");
+        //    SendStateMessage(ActorFsmStateType.FSM_BEATFLY, cmd);
+        //    return CommandReplyType.YES;
+        //}
+
+        ////击倒
+        //protected virtual CommandReplyType CheckBeatDown(BDCommand cmd)
+        //{
+        //    if (CannotControlSelf())
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (GetActorEffect(EActorEffect.Is_Divine) == true)
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    mActorSkill.Clear();
+        //    cmd.LastTime = mActorAction.GetAnimLength("down");
+        //    SendStateMessage(ActorFsmStateType.FSM_BEATDOWN, cmd);
+        //    return CommandReplyType.YES;
+        //}
+
+        ////浮空
+        //protected virtual CommandReplyType CheckFly(FLCommand cmd)
+        //{
+        //    if (CannotControlSelf())
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (GetActorEffect(EActorEffect.Is_Divine) == true)
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    mActorSkill.Clear();
+        //    SendStateMessage(ActorFsmStateType.FSM_FLOATING, cmd);
+        //    return CommandReplyType.YES;
+        //}
+
+        ////被勾取
+        //protected virtual CommandReplyType CheckHook(HKCommand cmd)
+        //{
+        //    if (CannotControlSelf())
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (GetActorEffect(EActorEffect.Is_Divine) == true)
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    mActorSkill.Clear();
+        //    SendStateMessage(ActorFsmStateType.FSM_HOOK, cmd);
+        //    return CommandReplyType.YES;
+        //}
+
+        ////被抓取
+        //protected virtual CommandReplyType CheckGrab(GBCommand cmd)
+        //{
+        //    if (CannotControlSelf())
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (GetActorEffect(EActorEffect.Is_Divine) == true)
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    mActorSkill.Clear();
+        //    SendStateMessage(ActorFsmStateType.FSM_GRAB, cmd);
+        //    return CommandReplyType.YES;
+        //}
+
+        ////变形
+        //protected virtual CommandReplyType CheckVariation(VACommand cmd)
+        //{
+        //    if (CannotControlSelf())
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (GetActorEffect(EActorEffect.Is_Divine) == true)
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    mActorSkill.Clear();
+        //    SendStateMessage(ActorFsmStateType.FSM_VARIATION, cmd);
+        //    return CommandReplyType.YES;
+        //}
+
+        ////骑乘
+        //protected virtual CommandReplyType CheckRide(ERCommand cmd)
+        //{
+        //    if (CannotControlSelf())
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (Launcher.Instance.GetCurrSceneType() != ESceneType.City)
+        //    {
+        //        ShowWarning("300002");
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (m_ActorFsm == ActorFsmStateType.FSM_RUN || m_ActorFsm == ActorFsmStateType.FSM_WALK || m_ActorFsm == ActorFsmStateType.FSM_SKILL)
+        //    {
+        //        ShowWarning("300003");
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (mActorCard.GetMountID() == 0)
+        //    {
+        //        ShowWarning("300004");
+        //        return CommandReplyType.NO;
+        //    }
+        //    OnBeginRide();
+        //    return CommandReplyType.YES;
+        //}
+
+        //private CommandReplyType CheckReborn(RBCommand cmd)
+        //{
+        //    cmd.LastTime = mActorAction.GetAnimLength("fuhuo");
+        //    SendStateMessage(ActorFsmStateType.FSM_REBORN, cmd);
+        //    return CommandReplyType.YES;
+        //}
+
+        ////跳跃
+        //protected virtual CommandReplyType CheckJump(JPCommand cmd)
+        //{
+        //    if (CannotControlSelf())
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (GetActorEffect(EActorEffect.Is_Ride) == true)
+        //    {
+        //        ShowWarning("100011");
+        //        return CommandReplyType.NO;
+        //    }
+        //    SendStateMessage(ActorFsmStateType.FSM_JUMP);
+        //    return CommandReplyType.YES;
+        //}
+
+        ////隐身
+        //protected virtual CommandReplyType CheckSteal(YSCommand cmd)
+        //{
+        //    if (m_ActorFsm != ActorFsmStateType.FSM_IDLE ||
+        //       m_ActorFsm != ActorFsmStateType.FSM_RUN ||
+        //       m_ActorFsm != ActorFsmStateType.FSM_WALK)
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    this.OnBeginStealth(cmd.LastTime);
+        //    return CommandReplyType.YES;
+        //}
+
+        ////交互
+        //private CommandReplyType CheckInterActive(ITCommand cmd)
+        //{
+        //    if (CannotControlSelf())
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (m_ActorFsm == ActorFsmStateType.FSM_DEAD)
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (cmd.AnimName == "idle")
+        //    {
+        //        cmd.LastTime = 1;
+        //    }
+        //    else
+        //    {
+        //        cmd.LastTime = mActorAction.GetAnimLength(cmd.AnimName);
+        //    }
+        //    SendStateMessage(ActorFsmStateType.FSM_INTERACTIVE, cmd);
+        //    return CommandReplyType.YES;
+        //}
+
+        //private CommandReplyType CheckMine(CJCommand cmd)
+        //{
+        //    if (CannotControlSelf())
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    if (m_ActorFsm == ActorFsmStateType.FSM_DEAD)
+        //    {
+        //        return CommandReplyType.NO;
+        //    }
+        //    cmd.LastTime = mActorAction.GetAnimLength("miss");
+        //    SendStateMessage(ActorFsmStateType.FSM_INTERACTIVE, cmd);
+        //    return CommandReplyType.YES;
+        //}
+
         #endregion 
 
         #region Action
-
-        /// <summary>
-        /// 休闲
-        /// </summary>
-        public virtual void OnIdle()
-        {
-            StopPathFinding();
-            this.m_AnimController.Play("idle", null, true);
-        }
-
-        /// <summary>
-        /// 死亡
-        /// </summary>
-        public virtual void OnDead(DeadCommand ev)
-        {
-            StopPathFinding();
-            this.m_AnimController.Play("die");
-            Attrbute.UpdateValue(ActorAttributeType.Hp, 0);
-            Attrbute.UpdateValue(ActorAttributeType.Mp, 0);
-            this.Clear();
-            this.ApplyCharacterCtrl(false);
-            this.m_ActorAI.Clear();
-            //DBEntiny db = ZTConfig.Instance.GetDBEntiny(Id);
-            //if ((this is ActorMainPlayer) == false)
-            //{
-            //    LevelData.AllActors.Remove(this);
-            //}
-            //switch (ActorType)
-            //{
-            //    case EActorType.PLAYER:
-            //        if (this is ActorMainPlayer)
-            //        {
-            //            ZTLevel.Instance.OnMainPlayerDead();
-            //        }
-            //        break;
-            //    case EActorType.MONSTER:
-            //        ZTEvent.FireEvent(EventID.RECV_KILL_MONSTER, GUID, Id);
-            //        ZTTimer.Instance.Register(1.5f, OnDeadEnd);
-            //        break;
-            //}
-        }
-
-        /// <summary>
-        /// 转向
-        /// </summary>
-        public virtual void OnTurnTo(TurnToCommand ev)
-        {
-            Vector3 pos = new Vector3(ev.LookDirection.x, CacheTransform.position.y, ev.LookDirection.z);
-            CacheTransform.LookAt(pos);
-        }
 
         /// <summary>
         /// 强制移动
@@ -916,6 +1340,147 @@ namespace GameMain
         }
 
         /// <summary>
+        /// 休闲
+        /// </summary>
+        public virtual void OnIdle()
+        {
+            StopPathFinding();
+            this.m_AnimController.Play("idle", null, true);
+        }
+
+        /// <summary>
+        /// 交谈
+        /// </summary>
+        public virtual void OnTalk(TalkCommand ev)
+        {
+            this.m_AnimController.Play("talk", null, true);
+        }
+
+        /// <summary>
+        /// 死亡
+        /// </summary>
+        public virtual void OnDead(DeadCommand ev)
+        {
+            StopPathFinding();
+            this.m_AnimController.Play("die");
+            Attrbute.UpdateValue(ActorAttributeType.Hp, 0);
+            Attrbute.UpdateValue(ActorAttributeType.Mp, 0);
+            this.Clear();
+            this.ApplyCharacterCtrl(false);
+            this.m_ActorAI.Clear();
+            //DBEntiny db = ZTConfig.Instance.GetDBEntiny(Id);
+            //if ((this is ActorMainPlayer) == false)
+            //{
+            //    LevelData.AllActors.Remove(this);
+            //}
+            //switch (ActorType)
+            //{
+            //    case EActorType.PLAYER:
+            //        if (this is ActorMainPlayer)
+            //        {
+            //            ZTLevel.Instance.OnMainPlayerDead();
+            //        }
+            //        break;
+            //    case EActorType.MONSTER:
+            //        ZTEvent.FireEvent(EventID.RECV_KILL_MONSTER, GUID, Id);
+            //        ZTTimer.Instance.Register(1.5f, OnDeadEnd);
+            //        break;
+            //}
+        }
+
+        /// <summary>
+        /// 使用技能
+        /// </summary>
+        public virtual void OnUseSkill(UseSkillCommand ev)
+        {
+            StopPathFinding();
+            LookAtEnemy();
+            m_ActorSkill.UseSkill(ev.SkillPos);
+        }
+
+        /// <summary>
+        /// 转向
+        /// </summary>
+        public virtual void OnTurnTo(TurnToCommand ev)
+        {
+            Vector3 pos = new Vector3(ev.LookDirection.x, CacheTransform.position.y, ev.LookDirection.z);
+            CacheTransform.LookAt(pos);
+        }
+
+        /// <summary>
+        /// 击退
+        /// </summary>
+        public virtual void OnBeatBack(BeatBackCommand ev)
+        {
+            StopPathFinding();
+        }
+
+        /// <summary>
+        /// 击倒
+        /// </summary>
+        public virtual void OnBeatDown()
+        {
+            StopPathFinding();
+            m_AnimController.Play("down", GotoEmptyFsm, false);
+        }
+
+        /// <summary>
+        /// 击飞
+        /// </summary>
+        public virtual void OnBeatFly()
+        {
+            StopPathFinding();
+            m_AnimController.Play("fly", GotoEmptyFsm, false);
+        }
+
+        /// <summary>
+        /// 受伤
+        /// </summary>
+        public virtual void OnWound()
+        {
+            StopPathFinding();
+            m_AnimController.Play("hit", GotoEmptyFsm, false);
+        }
+
+        /// <summary>
+        /// 行走
+        /// </summary>
+        public virtual void OnWalk()
+        {
+            StopPathFinding();
+            m_AnimController.Play("walk", GotoEmptyFsm, true);
+        }
+
+        /// <summary>
+        /// 晕眩
+        /// </summary>
+        public virtual void OnStun(float lastTime)
+        {
+            StopPathFinding();
+            m_AnimController.Play("yun", GotoEmptyFsm, true, 1, lastTime);
+        }
+
+        /// <summary>
+        /// 跳
+        /// </summary>
+        public void OnJump()
+        {
+            StopPathFinding();
+            m_AnimController.Play("jump", GotoEmptyFsm, false);
+        }
+
+        /// <summary>
+        /// 重生
+        /// </summary>
+        public void OnReborn()
+        {
+            AddHp(Attrbute.GetValue(ActorAttributeType.MaxHp), false);
+            AddMp(Attrbute.GetValue(ActorAttributeType.MaxMp), false);
+            m_CharacterController.enabled = true;
+            m_AnimController.Play("fuhuo", GotoEmptyFsm, false);
+        }
+
+        /// <summary>
         /// 开始骑坐骑
         /// </summary>
         public virtual void OnBeginRide()
@@ -932,15 +1497,66 @@ namespace GameMain
         }
 
         /// <summary>
-        /// 交谈
+        /// 采矿
         /// </summary>
-        public virtual void OnTalk(TalkCommand ev)
+        /// <param name="ev"></param>
+        public void OnCollectMine(CollectMineCommand ev)
         {
-            this.m_AnimController.Play("talk", null, true);
+            StopPathFinding();
+            Action callback = delegate ()
+            {
+                GotoEmptyFsm();
+                ev.OnFinish?.Invoke();
+            };
+            m_AnimController.Play("miss", callback, false);
         }
 
+        /// <summary>
+        /// 交互
+        /// </summary>
+        /// <param name="ev"></param>
+        public void OnInteractive(InteractiveCommand ev)
+        {
+            StopPathFinding();
+            Action callback = delegate ()
+            {
+                GotoEmptyFsm();
+                ev.OnFinish?.Invoke();
+            };
+            m_AnimController.Play(ev.AnimName, callback, false);
+        }
 
+        protected void OnBeginStealth(float lifeTime)
+        {
+            SetActorState(ActorStateType.IsStealth, true);
+            OnFadeOut();
+        }
 
+        protected void OnEndStealth()
+        {
+            SetActorState(ActorStateType.IsStealth, false);
+            OnFadeIn();
+        }
+
+        protected void OnFadeOut()
+        {
+            SetAlphaVertexColorOff(0.1f);
+           // mActorBuff.SetAllParticleEnabled(false);
+           //TODO
+        }
+
+        protected void OnFadeIn()
+        {
+            SetAlphaVertexColorOn(0.1f);
+           // mActorBuff.SetAllParticleEnabled(true);
+
+        }
+
+        protected void OnDeadEnd()
+        {
+            m_ActorAI.Clear();
+            GameEntry.Entity.HideEntity(EntityId);
+        }
         #endregion
 
     }

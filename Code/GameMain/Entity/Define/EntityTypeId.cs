@@ -1,7 +1,7 @@
 ﻿namespace GameMain
 {
     /// <summary>
-    /// 实体编号(由服务端产生，单机版先在这定义)
+    /// 实体类型编号
     /// </summary>
     public enum EntityTypeId
     {

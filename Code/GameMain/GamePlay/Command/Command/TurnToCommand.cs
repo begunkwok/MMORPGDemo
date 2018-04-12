@@ -11,7 +11,7 @@ namespace GameMain
         public CommandType CommandType { get; }
 
         public Vector3 LookDirection { get; }
-        public Action OnFinish { get; }
+        public Action OnFinish { get; set; }
 
         public TurnToCommand(Vector3 lookDirection, Action onFinish)
         {

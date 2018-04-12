@@ -34,6 +34,19 @@ namespace GameMain
             }
         }
 
+        public static void SetLayer(GameObject go, int layer)
+        {
+            go.layer = layer;
+
+            Transform t = go.transform;
+
+            for (int i = 0, imax = t.childCount; i < imax; ++i)
+            {
+                Transform child = t.GetChild(i);
+                SetLayer(child.gameObject, layer);
+            }
+        }
+
         public static string ToTimer(int value)
         {
             if (value > 9)

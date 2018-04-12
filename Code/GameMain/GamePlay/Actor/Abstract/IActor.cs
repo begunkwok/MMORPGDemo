@@ -10,7 +10,7 @@ namespace GameMain
         /// <summary>
         /// 实体ID
         /// </summary>
-        int EntityId { get; }
+        int Id { get; }
 
         /// <summary>
         /// 游戏实体

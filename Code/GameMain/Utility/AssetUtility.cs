@@ -55,5 +55,9 @@ namespace GameMain
             return string.Format("Assets/GameMain/Lua/{0}", assetName);
         }
 
+        public static string GetSkillScriptAsset(string assetName)
+        {
+            return string.Format("Assets/GameMain/Configs/ActorSkill/{0}", assetName);
+        }
     }
 }

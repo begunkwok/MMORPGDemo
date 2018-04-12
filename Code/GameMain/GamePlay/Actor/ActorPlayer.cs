@@ -77,7 +77,7 @@ namespace GameMain
         }
 
 
-        public ActorPlayer(int entityId, GameObject go, ActorType type, ActorBattleCampType camp, CharacterController cc,Animator anim) : base(entityId, go, type, camp, cc,anim)
+        public ActorPlayer(int entityId,int id, GameObject go, ActorType type, ActorBattleCampType camp, CharacterController cc,Animator anim) : base(entityId,id, go, type, camp, cc,anim)
         {
 
         }

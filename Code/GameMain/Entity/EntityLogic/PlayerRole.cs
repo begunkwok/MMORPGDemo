@@ -28,7 +28,7 @@ namespace GameMain
             m_Animator = gameObject.GetComponent<Animator>();
             m_CharacterController = gameObject.GetOrAddComponent<CharacterController>();
             
-            PlayerActor = new ActorPlayer(m_PlayerEntityData.Id,gameObject,ActorType.Player, ActorBattleCampType.Ally, m_CharacterController, m_Animator);
+            PlayerActor = new ActorPlayer(m_PlayerEntityData.Id,m_PlayerEntityData.TypeId,gameObject,ActorType.Player, ActorBattleCampType.Ally, m_CharacterController, m_Animator);
             PlayerActor.Init();
 
             //设置自身,与跟随相机到场景出身点

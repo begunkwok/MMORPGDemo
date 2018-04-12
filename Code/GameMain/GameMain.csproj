@@ -96,13 +96,20 @@
     <Compile Include="Definition\Constant\Constant.Layer.cs" />
     <Compile Include="Definition\Constant\Constant.Tags.cs" />
     <Compile Include="Definition\DataStruct\VersionInfo.cs" />
+    <Compile Include="GamePlay\AI\Fsm\ActorDeadFsm.cs" />
+    <Compile Include="GamePlay\AI\Fsm\ActorFrostFsm.cs" />
+    <Compile Include="GamePlay\AI\Fsm\ActorStunFsm.cs" />
+    <Compile Include="GamePlay\AI\Fsm\ActorTalkFsm.cs" />
+    <Compile Include="GamePlay\AI\Fsm\ActorSkillFsm.cs" />
+    <Compile Include="GamePlay\AI\Fsm\ActorTurnFsm.cs" />
+    <Compile Include="GamePlay\AI\Fsm\ActorWalkFsm.cs" />
     <Compile Include="GamePlay\AI\Fsm\ActorRunFsm.cs" />
     <Compile Include="GamePlay\Attribute\Define\PropertyType.cs" />
     <Compile Include="Definition\EventArgs\ChangeEquipEventArgs.cs" />
     <Compile Include="GamePlay\Actor\ActorPlayer.cs" />
     <Compile Include="GamePlay\Actor\Define\ActorDeadType.cs" />
     <Compile Include="GamePlay\Actor\Define\ActorPartnerSortType.cs" />
-    <Compile Include="GamePlay\AI\Abstract\IAIPathFinding.cs" />
+    <Compile Include="GamePlay\AI\Base\IAIPathFinding.cs" />
     <Compile Include="GamePlay\Actor\Define\ActorBattleCampType.cs" />
     <Compile Include="GamePlay\Actor\Define\ActorBindPosType.cs" />
     <Compile Include="Definition\Enum\FlyWordType.cs" />
@@ -119,14 +126,14 @@
     <Compile Include="Entity\EntityData\ActorDataBase.cs" />
     <Compile Include="GamePlay\Actor\ActorBase.cs" />
     <Compile Include="GamePlay\Actor\ActorManager.cs" />
-    <Compile Include="GamePlay\AI\Abstract\ActorAIBase.cs" />
+    <Compile Include="GamePlay\AI\Base\ActorAIBase.cs" />
     <Compile Include="GamePlay\AI\Define\AIFeatureType.cs" />
     <Compile Include="GamePlay\Animtion\AnimController.cs" />
     <Compile Include="GamePlay\Attribute\Abstract\IAttribute.cs" />
     <Compile Include="GamePlay\Attribute\ActorAttribute.cs" />
     <Compile Include="GamePlay\Attribute\Abstract\ICalcStrategy.cs" />
     <Compile Include="GamePlay\Actor\Abstract\IActor.cs" />
-    <Compile Include="GamePlay\AI\Abstract\IActorAI.cs" />
+    <Compile Include="GamePlay\AI\Base\IActorAI.cs" />
     <Compile Include="GamePlay\Actor\Abstract\IActorManager.cs" />
     <Compile Include="GamePlay\Attribute\DefaultAttributeStrategy.cs" />
     <Compile Include="GamePlay\Battle\Abstract\IBuffCtrl.cs" />
@@ -156,6 +163,12 @@
     <Compile Include="GamePlay\BehaviorTree\Define\BTStatus.cs" />
     <Compile Include="GamePlay\Command\CommandHandler.cs" />
     <Compile Include="GamePlay\Command\CommandReceiver.cs" />
+    <Compile Include="GamePlay\Command\Command\BeatBackCommand.cs" />
+    <Compile Include="GamePlay\Command\Command\FrostCommand.cs" />
+    <Compile Include="GamePlay\Command\Command\InteractiveCommand.cs" />
+    <Compile Include="GamePlay\Command\Command\CollectMineCommand.cs" />
+    <Compile Include="GamePlay\Command\Command\StunCommand.cs" />
+    <Compile Include="GamePlay\Command\Command\UseSkillCommand.cs" />
     <Compile Include="GamePlay\Command\Command\IdleCommand.cs" />
     <Compile Include="GamePlay\Command\Command\TurnToCommand.cs" />
     <Compile Include="GamePlay\Command\Command\TalkCommand.cs" />
@@ -183,7 +196,11 @@
     <Compile Include="GamePlay\Command\Define\PursueType.cs" />
     <Compile Include="GamePlay\Item\IEquip.cs" />
     <Compile Include="GamePlay\Item\IItem.cs" />
-    <Compile Include="GamePlay\Skill\Abstract\IActorSkill.cs" />
+    <Compile Include="GamePlay\Skill\Base\ActorSkill.cs" />
+    <Compile Include="GamePlay\Skill\Base\IActorSkill.cs" />
+    <Compile Include="GamePlay\Skill\Base\SkillCostType.cs" />
+    <Compile Include="GamePlay\Skill\Base\SkillPosType.cs" />
+    <Compile Include="GamePlay\Skill\BT\SkillTree.cs" />
     <Compile Include="GamePlay\Timer\Timer.cs" />
     <Compile Include="GamePlay\Timer\TimerComponent.cs" />
     <Compile Include="Input\CrossPlatformInputManager.cs" />
@@ -262,6 +279,7 @@
     <Compile Include="Utility\GlobalTools.cs" />
     <Compile Include="Utility\LitJsonHelper.cs" />
     <Compile Include="Utility\WebUtility.cs" />
+    <Compile Include="Utility\XmlObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameFramework\GameFramework.csproj">
