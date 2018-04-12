@@ -13,6 +13,8 @@
             Lua = UnityGameFramework.Runtime.GameEntry.GetComponent<LuaComponent>();
             Camera = UnityGameFramework.Runtime.GameEntry.GetComponent<CameraComponent>();
             Input = UnityGameFramework.Runtime.GameEntry.GetComponent<InputComponent>();
+            BT = UnityGameFramework.Runtime.GameEntry.GetComponent<BehaviorTreeComponent>();
+            Timer = UnityGameFramework.Runtime.GameEntry.GetComponent<TimerComponent>();
 
             Database.Init();
             FairyGui.Init();
@@ -56,6 +58,13 @@
             get;
             private set;
         }
+
+        public static BehaviorTreeComponent BT
+        {
+            get; private set;
+        }
+
+        public static TimerComponent Timer { get; protected set; }
 
     }
 }

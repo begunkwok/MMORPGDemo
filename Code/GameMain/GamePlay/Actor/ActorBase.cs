@@ -83,9 +83,9 @@ namespace GameMain
         protected Animator m_Animator;
         protected Transform[] m_Hands;
 
-        protected IFsm<ActorBase> m_ActorFsm;
         protected ActorBase m_Target;
         protected ActorBase m_Host;
+        protected IFsm<ActorBase> m_ActorFsm;
         protected IActorAI m_ActorAI;
         protected IAnimController m_AnimController;
         protected IAIPathFinding m_ActorPathFinding;
@@ -938,6 +938,8 @@ namespace GameMain
         {
             this.m_AnimController.Play("talk", null, true);
         }
+
+
 
         #endregion
 
