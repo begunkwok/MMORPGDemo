@@ -1,0 +1,4 @@
+#	Id	SceneName	SceneType	AssetName	BackgroundMusicId	PlayerSpawn
+1	Login场景	1	Login	1	0.0;0.0;0.0;
+2	角色创建场景	2	CreateRole	2	0.0;0.0;0.0;
+3	主城场景	3	MainCity	3	21.0;0.0;0.0;
