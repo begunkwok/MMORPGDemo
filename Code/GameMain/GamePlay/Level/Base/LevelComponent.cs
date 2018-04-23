@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameFramework;
 using GameFramework.Event;
 using UnityEngine;
 using UnityGameFramework.Runtime;
@@ -8,29 +9,36 @@ namespace GameMain
 {
     [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Level")]
-    public class LevelComponent : GameFrameworkComponent
+    public partial class LevelComponent : GameFrameworkComponent
     {
-        public int MapID;
-        public SceneId CurSceneId { get; private set; }
-        public SceneType CurSceneType { get; private set; }
-        public float Delay;
+        public int LevelID;
         public string MapName = string.Empty;
         public string MapPath = string.Empty;
+        public SceneId CurSceneId { get; private set; }
+        public SceneType CurSceneType { get; private set; }
         public MapConfig Config { get; private set; }
+        public PlayerRole Player { get; private set; }
 
         private readonly List<LevelTask> m_OnLoadNewSceneTasks = new List<LevelTask>();
         private readonly Dictionary<MapHolderType, LevelElement> m_Holders = new Dictionary<MapHolderType, LevelElement>();
-        private static int _guidStart = 100001;
+ 
 
-        public int GetGUID()
-        {
-            _guidStart++;
-            return _guidStart;
-        }
 
         public void Init()
         {
             GameEntry.Event.Subscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
+
+            IsEditorMode = false;
+
+            InitHolder();
+        }
+
+        public void InitHolder()
+        {
+            if (transform.childCount > 0)
+            {
+                return;
+            }
 
             AddHolder<HolderBorn>(MapHolderType.Born);
             AddHolder<HolderMonsterGroup>(MapHolderType.MonsterGroup);
@@ -41,6 +49,7 @@ namespace GameMain
             AddHolder<HolderNpc>(MapHolderType.Npc);
             AddHolder<HolderMineGroup>(MapHolderType.MineGroup);
             AddHolder<HolderRole>(MapHolderType.Role);
+
             foreach (KeyValuePair<MapHolderType, LevelElement> current in m_Holders)
             {
                 Transform trans = current.Value.transform;
@@ -51,27 +60,16 @@ namespace GameMain
             }
         }
 
-        public void EnterWorld(int mapID)
+        public void EnterLevel(int levelId,SceneId sceneId)
         {
-            this.MapID = mapID;
-            this.Init();
-            string assetName = AssetUtility.GetSkillScriptAsset(mapID.ToString());
+            this.LevelID = levelId;
+            this.CurSceneId = sceneId;
+       
+            string assetName = AssetUtility.GetLevelConfigAsset(levelId.ToString());
             Config = new MapConfig();
             Config.Load(assetName);
 
-            for (int i = 0; i < Config.Regions.Count; i++)
-            {
-                MapRegion data = Config.Regions[i];
-                if (data.StartActive)
-                {
-                    LevelElement pHolder = GetHolder(MapHolderType.Region);
-                    GameObject go = pHolder.gameObject.AddChild();
-                    LevelRegion pRegion = go.AddComponent<LevelRegion>();
-                    pRegion.Import(data, false);
-                    pRegion.Init();
-                }
-            }
-            this.OnSceneStart();
+            this.OnLevelStart();
         }
 
         public LevelElement GetHolder(MapHolderType type)
@@ -92,12 +90,12 @@ namespace GameMain
             }
         }
 
-        public PlayerRole CreatePlayer(int id, TransformParam param)
+        public PlayerRole CreatePlayer(int id)
         {
-            PlayerRole player = AddRole<PlayerRole>(id, ActorType.Player, BattleCampType.Ally, param);
-            LevelData.Player = player;
+            Player = AddRole<PlayerRole>(id, ActorType.Player, BattleCampType.Ally, TransformParam.Default);
+            LevelData.Player = Player;
             GameEntry.Camera.SwitchCameraBehaviour(CameraBehaviourType.LockLook);
-            return player;
+            return Player;
         }
 
         public EnemyRole CreateEnemy(int id, TransformParam param)
@@ -106,46 +104,30 @@ namespace GameMain
             return enemy;
         }
 
-        public Barrier CreateBarrier(int id, TransformParam param = null)
+        public LevelObject CreateLevelObject(int id, TransformParam param = null)
         {
             int entityId = GameEntry.Entity.GenerateSerialId();
-            BarrierData barrierData = new BarrierData(entityId,id);
-            Barrier barrier = GameEntry.Entity.ShowEntity<Barrier>(barrierData);
+            LevelObjectData levelObjectData = new LevelObjectData(entityId, id);
+            LevelObject levelObject = GameEntry.Entity.ShowEntity<LevelObject>(levelObjectData);
 
-            if (param != null)
+            if (param != null && levelObject != null)
             {
-                barrier.CachedTransform.position = param.Position;
-                barrier.CachedTransform.eulerAngles = param.EulerAngles;
-                barrier.CachedTransform.localScale = param.Scale;
+                levelObject.CachedTransform.position = param.Position;
+                levelObject.CachedTransform.eulerAngles = param.EulerAngles;
+                levelObject.CachedTransform.localScale = param.Scale;
             }
 
-            return barrier;
-        }
-
-        public Mine CreateMine(int id, TransformParam param = null)
-        {
-            int entityId = GameEntry.Entity.GenerateSerialId();
-            MineData mineData = new MineData(entityId, id);
-            Mine mine = GameEntry.Entity.ShowEntity<Mine>(mineData);
-
-            if (param != null)
-            {
-                mine.CachedTransform.position = param.Position;
-                mine.CachedTransform.eulerAngles = param.EulerAngles;
-                mine.CachedTransform.localScale = param.Scale;
-            }
-
-            return mine;
+            return levelObject;
         }
 
         public void AddPartner(PlayerRole host, int pos, int id)
         {
-            if (host?.Actor == null)
-                return;
-
             if (id <= 0)
                 return;
 
+            if (host?.Actor == null)
+                return;
+            
             PartnerSortType sort = (PartnerSortType)pos;
             ActorPlayer actorPlayer = host.Actor as ActorPlayer;
             if (actorPlayer == null)
@@ -175,7 +157,7 @@ namespace GameMain
             partner.Sort = sort;
         }
 
-        public bool GetPortalByDestMapID(int id, ref Vector3 pos)
+        public bool GetPortalByDestMapId(int id, ref Vector3 pos)
         {
             HolderPortal pHolder = (HolderPortal)GetHolder(MapHolderType.Portal);
             for (int i = 0; i < pHolder.Elements.Count; i++)
@@ -213,8 +195,6 @@ namespace GameMain
 
                 if (role.CachedTransform != null)
                 {
-                    //TODO 设置父节点
-                    //role.CachedTransform.parent = GetHolder(MapHolderType.Role).transform;
                     LevelData.AllRoles.Add(role);
                     LevelData.AllActors.Add(role.Actor);
                     LevelData.CampActors[camp].Add(role);
@@ -313,7 +293,7 @@ namespace GameMain
                     break;
                 case MapTriggerType.Result:
                     {
-                        OnSceneEnd();
+                        OnLevelEnd();
                     }
                     break;
                 case MapTriggerType.Monstegroup:
@@ -332,79 +312,6 @@ namespace GameMain
             }
         }
         
-        public void OnSceneStart()
-        {
-            CurSceneType = GameEntry.Scene.GetSceneTypeBySceneId(CurSceneId);
-
-            int id = GameEntry.Database.GetPlayerId();
-
-            if (Config.A == null)
-            {
-                return;
-            }
-            TransformParam pTransParam = TransformParam.Create(Config.A.TransParam.Position,
-                Config.A.TransParam.EulerAngles);
-
-            CreatePlayer(id, pTransParam);
-
-            //TODO 创建同伴
-            //AddPartner(LevelData.MainPlayer, 1, LevelData.MainPlayer.GetActorCard().Partners[0]);
-            //AddPartner(LevelData.MainPlayer, 2, LevelData.MainPlayer.GetActorCard().Partners[1]);
-
-            for (int i = 0; i < Config.Npcs.Count; i++)
-            {
-                MapNpc data = Config.Npcs[i];
-
-                //TODO 创建npc
-                //AddActor(data.Id, EActorType.NPC, EBattleCamp.C, data.Position, data.Euler, data.Scale);
-            }
-            if (CurSceneType == SceneType.Battle)
-            {
-                OnBattleStart();
-            }
-
-            for (int i = 0; i < m_OnLoadNewSceneTasks.Count; i++)
-            {
-                LevelTask task = m_OnLoadNewSceneTasks[i];
-                if (task.callback == null)
-                {
-                    Invoke(task.callback.Method.Name, task.delay);
-                }
-            }
-        }
-
-        public void OnSceneEnd()
-        {
-            if (CurSceneType == SceneType.Battle)
-            {
-                OnBattleEnd();
-            }
-        }
-
-        public void OnBattleStart()
-        {
-            //TODO: 战斗场景开始
-            //DBCopy db = ZTConfig.Instance.GetDBCopy(LevelData.CopyID);
-            //if (db == null)
-            //{
-            //    return;
-            //}
-            //LevelData.StrTime = Time.realtimeSinceStartup;
-        }
-
-        public void OnBattleEnd()
-        {
-            //TODO: 战斗结束
-            //DBCopy db = ZTConfig.Instance.GetDBCopy(LevelData.CopyID);
-            //if (db == null)
-            //{
-            //    return;
-            //}
-            //LevelData.EndTime = Time.realtimeSinceStartup - LevelData.StrTime;
-            //LevelData.Win = !LevelData.MainPlayer.IsDead();
-            //LevelData.CalcResult();
-        }
-
         public void RegisterLoadSceneCallback(Action pCallback, float pDelay = 0)
         {
             m_OnLoadNewSceneTasks.Add(new LevelTask() { callback = pCallback, delay = pDelay });
@@ -441,8 +348,153 @@ namespace GameMain
             {
                 current.Value.Clear();
             }
+        }
 
+        void OnDestroy()
+        {
             GameEntry.Event.Unsubscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
+        }
+
+
+        private void OnLevelStart()
+        {
+            CurSceneType = GameEntry.Scene.GetSceneTypeBySceneId(CurSceneId);
+
+            if (CurSceneType == SceneType.Battle)
+            {
+                OnBattleStart();
+            }
+
+            InitPlayer();
+
+            InitNpc();
+
+            InitLevelObject();
+
+            for (int i = 0; i < m_OnLoadNewSceneTasks.Count; i++)
+            {
+                LevelTask task = m_OnLoadNewSceneTasks[i];
+                if (task.callback == null)
+                {
+                    if (task.callback != null)
+                        Invoke(task.callback.Method.Name, task.delay);
+                }
+            }
+        }
+
+        private void OnLevelEnd()
+        {
+            if (CurSceneType == SceneType.Battle)
+            {
+                OnBattleEnd();
+            }
+        }
+
+        private void OnBattleStart()
+        {
+            if (LevelData.CopyID <= 0)
+            {
+                Log.Error("CopyId is invalid.");
+                return;
+            }
+
+            if(!GameEntry.DataTable.GetDataTable<DRCopy>().HasDataRow(LevelData.CopyID))
+            {
+                Log.Error("the copy is no exist.");
+                return;
+            }
+
+            LevelData.StrTime = Time.realtimeSinceStartup;
+        }
+
+        private void OnBattleEnd()
+        {
+            if (LevelData.CopyID <= 0)
+            {
+                Log.Error("CopyId is invalid.");
+                return;
+            }
+
+            if (!GameEntry.DataTable.GetDataTable<DRCopy>().HasDataRow(LevelData.CopyID))
+            {
+                Log.Error("the copy is no exist.");
+                return;
+            }
+
+            LevelData.EndTime = Time.realtimeSinceStartup - LevelData.StrTime;
+            LevelData.Win = !LevelData.Player.Actor.IsDead;
+            LevelData.CalcResult();
+        }
+
+        private void InitPlayer()
+        {
+            if (Config.Ally == null)
+            {
+                return;
+            }
+
+            if (Player != null)
+            {
+                TransformParam param = new TransformParam
+                {
+                    Position = Config.Ally.TransParam.Position,
+                    EulerAngles = Config.Ally.TransParam.EulerAngles,
+                    Scale = Config.Ally.TransParam.Scale
+                };
+                Player.UpdateTransform(param);
+
+                AddPartner(LevelData.Player, 1, LevelData.Player.Actor.ActorCard.Partners[0]);
+                AddPartner(LevelData.Player, 2, LevelData.Player.Actor.ActorCard.Partners[1]);
+            }
+        }
+
+        private void InitNpc()
+        {
+            for (int i = 0; i < Config.Npcs.Count; i++)
+            {
+                MapNpc data = Config.Npcs[i];
+
+                AddRole<NpcRole>(data.Id, ActorType.Npc, BattleCampType.Ally, data.Position, data.Euler, data.Scale);
+            }
+        }
+
+        private void InitLevelObject()
+        {
+            //触发区域
+            for (int i = 0; i < Config.Regions.Count; i++)
+            {
+                MapRegion data = Config.Regions[i];
+                if (data.StartActive)
+                {
+                    LevelElement pHolder = GetHolder(MapHolderType.Region);
+                    GameObject go = pHolder.gameObject.AddChild();
+                    LevelRegion pRegion = go.AddComponent<LevelRegion>();
+                    pRegion.Import(data, false);
+                    pRegion.Init();
+                }
+            }
+
+            //障碍物
+            for (int i = 0; i < Config.Barriers.Count; i++)
+            {
+                MapBarrier data = Config.Barriers[i];
+                LevelElement pHolder = GetHolder(MapHolderType.Barrier);
+                GameObject go = pHolder.gameObject.AddChild();
+                LevelBarrier pBarrier = go.AddComponent<LevelBarrier>();
+                pBarrier.Import(data, false);
+                pBarrier.Init();
+            }
+
+            //传送门
+            for (int i = 0; i < Config.Barriers.Count; i++)
+            {
+                MapPortal data = Config.Portals[i];
+                LevelElement pHolder = GetHolder(MapHolderType.Portal);
+                GameObject go = pHolder.gameObject.AddChild();
+                LevelPortal pPortal = go.AddComponent<LevelPortal>();
+                pPortal.Import(data, false);
+                pPortal.Init();
+            }
         }
 
         private void OnLoadSceneSuccess(object sender, GameEventArgs e)
@@ -451,5 +503,6 @@ namespace GameMain
             if (ne != null)
                 CurSceneId = (SceneId)ne.UserData;
         }
+
     }
 }

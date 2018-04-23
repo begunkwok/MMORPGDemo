@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 using UnityEngine.WSA;
 using Application = UnityEngine.Application;
 
@@ -14,7 +15,8 @@ namespace GameMain
         public int OpenLevel;
         public int OpenItemID;
         public int OpenVIP;
-        private EffectBase mEffectObj;
+
+        private GameObject m_PortalObj;
 
         public LevelRegion Region
         {
@@ -26,29 +28,28 @@ namespace GameMain
             get { return Region == null ? 0 : Region.Id; }
         }
 
-        public EffectBase EffectObj
+        public GameObject PortalObj
         {
-            get { return mEffectObj; }
-            set { mEffectObj = value; }
+            get { return m_PortalObj; }
+            set { m_PortalObj = value; }
         }
 
         public override void Build()
         {
-            if (DisplayText && Application.isPlaying)
+            if (m_PortalObj == null)
             {
-
-            }
-            if (mEffectObj==null)
-            {
-                int entityId = GameEntry.Entity.GenerateTempSerialId();
-                EffectData effectData = new EffectData(entityId, Constant.Define.PortalEffect);
-                mEffectObj = GameEntry.Entity.ShowEffect(effectData);
-
-                if (mEffectObj != null)
+                if (LevelComponent.IsEditorMode)
                 {
-                    mEffectObj.transform.parent = transform;
-                    mEffectObj.transform.localPosition = Vector3.zero;
-                    mEffectObj.transform.localEulerAngles = Vector3.zero;
+                    m_PortalObj = LevelComponent.CreateLevelEditorObject(MapHolderType.Portal);
+                    m_PortalObj.transform.parent = transform;
+                }
+                else
+                {
+                    LevelObject Portal = GameEntry.Level.CreateLevelObject(Id);
+                    m_PortalObj = Portal.gameObject;
+                    Portal.CachedTransform.position = transform.position;
+                    Portal.CachedTransform.rotation = transform.rotation;
+                    Portal.CachedTransform.localScale = transform.localScale;
                 }
             }
         }
@@ -124,7 +125,7 @@ namespace GameMain
                 return;
             }
 
-            if (DestMapID == GameEntry.Level.MapID)
+            if (DestMapID == GameEntry.Level.LevelID)
             {
                 ActorPlayer actorPlayer = LevelData.Player.Actor as ActorPlayer;
 

@@ -27,8 +27,6 @@ namespace GameMain
             Actor = new ActorEnemy(actorId, actorEntityId, gameObject, actorType, campType, m_CharacterController,
                 m_Animator);
             Actor.Init();
-
-
         }
 
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)

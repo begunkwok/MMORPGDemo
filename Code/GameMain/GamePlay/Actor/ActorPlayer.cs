@@ -93,6 +93,17 @@ namespace GameMain
             GameEntry.Event.Subscribe(SkillKeyDownEventArgs.EventId,TryUseSkill);
         }
 
+        protected override void InitAi()
+        {
+            m_ActorPathFinding = new AIPathFinding(this);
+            float atkDist = m_ActorData.AiAtkDist;
+            float followDist = m_ActorData.AiFollowDist;
+            float waringDist = m_ActorData.AiWaringDist;
+            float findEnemyInterval = m_ActorData.FindEnemyInterval;
+            m_ActorAI = new ActorFsmAI(this, AIModeType.Hand, atkDist, followDist, waringDist, findEnemyInterval);
+            m_ActorAI.Start();
+        }
+
         protected override void InitAttribute(bool init = false)
         {
             m_BaseAttribute = new ActorAttribute();
@@ -220,18 +231,12 @@ namespace GameMain
 
             GameEntry.Event.Unsubscribe(ChangeEquipEventArgs.EventId, ChangeEquipAvatar);
             GameEntry.Event.Unsubscribe(SkillKeyDownEventArgs.EventId, TryUseSkill);
-        }
-
-        public override void Clear()
-        {
-            base.Clear();
 
             for (int i = 0; i < 8; i++)
             {
                 RemoveEquip(i);
             }
         }
-
 
         public EquipAvatar GetEquipModelsByPos(int pos)
         {

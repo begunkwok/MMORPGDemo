@@ -604,8 +604,9 @@ MonoBehaviour:
   - GameMain.ProcedureCheckVersion
   - GameMain.ProcedureCreateRole
   - GameMain.ProcedureLaunch
+  - GameMain.ProcedureLevel
   - GameMain.ProcedureLogin
-  - GameMain.ProcedureMain
+  - GameMain.ProcedureMainCity
   - GameMain.ProcedurePreload
   - GameMain.ProcedureShowDialog
   - GameMain.ProcedureSplash
@@ -806,6 +807,11 @@ MonoBehaviour:
     m_InstanceExpireTime: 60
     m_InstancePriority: 0
   - m_Name: Actor
+    m_InstanceAutoReleaseInterval: 60
+    m_InstanceCapacity: 10
+    m_InstanceExpireTime: 60
+    m_InstancePriority: 0
+  - m_Name: Level
     m_InstanceAutoReleaseInterval: 60
     m_InstanceCapacity: 10
     m_InstanceExpireTime: 60

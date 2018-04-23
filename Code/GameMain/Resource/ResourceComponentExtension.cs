@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Text;
+using UnityEditor;
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
@@ -10,9 +11,6 @@ namespace GameMain
         /// <summary>
         /// 编辑器下加载Unity无法识别的文本文件，如.lua
         /// </summary>
-        /// <param name="editorResourceComponent"></param>
-        /// <param name="path"></param>
-        /// <returns></returns>
         public static string LoadTextAsset(this ResourceComponent editorResourceComponent, string assetName)
         {
             string path = Application.dataPath.Replace("Assets", "") + assetName;

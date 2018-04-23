@@ -48,7 +48,7 @@ namespace GameMain
             {
                 GameEntry.Scene.UnloadScene(loadedSceneAssetNames[i]);
             }
-
+            
             //还原游戏速度
             GameEntry.Base.ResetNormalGameSpeed();
 
@@ -106,7 +106,10 @@ namespace GameMain
                     ChangeState<ProcedureCreateRole>(procedureOwner);
                     break;
                 case SceneId.MainCity:
-                    ChangeState<ProcedureMain>(procedureOwner);
+                    ChangeState<ProcedureMainCity>(procedureOwner);
+                    break;
+                case SceneId.Level_01:
+                    ChangeState<ProcedureLevel>(procedureOwner);
                     break;
             }
         }
@@ -114,10 +117,6 @@ namespace GameMain
         private void OnLoadSceneSuccess(object sender, GameEventArgs e)
         {
             LoadSceneSuccessEventArgs ne = e as LoadSceneSuccessEventArgs;
-            if (ne.UserData != this)
-            {
-                return;
-            }
 
             Log.Info("Load scene '{0}' OK.",ne.SceneAssetName);
 
@@ -127,7 +126,10 @@ namespace GameMain
             }
 
             m_IsChangeSceneComplete = true;
-            //关闭进度界面
+
+            //加载场景成功，手动清理资源，确保场景资源卸载干净
+            Resources.UnloadUnusedAssets();
+
             GameEntry.UI.CloseUIForm(UIFormId.LoadingForm);
         }
 

@@ -23,6 +23,7 @@
             Lua.Init();
             Camera.Init();
             Input.Init();
+            Level.Init();
         }
 
         public static DatabaseComponent Database

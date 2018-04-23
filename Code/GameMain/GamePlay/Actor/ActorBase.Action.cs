@@ -68,9 +68,9 @@ namespace GameMain
             this.m_AnimController.Play("die");
             Attrbute.UpdateValue(AttributeType.Hp, 0);
             Attrbute.UpdateValue(AttributeType.Mp, 0);
-            this.Clear();
+            this.Destory();
             this.ApplyCharacterCtrl(false);
-            this.m_ActorAI.Clear();
+
             //DBEntiny db = ZTConfig.Instance.GetDBEntiny(Id);
             //if ((this is ActorMainPlayer) == false)
             //{

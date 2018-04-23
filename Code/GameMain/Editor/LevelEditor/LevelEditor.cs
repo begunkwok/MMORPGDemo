@@ -8,10 +8,10 @@ namespace GameMain
     /// </summary>
     public class LevelEditor:UnityEditor.Editor
     {
-        [MenuItem("MMORPG Demo/LevelEditor")]
+        [MenuItem("MMORPG Demo/Add LevelEditor")]
         static void OpenLevelEditor()
         {
-            GameEntry.Level.Init();
+            LevelComponent.Instance.InitHolder();
         }
 
         [MenuItem("MMORPG Demo/GetSelectGOMeshData")]

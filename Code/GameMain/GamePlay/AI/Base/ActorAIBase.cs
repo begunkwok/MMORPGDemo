@@ -25,15 +25,16 @@ namespace GameMain
 
         public float FindEnemyInterval { get; protected set; }
 
+        public float FindEnemyTimer { get; set; }
 
-        protected ActorAIBase(ActorBase owner, AIModeType mode,float atkDist,float followDist,float waringDist)
+        protected ActorAIBase(ActorBase owner, AIModeType mode,float atkDist,float followDist,float waringDist,float findEnemyInterval)
         {
             this.Owner = owner;
             this.AIMode = mode;
             this.AttackDist = atkDist;
             this.FollowDist = followDist;
             this.WaringDist = waringDist;
-            this.FindEnemyInterval = 0.2f;
+            this.FindEnemyInterval = findEnemyInterval;
         }
 
         public abstract void Start();

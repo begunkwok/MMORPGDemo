@@ -193,6 +193,11 @@ namespace GameMain
 		public float AiWaringDist { get; private set; }
 
 		/// <summary>
+		/// Ai寻敌间隔
+		/// </summary>
+		public float FindEnemyInterval { get; private set; }
+
+		/// <summary>
 		/// AI脚本
 		/// </summary>
 		public string AIScript { get; private set; }
@@ -248,6 +253,7 @@ namespace GameMain
 			AiAtkDist = float.Parse(text[++index]);
 			AiFollowDist = float.Parse(text[++index]);
 			AiWaringDist = float.Parse(text[++index]);
+			FindEnemyInterval = float.Parse(text[++index]);
 			AIScript = text[++index];
 			SkillScript = text[++index];
 		}

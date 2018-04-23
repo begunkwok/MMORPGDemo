@@ -33,7 +33,7 @@ namespace GameMain
             }
 
             EditorGUILayout.Space();
-            EditorGUILayout.ObjectField("特效", pElem.EffectObj, typeof(GameObject),true);
+            EditorGUILayout.ObjectField("特效", pElem.PortalObj, typeof(GameObject),true);
 
             EditorGUILayout.Space();
             EditorGUILayout.BeginVertical();

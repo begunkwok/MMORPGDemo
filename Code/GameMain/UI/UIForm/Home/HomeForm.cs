@@ -77,9 +77,14 @@ namespace GameMain
 
         private void OnBattleSkillClick(SkillPosType skillPos)
         {
-            SkillKeyDownEventArgs eventArgs = ReferencePool.Acquire<SkillKeyDownEventArgs>();
-            eventArgs.Fill(skillPos);
-            GameEntry.Event.Fire(eventArgs.Id, eventArgs);
+            SkillKeyDownEventArgs skillEventArgs = ReferencePool.Acquire<SkillKeyDownEventArgs>();
+            skillEventArgs.Fill(skillPos);
+           // GameEntry.Event.Fire(skillEventArgs.Id, skillEventArgs);
+
+
+            EnterLevelEventArgs enterLevelEventArgs = new EnterLevelEventArgs();
+            enterLevelEventArgs.Fill(4, SceneId.Level_01);
+            GameEntry.Event.Fire(enterLevelEventArgs.LevelId, enterLevelEventArgs);
         }
 
 

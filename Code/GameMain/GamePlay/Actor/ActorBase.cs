@@ -15,7 +15,7 @@ namespace GameMain
 
         public Transform CachedTransform { get; }
 
-        public Transform BornParam { get; }
+        public TransformParam BornParam { get; }
 
         public GameObject EntityGo { get; }
 
@@ -31,22 +31,9 @@ namespace GameMain
 
         public IAttribute Attrbute => m_CurAttribute;
 
-        public ActorBuff ActorBuff => m_ActorBuff;
+        public IActorAI ActorAI => m_ActorAI;
 
-        public ActorBase Target
-        {
-            get
-            {
-                if (m_Target == null)
-                {
-                    Log.Error("Target is null");
-                    return null;
-                }
-
-               // return m_Target;
-                return this;
-            }
-        }
+        public IActorSkill ActorSkill => m_ActorSkill;
 
         public ActorFsmStateType CurFsmStateType
         {
@@ -65,6 +52,14 @@ namespace GameMain
             }
         }
 
+        public ActorBuff ActorBuff => m_ActorBuff;
+
+        public ActorCard ActorCard => m_ActorCard;
+
+        public ActorBase Target => m_Target;
+        
+        public ActorBase Host => m_Host;
+            
         public Vector3 Dir => CachedTransform.forward;
 
         public Vector3 Euler => CachedTransform.localEulerAngles;
@@ -106,26 +101,32 @@ namespace GameMain
 
         protected DRActorEntity m_ActorData = null;
         protected int m_CurSkillId = 0;
+        protected string m_FsmName = String.Empty;
 
 
-
-        protected ActorBase(int entityId,int id, GameObject go, ActorType type, BattleCampType camp,
+        public ActorBase(int entityId,int id, GameObject go, ActorType type, BattleCampType camp,
             CharacterController cc, Animator anim)
         {
             if (id == 0 || go == null || cc == null || anim == null)
             {
                 throw new GameFrameworkException("Construct Actor Fail.");
             }
-
+            
             Id = id;
             EntityId = entityId;
             ActorType = type;
             Camp = camp;
             EntityGo = go;
             CachedTransform = go.transform;
-            BornParam = go.transform;
             m_CharacterController = cc;
             m_Animator = anim;
+
+            BornParam = new TransformParam
+            {
+                Position = CachedTransform.position,
+                EulerAngles = CachedTransform.localScale,
+                Scale = CachedTransform.localScale
+            };
 
             m_ActorData = GameEntry.DataTable.GetDataTable<DRActorEntity>().GetDataRow(id);
             m_ActorSkill = new ActorSkill(this);
@@ -169,7 +170,27 @@ namespace GameMain
 
         public virtual void Destory()
         {
-            m_ActorAI.Clear();         
+            RemoveBoard();
+            RemoveEffect();
+
+            m_AIFeatures.Clear();
+            m_ActorStates.Clear();
+
+            m_Enemys.Clear();
+            m_Allys.Clear();
+            m_Targets.Clear();
+
+            m_ActorAI.Clear();
+            m_ActorBuff.Clear();
+            m_ActorSkill.Clear();
+            m_BuffCtrl.Clear();
+            m_CommandReceiver.Clear();
+
+            m_ActorAI = null;
+            m_ActorBuff = null;
+            m_ActorSkill = null;
+            m_BuffCtrl = null;
+            m_CommandReceiver = null;
         }
 
         public virtual void UpdateCurAttribute(bool init = false)
@@ -446,12 +467,6 @@ namespace GameMain
             }
         }
 
-        public virtual void Clear()
-        {
-            RemoveBoard();
-            RemoveEffect();
-        }
-
 
 
         public Transform[] GetHands()
@@ -696,9 +711,7 @@ namespace GameMain
             }
         }
 
-
-
-        protected bool IsEnemy(ActorBase actor)
+        public bool IsEnemy(ActorBase actor)
         {
             if (actor == null)
             {
@@ -709,7 +722,7 @@ namespace GameMain
             return GetCamp(actor) == BattleCampType.Enemy;
         }
 
-        protected bool IsAlly(ActorBase actor)
+        public bool IsAlly(ActorBase actor)
         {
             if (actor == null)
             {
@@ -720,21 +733,21 @@ namespace GameMain
             return GetCamp(actor) == BattleCampType.Ally;
         }
 
-        protected List<ActorBase> GetAllEnemy()
+        public List<ActorBase> GetAllEnemy()
         {
             m_Enemys.Clear();
             FindActorsByCamp(BattleCampType.Enemy, ref m_Enemys, true);
             return m_Enemys;
         }
 
-        protected List<ActorBase> GetAllAlly()
+        public List<ActorBase> GetAllAlly()
         {
             m_Allys.Clear();
             FindActorsByCamp(BattleCampType.Ally,ref m_Allys);
             return m_Allys;
         }
 
-        protected void FindActorsByCamp(BattleCampType actorCamp, ref List<ActorBase> list, bool ignoreStealth = false)
+        public void FindActorsByCamp(BattleCampType actorCamp, ref List<ActorBase> list, bool ignoreStealth = false)
         {
             for (int i = 0; i < LevelData.AllActors.Count; i++)
             {
@@ -756,7 +769,7 @@ namespace GameMain
             }
         }
 
-        protected BattleCampType GetCamp(ActorBase actor)
+        public BattleCampType GetCamp(ActorBase actor)
         {
             if (actor == null)
             {
@@ -767,7 +780,7 @@ namespace GameMain
             return actor.Camp;
         }
 
-        protected ActorBase GetNearestEnemy(float radius = 100)
+        public ActorBase GetNearestEnemy(float radius = 100)
         {
             List<ActorBase> actors = GetAllEnemy();
             ActorBase nearest = null;
@@ -783,6 +796,9 @@ namespace GameMain
             }
             return nearest;
         }
+
+
+
 
         protected void LookAtEnemy()
         {
@@ -942,17 +958,19 @@ namespace GameMain
                 new ActorCollectMineFsm(), 
                 new ActorInteractiveFsm(), 
             };
-            m_ActorFsm = GameEntry.Fsm.CreateFsm(EntityId.ToString(), this, states);
+            m_FsmName = GlobalTools.Format("ActorFsm[{0}]", EntityId);
+            m_ActorFsm = GameEntry.Fsm.CreateFsm(m_FsmName, this, states);
             m_ActorFsm.Start<ActorIdleFsm>();
         }
 
-        protected void InitAi()
+        protected virtual void InitAi()
         {
             m_ActorPathFinding = new AIPathFinding(this);
             float atkDist = m_ActorData.AiAtkDist;
             float followDist = m_ActorData.AiFollowDist;
             float waringDist = m_ActorData.AiWaringDist;
-            m_ActorAI = new ActorFsmAI(this, AIModeType.Hand, atkDist, followDist, waringDist);
+            float findEnemyInterval = m_ActorData.FindEnemyInterval;
+            m_ActorAI = new ActorFsmAI(this, AIModeType.Auto, atkDist, followDist, waringDist, findEnemyInterval);
             m_ActorAI.Start();
         }
 

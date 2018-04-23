@@ -48,5 +48,9 @@ namespace GameMain
             return commandHandler.Invoke(command);
         }
 
+        public void Clear()
+        {
+            m_Commands.Clear();
+        }
     }
 }

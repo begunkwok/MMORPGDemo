@@ -27,5 +27,10 @@
         /// <param name="command">命令</param>
         /// <returns></returns>
         CommandReplyType ExecuteCommand<T>(T command) where T : ICommand;
+
+        /// <summary>
+        /// 清空
+        /// </summary>
+        void Clear();
     }
 }

@@ -1,5 +1,7 @@
 ﻿using GameFramework;
+using UnityEditor;
 using UnityEngine;
+using UnityGameFramework.Runtime;
 
 namespace GameMain
 {
@@ -10,14 +12,17 @@ namespace GameMain
         private BoxCollider m_Collider;
         private Vector3 m_Size;
 
+        private LevelObject m_Barrier;
+        private float m_DefaultWidth = 14;
+
         public override void Build()
         {
-            if (Width < Constant.Define.BarrierWidth)
+            if (Width < m_DefaultWidth)
             {
-               Width = Constant.Define.BarrierWidth;
+               Width = m_DefaultWidth;
             }
-            int count = Mathf.CeilToInt(Width / Constant.Define.BarrierWidth);
-            m_Size.x = count * Constant.Define.BarrierWidth;
+            int count = Mathf.CeilToInt(Width / m_DefaultWidth);
+            m_Size.x = count * m_DefaultWidth;
             m_Size.y = 4;
             m_Size.z = 1.5f;
 
@@ -36,24 +41,33 @@ namespace GameMain
             float halfCount = count * 0.5f;
             for (int i = 0; i < count; i++)
             {
-                Barrier barrier = GameEntry.Level.CreateBarrier(Constant.Define.BarrierTypeId);
-                if (barrier == null)
+                if (LevelComponent.IsEditorMode)
                 {
-                    Log.Error("Create barrier failure.");
-                    return;
-                }
+                    GameObject barrier = LevelComponent.CreateLevelEditorObject(MapHolderType.Portal);
 
-                Vector3 localPosition = Vector3.right * (i - halfCount + 0.5f) * Constant.Define.BarrierWidth;
-                localPosition.z = m_Size.z * 0.5f;
-                barrier.CachedTransform.localPosition = localPosition;
-                barrier.CachedTransform.SetParent(m_Body, false);
+                    Vector3 localPosition = Vector3.right*(i - halfCount + 0.5f)*m_DefaultWidth;
+                    localPosition.z = m_Size.z*0.5f;
+                    barrier.transform.localPosition = localPosition;
+                }
+                else
+                {
+                    m_Barrier = GameEntry.Level.CreateLevelObject(Id);
+                    if (m_Barrier == null)
+                    {
+                        Log.Error("Create barrier failure.");
+                        return;
+                    }
+
+                    m_Barrier.CachedTransform.position   = transform.position;
+                    m_Barrier.CachedTransform.rotation   = transform.rotation;
+                    m_Barrier.CachedTransform.localScale = transform.localScale;
+                }
             }
 
             m_Collider = gameObject.GetOrAddComponent<BoxCollider>();
             m_Collider.size = m_Size;
             m_Collider.center = new Vector3(0, m_Size.y * 0.5f, m_Size.z * 0.5f);
-            GlobalTools.SetLayer(gameObject, Constant.Define.BarrierTypeId);
-
+            GlobalTools.SetLayer(gameObject, Constant.Layer.BarrerId);
         }
 
         public override void SetName()

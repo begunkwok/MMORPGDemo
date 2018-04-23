@@ -25,6 +25,7 @@ namespace GameMain
                 }
                 pElem.transform.DestroyChildren();
                 LevelPathNodeSet elem = new GameObject().AddComponent<LevelPathNodeSet>();
+                elem.name = "WayPath";
                 elem.transform.parent = pElem.transform;
                 elem.transform.localPosition = Vector3.zero;
                 elem.transform.localEulerAngles = Vector3.zero;

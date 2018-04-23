@@ -24,6 +24,11 @@
         /// 主城场景
         /// </summary>
         MainCity = 3,
+
+        /// <summary>
+        /// 关卡01
+        /// </summary>
+        Level_01 = 4,
     }
 
 

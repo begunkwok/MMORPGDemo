@@ -14,9 +14,9 @@ namespace GameMain
         public bool AllowPK = true;
         public bool AllowTrade = true;
         public bool AllowFight = true;
-        public MapBorn A;
-        public MapBorn B;
-        public MapBorn C;
+        public MapBorn Ally;
+        public MapBorn Enemy;
+        public MapBorn Neutral;
         public List<MapBarrier> Barriers = new List<MapBarrier>();
         public List<MapPortal>  Portals = new List<MapPortal>();
         public List<MapRegion>  Regions = new List<MapRegion>();
@@ -55,17 +55,17 @@ namespace GameMain
                     case "AllowFight":
                         this.AllowFight = ReadBool(current);
                         break;
-                    case "A":
-                        this.A = new MapBorn();
-                        this.A.Read(current);
+                    case "Ally":
+                        this.Ally = new MapBorn();
+                        this.Ally.Read(current);
                         break;
-                    case "B":
-                        this.B = new MapBorn();
-                        this.B.Read(current);
+                    case "Enemy":
+                        this.Enemy = new MapBorn();
+                        this.Enemy.Read(current);
                         break;
-                    case "C":
-                        this.C = new MapBorn();
-                        this.C.Read(current);
+                    case "Neutral":
+                        this.Neutral = new MapBorn();
+                        this.Neutral.Read(current);
                         break;
                     case "Barriers":
                         XmlObject.GetChilds(current).ForEach(delegate (XmlNode pNode)
@@ -136,9 +136,9 @@ namespace GameMain
             XmlObject.Write(os, "AllowPK", AllowPK);
             XmlObject.Write(os, "AllowTrade", AllowTrade);
             XmlObject.Write(os, "AllowFight", AllowFight);
-            XmlObject.Write(os, "A", A);
-            XmlObject.Write(os, "B", B);
-            XmlObject.Write(os, "C", C);
+            XmlObject.Write(os, "Ally", Ally);
+            XmlObject.Write(os, "Enemy", Enemy);
+            XmlObject.Write(os, "Neutral", Neutral);
             XmlObject.Write(os, "Barriers", Barriers);
             XmlObject.Write(os, "Portals", Portals);
             XmlObject.Write(os, "Regions", Regions); 

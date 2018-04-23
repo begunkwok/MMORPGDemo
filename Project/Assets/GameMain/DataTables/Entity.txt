@@ -2,6 +2,9 @@
 10001	Default	Model/RoleCreate/Pose_Warrior
 10002	Default	Model/RoleCreate/Pose_Master
 10003	Default	Model/RoleCreate/Pose_Shooter
+20001	Level	Level/Barrier_01
+20002	Level	Level/Portal_01
+20003	Level	Level/Mine/Mine_01
 31001	Effect	Effect/RoleCreate/Warrior/TrailOrder_Sword
 31002	Effect	Effect/RoleCreate/Warrior/Ground_Explode
 32001	Effect	Effect/RoleCreate/Master/Ice_Explode

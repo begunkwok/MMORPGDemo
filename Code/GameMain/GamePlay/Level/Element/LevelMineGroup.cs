@@ -22,6 +22,13 @@ namespace GameMain
             transform.name = "Mine_Group_" + Id;
         }
 
+        public override LevelMine AddElement()
+        {
+            LevelMine pElem = new GameObject().AddComponent<LevelMine>();
+            pElem.transform.parent = transform;
+            return pElem;
+        }
+
         public override void Import(XmlObject pData, bool pBuild)
         {
             MapMineGroup data = pData as MapMineGroup;

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 namespace GameMain
 {
@@ -6,10 +7,10 @@ namespace GameMain
     {
         public float RebornCD = 5;
         public int DropItemCount = 1;
-        private int m_MineGUID = 0;
 
-        private Mine m_Mine;
+        private LevelObject m_Mine;
 
+        
         public override void Import(XmlObject pData, bool pBuild)
         {
             MapMine data = pData as MapMine;
@@ -46,16 +47,22 @@ namespace GameMain
         public override void Build()
         {
             transform.DestroyChildren();
-            m_Mine = GameEntry.Level.CreateMine(Id);
-            if(m_Mine==null)
+            if (LevelComponent.IsEditorMode)
             {
-                return;
+                GameObject mine = LevelComponent.CreateLevelEditorObject(MapHolderType.MineGroup);
+                mine.transform.SetParent(transform, false);
+                mine.transform.localPosition = Vector3.zero;
+                mine.transform.localScale = Vector3.one;
+                mine.transform.localRotation = Quaternion.identity;
+            }
+            else
+            {
+                m_Mine = GameEntry.Level.CreateLevelObject(Id);
+                m_Mine.CachedTransform.position = transform.position;
+                m_Mine.CachedTransform.rotation = transform.rotation;
+                m_Mine.CachedTransform.localScale = transform.localScale;
             }
 
-            m_Mine.CachedTransform.parent = transform;
-            m_Mine.CachedTransform.localPosition = Vector3.zero;
-            m_Mine.CachedTransform.localScale = Vector3.one;
-            m_Mine.CachedTransform.localRotation = Quaternion.identity;
         }
     }
 }

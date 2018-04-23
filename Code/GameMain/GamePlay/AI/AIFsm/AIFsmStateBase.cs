@@ -1,0 +1,46 @@
+﻿using GameFramework.Fsm;
+using UnityEngine;
+
+namespace GameMain
+{
+    /// <summary>
+    /// AI状态基类
+    /// </summary>
+    public class AIFsmStateBase : ActorFsmStateBase
+    {
+        public IActorAI AI
+        {
+            get { return m_Owner.ActorAI; }
+        }
+
+        protected override void OnUpdate(IFsm<ActorBase> fsm, float elapseSeconds, float realElapseSeconds)
+        {
+            base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);
+
+            if (m_Owner.IsDead)
+            {
+                AI.ChangeAIState<AIDeadState>(AIStateType.Dead);
+                return;
+            }
+            if (AI.AIMode == AIModeType.Auto && m_Owner.Target == null)
+            {
+                IntervalFindEnemy();
+            }
+        }
+
+        private void IntervalFindEnemy()
+        {
+            if (AI.FindEnemyInterval >= Constant.Define.MinFindenemyInterval)
+            {
+                ActorBase enemy = m_Owner.GetNearestEnemy(AI.WaringDist);
+                if (enemy != null)
+                    this.m_Owner.SetTarget(enemy);
+                AI.FindEnemyTimer = 0;
+            }
+            else
+            {
+                AI.FindEnemyTimer += Time.deltaTime;
+            }
+        }
+    }
+}

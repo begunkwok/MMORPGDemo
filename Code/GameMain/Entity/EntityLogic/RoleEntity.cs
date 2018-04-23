@@ -24,5 +24,11 @@ namespace GameMain
             m_CharacterController = gameObject.GetOrAddComponent<CharacterController>();
         }
 
+        public void UpdateTransform(TransformParam param)
+        {
+            CachedTransform.position = param.Position;
+            CachedTransform.eulerAngles = param.EulerAngles;
+            CachedTransform.localScale = param.Scale;
+        }
     }
 }

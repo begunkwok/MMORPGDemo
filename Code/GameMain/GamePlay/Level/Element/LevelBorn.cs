@@ -5,38 +5,41 @@ namespace GameMain
     public class LevelBorn : LevelElement
     {
         public BattleCampType Camp = BattleCampType.Ally;
-        private GameObject mBody;
+        private GameObject m_Body;
 
         public override void Build()
         {
-            if(mBody==null)
+            if (m_Body == null)
             {
-                mBody = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                mBody.transform.parent = transform;
-                mBody.transform.localPosition = Vector3.zero;
-                mBody.transform.localEulerAngles = Vector3.zero;
-                mBody.transform.localScale = Vector3.one;
+                m_Body = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                m_Body.transform.parent = transform;
+                m_Body.transform.localPosition = Vector3.zero;
+                m_Body.transform.localEulerAngles = Vector3.zero;
+                m_Body.transform.localScale = Vector3.one;
             }
-            MeshRenderer render = mBody.GetComponent<MeshRenderer>();
-            if (render == null)
+
+            MeshRenderer render = m_Body.GetComponent<MeshRenderer>();
+            if (render?.sharedMaterial == null)
             {
                 return;
             }
-            if (render.sharedMaterial != null)
-            {
-                Shader shader = Shader.Find("Custom/TranspUnlit");
-                render.sharedMaterial = new Material(shader) { hideFlags = HideFlags.HideAndDontSave };
-            }
+
+            Shader shader = Shader.Find("Custom/TranspUnlit");
+            render.sharedMaterial = new Material(shader) {hideFlags = HideFlags.HideAndDontSave};
+
             switch (Camp)
             {
                 case BattleCampType.Ally:
                     render.sharedMaterial.color = Color.green;
                     break;
                 case BattleCampType.Enemy:
-                    render.sharedMaterial.color = Color.blue;
+                    render.sharedMaterial.color = Color.red;
                     break;
                 case BattleCampType.Neutral:
                     render.sharedMaterial.color = Color.yellow;
+                    break;
+                default:
+                    render.sharedMaterial.color = Color.white;
                     break;
             }
         }

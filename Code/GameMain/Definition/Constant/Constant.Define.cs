@@ -28,19 +28,9 @@
             public static readonly string BTJudgeSuccess = "JudgeSuccess";
 
             /// <summary>
-            /// 障碍物宽度
+            ///最小寻敌间隔
             /// </summary>
-            public const float BarrierWidth = 14;
-
-            /// <summary>
-            /// 障碍物id
-            /// </summary>
-            public const int BarrierTypeId = 0;
-
-            /// <summary>
-            /// 传送门特效id
-            /// </summary>
-            public const int PortalEffect = 0;
+            public static readonly float MinFindenemyInterval = 0.5f;
         }
     }
 }

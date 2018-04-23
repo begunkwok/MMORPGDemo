@@ -1,9 +1,9 @@
 ﻿namespace GameMain
 {
     /// <summary>
-    /// 矿石实体
+    /// 障碍物实体
     /// </summary>
-    public class Mine : EntityBase
+    public class LevelObject : EntityBase
     {
 
     }

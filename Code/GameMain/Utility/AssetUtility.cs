@@ -60,9 +60,15 @@ namespace GameMain
             return string.Format("Assets/GameMain/Configs/ActorSkill/{0}.xml", assetName);
         }
 
-        public static string GetMapConfigAsset(string assetName)
+        public static string GetLevelConfigAsset(string assetName)
         {
-            return string.Format("Assets/GameMain/Configs/Map/{0}.xml", assetName);
+            return string.Format("Assets/GameMain/Configs/Level/{0}.xml", assetName);
         }
+
+        public static string GetLevelObjectAsset(string assetName)
+        {
+            return string.Format("Assets/GameMain/Entities/Level/{0}.prefab", assetName);
+        }
+
     }
 }

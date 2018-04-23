@@ -59,6 +59,7 @@ namespace GameMain
             {
                 return;
             }
+
             Star = CalcStar(drCopy);
             if (Call != null)
             {
@@ -75,8 +76,31 @@ namespace GameMain
             Win = false;
             Call = null;
         }
+        
+        public static void ShowResult()
+        {
+            DRCopy drCopy = GameEntry.DataTable.GetDataTable<DRCopy>().GetDataRow(CopyID);
+            if (drCopy == null)
+            {
+                return;
+            }
+            switch ((CopyType)drCopy.CopyType)
+            {
+                case CopyType.Easy:
+                case CopyType.World:
+                case CopyType.Elite:
+                case CopyType.Daily:
+                {
+                        //TODO 显示副本通过UI
+                    //ZTUIManager.Instance.OpenWindow(WindowID.UI_MAINRESULT);
+                    //UIMainResult window = (UIMainResult) ZTUIManager.Instance.GetWindow(WindowID.UI_MAINRESULT);
+                    //window.ShowView();
+                }
+                    break;
+            }
+        }
 
-        static int CalcStar(DRCopy copy)
+        private static int CalcStar(DRCopy copy)
         {
             int star = 0;
             PassContents = new bool[3] {false, false, false};
@@ -134,29 +158,6 @@ namespace GameMain
                 }
             }
             return star;
-        }
-
-        public static void ShowResult()
-        {
-            DRCopy drCopy = GameEntry.DataTable.GetDataTable<DRCopy>().GetDataRow(CopyID);
-            if (drCopy == null)
-            {
-                return;
-            }
-            switch ((CopyType)drCopy.CopyType)
-            {
-                case CopyType.Easy:
-                case CopyType.World:
-                case CopyType.Elite:
-                case CopyType.Daily:
-                {
-                        //TODO 显示副本通过UI
-                    //ZTUIManager.Instance.OpenWindow(WindowID.UI_MAINRESULT);
-                    //UIMainResult window = (UIMainResult) ZTUIManager.Instance.GetWindow(WindowID.UI_MAINRESULT);
-                    //window.ShowView();
-                }
-                    break;
-            }
         }
     }
 }

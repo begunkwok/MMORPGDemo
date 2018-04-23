@@ -43,6 +43,11 @@ namespace GameMain
         float FindEnemyInterval { get; }
 
         /// <summary>
+        /// 寻敌计时
+        /// </summary>
+        float FindEnemyTimer { get; set; }
+
+        /// <summary>
         /// 开始
         /// </summary>
         void Start();

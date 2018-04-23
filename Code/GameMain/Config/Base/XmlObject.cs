@@ -7,6 +7,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Linq;
 using System.Reflection;
+using UnityEditor;
 
 namespace GameMain
 {
@@ -318,6 +319,18 @@ namespace GameMain
         {
             XmlDocument xmlDocument = new XmlDocument();
             TextAsset pAsset = GameEntry.Resource.LoadAssetSync(file) as TextAsset;
+            if (pAsset == null)
+            {
+                return;
+            }
+            xmlDocument.LoadXml(pAsset.text);
+            this.Read(xmlDocument.DocumentElement);
+        }
+
+        public void EditorLoad(string file)
+        {
+            XmlDocument xmlDocument = new XmlDocument();
+            TextAsset pAsset = AssetDatabase.LoadMainAssetAtPath(file) as TextAsset;
             if (pAsset == null)
             {
                 return;

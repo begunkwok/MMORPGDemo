@@ -126,7 +126,7 @@
       </CPP>
     </SourceInfo>
   </ConfigItem>
-  <ConfigItem ExcelFile="../Excel/角色实体配置表.xlsx" SheetName="角色配置表">
+  <ConfigItem ExcelFile="../Excel/角色实体配置表.xlsx" SheetName="default">
     <ConfigInfo>
       <Client>../../Assets/GameMain/DataTables/ActorEntity.txt</Client>
       <Server>../../ServerRun/LogicSettings/</Server>
@@ -140,14 +140,14 @@
       </CPP>
     </SourceInfo>
   </ConfigItem>
-  <ConfigItem ExcelFile="../Excel/普通实体配置表.xlsx" SheetName="普通实体配置表">
+  <ConfigItem ExcelFile="../Excel/角色实体配置表.xlsx" SheetName="角色配置表">
     <ConfigInfo>
-      <Client>../../Assets/GameMain/DataTables/Entity.txt</Client>
+      <Client>../../Assets/GameMain/DataTables/ActorEntity.txt</Client>
       <Server>../../ServerRun/LogicSettings/</Server>
     </ConfigInfo>
     <SourceInfo>
-      <CS ClassName="DREntity" Manager="None">
-        <FilePath>../../../Code/GameMain/DataTable/DREntity.cs</FilePath>
+      <CS ClassName="DRActorEntity" Manager="None">
+        <FilePath>../../../Code/GameMain/DataTable/DRActorEntity.cs</FilePath>
       </CS>
       <CPP ClassName="" Manager="None" Capacity="1024" StepSize="512" KeyCount="64" GroupSize="64">
         <FilePath>../../Server/Servers/GameLogic/GameConfig/</FilePath>
