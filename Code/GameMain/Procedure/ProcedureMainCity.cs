@@ -28,7 +28,6 @@ namespace GameMain
             GameEntry.UI.OpenUIForm(UIFormId.HomeForm);
 
             CreatePlayer();
-            GameEntry.Level.CreateEnemy(50001, TransformParam.Default);
             GameEntry.Level.EnterLevel(1001, SceneId.MainCity);
         }
 

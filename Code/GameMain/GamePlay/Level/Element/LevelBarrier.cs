@@ -43,11 +43,13 @@ namespace GameMain
             {
                 if (LevelComponent.IsEditorMode)
                 {
-                    GameObject barrier = LevelComponent.CreateLevelEditorObject(MapHolderType.Portal);
-
+                    GameObject barrier = LevelComponent.CreateLevelEditorObject(MapHolderType.Barrier);
+                    barrier.transform.parent = transform;
                     Vector3 localPosition = Vector3.right*(i - halfCount + 0.5f)*m_DefaultWidth;
                     localPosition.z = m_Size.z*0.5f;
                     barrier.transform.localPosition = localPosition;
+                    barrier.transform.localEulerAngles = Vector3.zero;
+                    barrier.transform.localScale = Vector3.one;
                 }
                 else
                 {

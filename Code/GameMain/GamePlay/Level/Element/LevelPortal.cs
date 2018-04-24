@@ -42,14 +42,17 @@ namespace GameMain
                 {
                     m_PortalObj = LevelComponent.CreateLevelEditorObject(MapHolderType.Portal);
                     m_PortalObj.transform.parent = transform;
+                    m_PortalObj.transform.localPosition = Vector3.zero;
+                    m_PortalObj.transform.localEulerAngles = Vector3.zero;
+                    m_PortalObj.transform.localScale = Vector3.one;
                 }
                 else
                 {
-                    LevelObject Portal = GameEntry.Level.CreateLevelObject(Id);
-                    m_PortalObj = Portal.gameObject;
-                    Portal.CachedTransform.position = transform.position;
-                    Portal.CachedTransform.rotation = transform.rotation;
-                    Portal.CachedTransform.localScale = transform.localScale;
+                    LevelObject portal = GameEntry.Level.CreateLevelObject(Id);
+                    m_PortalObj = portal.gameObject;
+                    portal.CachedTransform.position = transform.position;
+                    portal.CachedTransform.rotation = transform.rotation;
+                    portal.CachedTransform.localScale = transform.localScale;
                 }
             }
         }
@@ -81,7 +84,7 @@ namespace GameMain
 
         public override void Import(XmlObject pData,bool pBuild)
         {
-           MapPortal data = pData as MapPortal;
+            MapPortal data = pData as MapPortal;
             if (data == null)
             {
                 return;
@@ -99,16 +102,20 @@ namespace GameMain
             Position = data.Center;
             this.Build();
             this.SetName();
-            HolderRegion pHolder = GameEntry.Level.GetHolder(MapHolderType.Region) as HolderRegion;
 
-            if (pHolder != null)
-                this.Region = pHolder.FindElement(data.RegionID);
-
-            if (Region != null)
+            if (!LevelComponent.IsEditorMode)
             {
-                Position = data.Center;
-                Euler = data.Euler;
-                Region.onTriggerEnter = onTriggerEnter;
+                HolderRegion pHolder = GameEntry.Level.GetHolder(MapHolderType.Region) as HolderRegion;
+
+                if (pHolder != null)
+                    this.Region = pHolder.FindElement(data.RegionID);
+
+                if (Region != null)
+                {
+                    Position = data.Center;
+                    Euler = data.Euler;
+                    Region.onTriggerEnter = onTriggerEnter;
+                }
             }
         }
 

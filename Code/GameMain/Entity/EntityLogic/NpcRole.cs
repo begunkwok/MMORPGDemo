@@ -22,7 +22,7 @@ namespace GameMain
             int actorEntityId = m_EnemyEntityData.TypeId;
             ActorType actorType = m_EnemyEntityData.ActorType;
             BattleCampType campType = m_EnemyEntityData.CampType;
-            Actor = new ActorBase(actorId, actorEntityId, gameObject, actorType, campType, m_CharacterController,
+            Actor = new ActorNpc(actorId, actorEntityId, gameObject, actorType, campType, m_CharacterController,
                 m_Animator);
             Actor.Init();
         }

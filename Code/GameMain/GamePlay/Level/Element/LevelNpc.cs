@@ -59,6 +59,9 @@ namespace GameMain
                 PatrolPathNodeSet = go.AddComponent<LevelPathNodeSet>();
                 PatrolPathNodeSet.Import(data.PatrolPathNodeSet,pBuild);
             }
+            
+            this.Build();
+            this.SetName();
         }
 
         public override XmlObject Export()

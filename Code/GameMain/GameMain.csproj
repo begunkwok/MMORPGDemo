@@ -107,6 +107,7 @@
     <Compile Include="Entity\EntityData\LevelObjectData.cs" />
     <Compile Include="Entity\EntityLogic\LevelObject.cs" />
     <Compile Include="Entity\EntityLogic\NpcRole.cs" />
+    <Compile Include="GamePlay\Actor\ActorNpc.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIBackState.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIChaseState.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIDeadState.cs" />

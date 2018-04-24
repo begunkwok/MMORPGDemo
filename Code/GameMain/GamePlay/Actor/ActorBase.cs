@@ -12,29 +12,16 @@ namespace GameMain
     public partial class ActorBase : IActor
     {
         #region Property
-
-        public Transform CachedTransform { get; }
-
-        public TransformParam BornParam { get; }
-
-        public GameObject EntityGo { get; }
-
         public int Id { get; }
-
         public int EntityId { get; }
 
+        public GameObject EntityGo { get; }
+        public Transform CachedTransform { get; }
+        public TransformParam BornParam { get; }
+        
         public ActorType ActorType { get; }
-
-        public PartnerSortType Sort { get; set; }
-
         public BattleCampType Camp { get; }
-
-        public IAttribute Attrbute => m_CurAttribute;
-
-        public IActorAI ActorAI => m_ActorAI;
-
-        public IActorSkill ActorSkill => m_ActorSkill;
-
+        public PartnerSortType Sort { get; set; }
         public ActorFsmStateType CurFsmStateType
         {
             get
@@ -52,26 +39,22 @@ namespace GameMain
             }
         }
 
+        public IAttribute Attrbute => m_CurAttribute;
+        public IActorAI ActorAI => m_ActorAI;
+        public IActorSkill ActorSkill => m_ActorSkill;
+
         public ActorBuff ActorBuff => m_ActorBuff;
-
         public ActorCard ActorCard => m_ActorCard;
-
         public ActorBase Target => m_Target;
-        
         public ActorBase Host => m_Host;
             
         public Vector3 Dir => CachedTransform.forward;
-
         public Vector3 Euler => CachedTransform.localEulerAngles;
-
         public Vector3 Pos => CachedTransform.position;
 
         public float Height => m_CharacterController.height * CachedTransform.localScale.x;
-
         public float Radius => m_CharacterController.radius * CachedTransform.localScale.x;
-
         public bool IsDead => CurFsmStateType == ActorFsmStateType.FSM_DEAD;
-
         #endregion
 
         protected Dictionary<AIFeatureType, bool> m_AIFeatures = new Dictionary<AIFeatureType, bool>();
@@ -719,7 +702,7 @@ namespace GameMain
                 return false;
             }
 
-            return GetCamp(actor) == BattleCampType.Enemy;
+            return actor.Camp != Camp;
         }
 
         public bool IsAlly(ActorBase actor)
@@ -730,13 +713,16 @@ namespace GameMain
                 return false;
             }
 
-            return GetCamp(actor) == BattleCampType.Ally;
+            return actor.Camp == this.Camp;
         }
 
         public List<ActorBase> GetAllEnemy()
         {
             m_Enemys.Clear();
-            FindActorsByCamp(BattleCampType.Enemy, ref m_Enemys, true);
+            if(Camp == BattleCampType.Ally)
+                FindActorsByCamp(BattleCampType.Enemy, ref m_Enemys, true);
+            else
+                FindActorsByCamp(BattleCampType.Ally, ref m_Enemys, true);
             return m_Enemys;
         }
 
@@ -767,17 +753,6 @@ namespace GameMain
                     }
                 }
             }
-        }
-
-        public BattleCampType GetCamp(ActorBase actor)
-        {
-            if (actor == null)
-            {
-                Log.Error("Actor is null.");
-                return BattleCampType.None;
-            }
-
-            return actor.Camp;
         }
 
         public ActorBase GetNearestEnemy(float radius = 100)
@@ -958,7 +933,7 @@ namespace GameMain
                 new ActorCollectMineFsm(), 
                 new ActorInteractiveFsm(), 
             };
-            m_FsmName = GlobalTools.Format("ActorFsm[{0}]", EntityId);
+            m_FsmName = GlobalTools.Format("ActorFsm[{0}][{1}]", Id, EntityId);
             m_ActorFsm = GameEntry.Fsm.CreateFsm(m_FsmName, this, states);
             m_ActorFsm.Start<ActorIdleFsm>();
         }

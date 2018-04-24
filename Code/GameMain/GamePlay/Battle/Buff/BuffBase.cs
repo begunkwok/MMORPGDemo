@@ -55,6 +55,7 @@ namespace GameMain
                 m_BuffAttr = GameEntry.DataTable.GetDataTable<DRBuffAttr>()?.GetDataRow(Data.ResultAttrID);
             }
 
+            AttrList = new List<BuffAttrData>();
             this.Enter();
         }
 

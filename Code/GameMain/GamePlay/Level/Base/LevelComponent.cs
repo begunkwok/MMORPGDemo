@@ -198,6 +198,9 @@ namespace GameMain
                     LevelData.AllRoles.Add(role);
                     LevelData.AllActors.Add(role.Actor);
                     LevelData.CampActors[camp].Add(role);
+                    role.CachedTransform.position = param.Position;
+                    role.CachedTransform.eulerAngles = param.EulerAngles;
+                    role.CachedTransform.localScale = param.Scale;
                 }
             }
 

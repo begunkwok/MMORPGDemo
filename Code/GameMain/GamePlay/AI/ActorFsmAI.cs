@@ -10,7 +10,7 @@ namespace GameMain
         public ActorFsmAI(ActorBase owner, AIModeType mode, float atkDist, float followDist, float waringDist, float findEnemyInterval)
             : base(owner, mode, atkDist, followDist, waringDist, findEnemyInterval)
         {
-            m_FsmName = GlobalTools.Format("ActorAIFsm[{0}]", Owner.Id);
+            m_FsmName = GlobalTools.Format("ActorAIFsm[{0}][{1}]", Owner.Id, owner.EntityId);
 
             FsmState<ActorBase>[] states =
             {
