@@ -19,6 +19,8 @@ namespace GameMain
         {
             m_UIPackages = new Dictionary<string, MyUIPackage>();
             m_LuaForms = new Dictionary<int, string>();
+            RegisterItemExtension();
+            RegisterCustomLoader();
         }
 
         /// <summary>
@@ -138,9 +140,15 @@ namespace GameMain
             return GameEntry.Resource.LoadAssetSync(name + extension);
         }
 
+        private void RegisterItemExtension()
+        {
+            UIObjectFactory.SetPackageItemExtension("ui://Home/Buff", typeof (BuffTip));
+        }
 
-
-
+        private void RegisterCustomLoader()
+        {
+            UIObjectFactory.SetLoaderExtension(typeof(CustomGLoader));
+        }
 
 
         private class MyUIPackage

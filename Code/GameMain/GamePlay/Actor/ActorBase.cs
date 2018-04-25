@@ -39,11 +39,11 @@ namespace GameMain
             }
         }
 
-        public IAttribute Attrbute => m_CurAttribute;
         public IActorAI ActorAI => m_ActorAI;
+        public IActorBuff ActorBuff => m_ActorBuff;
         public IActorSkill ActorSkill => m_ActorSkill;
+        public IAttribute Attrbute => m_CurAttribute;
 
-        public ActorBuff ActorBuff => m_ActorBuff;
         public ActorCard ActorCard => m_ActorCard;
         public ActorBase Target => m_Target;
         public ActorBase Host => m_Host;
@@ -76,7 +76,6 @@ namespace GameMain
         protected ActorAttribute m_CurAttribute;
         protected IFsm<ActorBase> m_ActorFsm;
         protected IActorAI m_ActorAI;
-        protected IBuffCtrl m_BuffCtrl;
         protected IActorSkill m_ActorSkill;
         protected IAnimController m_AnimController;
         protected IAIPathFinding m_ActorPathFinding;
@@ -139,6 +138,7 @@ namespace GameMain
             }
 
             m_ActorAI.Step();
+            m_ActorBuff.Step();
             m_ActorSkill.Step();
             m_AnimController.Step();
             m_ActorPathFinding.Step();
@@ -156,23 +156,21 @@ namespace GameMain
             RemoveBoard();
             RemoveEffect();
 
-            m_AIFeatures.Clear();
-            m_ActorStates.Clear();
+            m_AIFeatures?.Clear();
+            m_ActorStates?.Clear();
 
-            m_Enemys.Clear();
-            m_Allys.Clear();
-            m_Targets.Clear();
+            m_Enemys?.Clear();
+            m_Allys?.Clear();
+            m_Targets?.Clear();
 
-            m_ActorAI.Clear();
-            m_ActorBuff.Clear();
-            m_ActorSkill.Clear();
-            m_BuffCtrl.Clear();
-            m_CommandReceiver.Clear();
+            m_ActorAI?.Clear();
+            m_ActorBuff?.Clear();
+            m_ActorSkill?.Clear();
+            m_CommandReceiver?.Clear();
 
             m_ActorAI = null;
             m_ActorBuff = null;
             m_ActorSkill = null;
-            m_BuffCtrl = null;
             m_CommandReceiver = null;
         }
 

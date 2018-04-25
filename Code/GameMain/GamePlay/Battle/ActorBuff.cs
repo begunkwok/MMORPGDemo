@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using GameFramework;
 
 namespace GameMain
 {
-    public class ActorBuff
+    public class ActorBuff : IActorBuff
     {
         private List<int> m_DelBuffList = new List<int>();
         private List<int> m_AddBuffList = new List<int>();
@@ -176,8 +177,8 @@ namespace GameMain
                 m_DelBuffList.Clear();
             }
 
-            //TODO 更新buff事件
-           // ZTEvent.FireEvent(EventID.UPDATE_BUFF);
+            RefreshBuffEventArgs args = ReferencePool.Acquire<RefreshBuffEventArgs>().Fill(m_Owner);
+            GameEntry.Event.Fire(this, args);
         }
 
         public Map<int, BuffBase> GetAllBuff()
@@ -185,7 +186,7 @@ namespace GameMain
             return m_BuffMap;
         }
 
-        public void SetAllParticleEnabled(bool enabled)
+        public void SetAllEffectEnable(bool enabled)
         {
             Map<int, BuffBase>.Enumerator em = m_BuffMap.GetEnumerator();
             while (em.MoveNext())
@@ -201,17 +202,19 @@ namespace GameMain
             RemoveAllBuff();
         }
 
-
-
-
-        private BuffBase FindBuff(int id)
+        public BuffBase FindBuff(int id)
         {
             BuffBase buff = null;
             m_BuffMap.TryGetValue(id, out buff);
             return buff;
         }
 
-        private void RemoveAllDot()
+        public void RemoveBuff(int id)
+        {
+            m_DelBuffList.Add(id);
+        }
+
+        public void RemoveAllDot()
         {
             for (m_BuffMap.Begin(); m_BuffMap.Next();)
             {
@@ -222,7 +225,7 @@ namespace GameMain
             }
         }
 
-        private void RemoveAllDebuff()
+        public void RemoveAllDebuff()
         {
             for (m_BuffMap.Begin(); m_BuffMap.Next();)
             {
@@ -233,7 +236,7 @@ namespace GameMain
             }
         }
 
-        private void RemoveAllControl()
+        public void RemoveAllControl()
         {
             for (m_BuffMap.Begin(); m_BuffMap.Next();)
             {
@@ -244,7 +247,7 @@ namespace GameMain
             }
         }
 
-        private void RemoveAllBuff()
+        public void RemoveAllBuff()
         {
             for (m_BuffMap.Begin(); m_BuffMap.Next();)
             {

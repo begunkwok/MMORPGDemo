@@ -50,6 +50,16 @@ namespace GameMain
             return string.Format("Assets/GameMain/UI/UIPackage/{0}", packageName);
         }
 
+        public static string GetSkillIconAsset(int id)
+        {
+            return string.Format("Assets/GameMain/Textures/Skill/{0}.png", id);
+        }
+
+        public static string GetBuffIconAsset(int id)
+        {
+            return string.Format("Assets/GameMain/Textures/Buff/{0}.png", id);
+        }
+
         public static string GetLuaAsset(string assetName)
         {
             return string.Format("Assets/GameMain/Lua/{0}", assetName);

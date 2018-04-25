@@ -3,16 +3,16 @@
 namespace GameMain
 {
     /// <summary>
-    /// buff控制器
+    /// buff接口
     /// </summary>
-    public interface IBuffCtrl
+    public interface IActorBuff
     {
         /// <summary>
         /// 添加Buff
         /// </summary>
         /// <param name="id">编号</param>
         /// <param name="caster">作用者</param>
-        void AddBuff(int id, IActor caster);
+        void AddBuff(int id, ActorBase caster);
 
         /// <summary>
         /// 移除Buff
@@ -48,7 +48,7 @@ namespace GameMain
         /// <summary>
         /// 获取所有buff
         /// </summary>
-        Dictionary<int, IBuff> GetAllBuff();
+        Map<int, BuffBase> GetAllBuff();
 
         /// <summary>
         /// 设置特效是否显示

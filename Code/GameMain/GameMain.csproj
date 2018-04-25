@@ -80,6 +80,7 @@
     <Compile Include="Camera\CameraEffect\WaterDropEffect.cs" />
     <Compile Include="Camera\ProtectCameraFromWallClip.cs" />
     <Compile Include="Definition\EventArgs\EnterLevelEventArgs.cs" />
+    <Compile Include="Definition\EventArgs\RefreshBuffEventArgs.cs" />
     <Compile Include="Editor\LevelEditor\ElementInspector\InsLevelBarrier.cs" />
     <Compile Include="Editor\LevelEditor\ElementInspector\InsLevelBorn.cs" />
     <Compile Include="Editor\LevelEditor\ElementInspector\InsLevelElement.cs" />
@@ -406,6 +407,7 @@
     <Compile Include="Resource\ResourceComponentExtension.cs" />
     <Compile Include="Scene\SceneComponentExtension.cs" />
     <Compile Include="Scene\SceneType.cs" />
+    <Compile Include="UI\Base\CustomGLoader.cs" />
     <Compile Include="UI\Base\FairyGuiComponent.cs" />
     <Compile Include="DataTable\DataTableExtension.cs" />
     <Compile Include="DataTable\DREntity.cs" />
@@ -453,6 +455,7 @@
     <Compile Include="UI\Define\UIFormId.cs" />
     <Compile Include="UI\FormData\RoleCreateFormData.cs" />
     <Compile Include="UI\Extension\UIExtension.cs" />
+    <Compile Include="UI\UIForm\Home\BuffTip.cs" />
     <Compile Include="UI\UIForm\Home\ControllerForm.cs" />
     <Compile Include="UI\UIForm\Home\HomeForm.cs" />
     <Compile Include="UI\UIForm\Home\TouchPadModule.cs" />

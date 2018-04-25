@@ -244,13 +244,13 @@ namespace GameMain
         protected void OnFadeOut()
         {
             SetAlphaVertexColorOff(0.1f);
-            m_ActorBuff.SetAllParticleEnabled(false);
+            m_ActorBuff.SetAllEffectEnable(false);
         }
 
         protected void OnFadeIn()
         {
             SetAlphaVertexColorOn(0.1f);
-            m_ActorBuff.SetAllParticleEnabled(true);
+            m_ActorBuff.SetAllEffectEnable(true);
 
         }
 
