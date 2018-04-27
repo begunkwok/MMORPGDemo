@@ -16,6 +16,7 @@ namespace GameMain
         public int EntityId { get; }
 
         public GameObject EntityGo { get; }
+        public RoleBase Entity { get; }
         public Transform CachedTransform { get; }
         public TransformParam BornParam { get; }
         
@@ -86,22 +87,24 @@ namespace GameMain
         protected string m_FsmName = String.Empty;
 
 
-        public ActorBase(int entityId,int id, GameObject go, ActorType type, BattleCampType camp,
+        public ActorBase(RoleBase entity,ActorType type, BattleCampType camp,
             CharacterController cc, Animator anim)
         {
-            if (id == 0 || go == null || cc == null || anim == null)
+            if (entity == null || cc == null || anim == null)
             {
                 throw new GameFrameworkException("Construct Actor Fail.");
             }
-            
-            Id = id;
-            EntityId = entityId;
-            ActorType = type;
-            Camp = camp;
-            EntityGo = go;
-            CachedTransform = go.transform;
+
+            Entity = entity;
+            Id = entity.TypeId;
+            EntityId = entity.Id;
+            EntityGo = entity.gameObject;
+            CachedTransform = EntityGo.transform;
+
             m_CharacterController = cc;
             m_Animator = anim;
+            ActorType = type;
+            Camp = camp;
 
             BornParam = new TransformParam
             {
@@ -110,7 +113,7 @@ namespace GameMain
                 Scale = CachedTransform.localScale
             };
 
-            m_ActorData = GameEntry.DataTable.GetDataTable<DRActorEntity>().GetDataRow(id);
+            m_ActorData = GameEntry.DataTable.GetDataTable<DRActorEntity>().GetDataRow(Id);
             m_ActorSkill = new ActorSkill(this);
             m_ActorBuff = new ActorBuff(this);
         }
@@ -256,12 +259,12 @@ namespace GameMain
 
         protected virtual void UpdateHealth()
         {
-            //TODO 更新血量
+            
         }
 
         protected virtual void UpdatePower()
         {
-            //TODO 更新魔力
+          
         }
 
         public virtual int Attack(IActor defender, int value)
@@ -549,6 +552,9 @@ namespace GameMain
 
         public CommandReplyType ExecuteCommand<T>(T command) where T : ICommand
         {
+            if (m_CommandReceiver == null)
+                return CommandReplyType.NO;
+
             if (!m_CommandReceiver.HasCommand(command.CommandType))
             {
                 Log.Error("Can no find Command");
@@ -617,7 +623,7 @@ namespace GameMain
             if (hp > use)
             {
                 Attrbute.UpdateValue(AttributeType.Hp, hp - use);
-                UpdatePower();
+                UpdateHealth();
                 return true;
             }
 
@@ -686,7 +692,12 @@ namespace GameMain
                 case AffectType.Self:
                     return new List<ActorBase>() { this };
                 case AffectType.Each:
-                    return LevelData.AllActors;
+                    List<ActorBase> all = new List<ActorBase>();
+                    for (int i = 0; i < LevelData.AllRoles.Count; i++)
+                    {
+                        all.Add(LevelData.AllRoles[i].Actor);
+                    }
+                    return all;
                 default:
                     return new List<ActorBase>();
             }
@@ -733,9 +744,9 @@ namespace GameMain
 
         public void FindActorsByCamp(BattleCampType actorCamp, ref List<ActorBase> list, bool ignoreStealth = false)
         {
-            for (int i = 0; i < LevelData.AllActors.Count; i++)
+            for (int i = 0; i < LevelData.AllRoles.Count; i++)
             {
-                ActorBase actor = LevelData.AllActors[i];
+                ActorBase actor = LevelData.AllRoles[i].Actor;
                 if (actor.Camp == actorCamp && actor.IsDead == false)
                 {
                     if (ignoreStealth == false)

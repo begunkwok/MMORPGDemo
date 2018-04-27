@@ -14,10 +14,28 @@ namespace GameMain
         {
             get
             {
-                return Entity.Id;
+                if (m_EntityData == null)
+                {
+                    Log.Error("EntityData is null.");
+                    return 0;
+                }
+                return m_EntityData.Id;
             }
         }
 
+        public int TypeId
+        {
+            get
+            {
+                if (m_EntityData == null)
+                {
+                    Log.Error("EntityData is null.");
+                    return 0;
+                }
+                return m_EntityData.TypeId;
+            }
+        }
+        
         public Animator CachedAnimator
         {
             get;
@@ -27,22 +45,21 @@ namespace GameMain
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
-            CachedAnimator = GetComponent<Animator>();
-            m_GoName = gameObject.name;
-        }
-
-        protected override void OnShow(object userData)
-        {
-            base.OnShow(userData);
-
             m_EntityData = userData as EntityData;
             if (m_EntityData == null)
             {
                 Log.Error("Entity data is invalid.");
                 return;
             }
+            Name = $"{m_GoName}[{m_EntityData.TypeId}][{Id}]";
 
-            Name = string.Format("{0}[{1}][{2}]", m_GoName, m_EntityData.TypeId,Id);
+            CachedAnimator = GetComponent<Animator>();
+            m_GoName = gameObject.name;
+        }
+
+        protected override void OnShow(object userData)
+        {
+            base.OnShow(userData);   
         }
 
         protected override void OnHide(object userData)

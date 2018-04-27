@@ -4,9 +4,9 @@ using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedure
 namespace GameMain
 {
     /// <summary>
-    /// 关卡流程
+    /// 副本流程
     /// </summary>
-    public class ProcedureLevel : ProcedureBase
+    public class ProcedureCopy : ProcedureBase
     {
         public override bool UseNativeDialog => false;
 

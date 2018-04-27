@@ -1,4 +1,5 @@
 ﻿using System;
+using GameFramework;
 using GameFramework.Event;
 using UnityEngine;
 using UnityGameFramework.Runtime;
@@ -44,7 +45,10 @@ namespace GameMain
                 return;
 
             int playerId = m_ProcedureOwner.GetData<VarInt>(Constant.ProcedureData.PlayerId);
+
             DBPlayer dbPlayer = GameEntry.Database.GetDBRow<DBPlayer>(playerId);
+            RefreshHeroInfoEventArgs args = ReferencePool.Acquire<RefreshHeroInfoEventArgs>().FillName(dbPlayer.Name);
+            GameEntry.Event.Fire(this, args);
 
             TransformParam tParam = new TransformParam()
             {

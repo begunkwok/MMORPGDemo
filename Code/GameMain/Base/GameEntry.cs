@@ -13,5 +13,10 @@ namespace GameMain
             InitBuiltinComponents();
             InitCustomComponents();
         }
+
+        private void OnDestroy()
+        {
+            ClearCustomComponents();
+        }
     }
 }

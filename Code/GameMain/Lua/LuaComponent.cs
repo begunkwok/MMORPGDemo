@@ -9,7 +9,7 @@ namespace GameMain
 {
     [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Lua")]
-    public class LuaComponent : GameFrameworkComponent
+    public class LuaComponent : GameFrameworkComponent,ICustomComponent
     {
         private LuaEnv m_luaEnv = null;
         public LuaEnv LuaEnv
@@ -42,6 +42,21 @@ namespace GameMain
 
             //开始lua入口
             StartLuaMain();
+        }
+
+        public void Clear()
+        {
+            luaOnDestroy?.Invoke();
+
+            GameEntry.Event.Unsubscribe(LoadSceneUpdateEventArgs.EventId, OnLoadSceneSuccess);
+            luaStart = null;
+            luaUpdate = null;
+            luaLateUpdate = null;
+            luaFixedUpdate = null;
+            luaOnSceneLoaded = null;
+            luaOnDestroy = null;
+
+            m_luaEnv.Dispose();
         }
 
         private void InitCustomLoader()
@@ -124,21 +139,6 @@ namespace GameMain
         void FixedUpdate()
         {
             luaFixedUpdate?.Invoke();
-        }
-
-        void OnDestroy()
-        {
-            luaOnDestroy?.Invoke();
-
-            GameEntry.Event.Unsubscribe(LoadSceneUpdateEventArgs.EventId, OnLoadSceneSuccess);
-            luaStart = null;
-            luaUpdate = null;
-            luaLateUpdate = null;
-            luaFixedUpdate = null;
-            luaOnSceneLoaded = null;
-            luaOnDestroy = null;
-
-            m_luaEnv.Dispose();
         }
 
     }

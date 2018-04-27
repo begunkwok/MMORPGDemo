@@ -8,7 +8,7 @@ namespace GameMain
 {
     public class ActorNpc : ActorBase
     {
-        public ActorNpc(int entityId, int id, GameObject go, ActorType type, BattleCampType camp, CharacterController cc, Animator anim) : base(entityId, id, go, type, camp, cc, anim)
+        public ActorNpc(RoleBase entity, ActorType type, BattleCampType camp, CharacterController cc, Animator anim) : base(entity, type, camp, cc, anim)
         {
 
         }

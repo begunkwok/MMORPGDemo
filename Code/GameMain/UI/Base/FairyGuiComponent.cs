@@ -10,7 +10,7 @@ namespace GameMain
 {
     [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/FairyGui")]
-    public class FairyGuiComponent : GameFrameworkComponent
+    public class FairyGuiComponent : GameFrameworkComponent,ICustomComponent
     {
         private Dictionary<string, MyUIPackage> m_UIPackages = null;
         private Dictionary<int, string> m_LuaForms = null;
@@ -21,6 +21,20 @@ namespace GameMain
             m_LuaForms = new Dictionary<int, string>();
             RegisterItemExtension();
             RegisterCustomLoader();
+        }
+
+        public void Clear()
+        {
+            foreach (KeyValuePair<int, string> luaFormInfo in m_LuaForms)
+            {
+                IDataTable<DRUIForm> dt = GameEntry.DataTable.GetDataTable<DRUIForm>();
+                string formGroup = dt.GetDataRow(luaFormInfo.Key).UIGroupName;
+                FairyGuiLuaForm luaForm = GameEntry.UI.GetUIForm(luaFormInfo.Key, formGroup) as FairyGuiLuaForm;
+                GameEntry.UI.CloseUIForm(luaForm);
+            }
+            m_LuaForms.Clear();
+            m_UIPackages.Clear();
+            UIPackage.RemoveAllPackages();
         }
 
         /// <summary>
@@ -143,6 +157,7 @@ namespace GameMain
         private void RegisterItemExtension()
         {
             UIObjectFactory.SetPackageItemExtension("ui://Home/Buff", typeof (BuffTip));
+            UIObjectFactory.SetPackageItemExtension("ui://Home/Button_Attack", typeof (SkillButton));
         }
 
         private void RegisterCustomLoader()

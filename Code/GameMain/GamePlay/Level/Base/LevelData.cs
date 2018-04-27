@@ -7,7 +7,6 @@ namespace GameMain
     public class LevelData
     {
         public static List<RoleBase> AllRoles = new List<RoleBase>();
-        public static List<ActorBase> AllActors = new List<ActorBase>();
 
         public static Dictionary<BattleCampType, List<RoleBase>> CampActors = new Dictionary
             <BattleCampType, List<RoleBase>>()

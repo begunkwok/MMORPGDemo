@@ -8,7 +8,7 @@ namespace GameMain
 {
     [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Database")]
-    public class DatabaseComponent : GameFrameworkComponent
+    public class DatabaseComponent : GameFrameworkComponent,ICustomComponent
     {
         [SerializeField] private string DBName = "userData.db";
         [SerializeField] private float SaveInterval = 60;
@@ -55,10 +55,11 @@ namespace GameMain
             }
         }
 
-        void OnDestroy()
+        public void Clear()
         {
-            //退出游戏前，自动保存
+            //退出游戏前，保存数据
             SaveDatabase();
+            CloseSqlConnection();
         }
 
         public bool TryLogin(int account, string password)

@@ -9,7 +9,7 @@ namespace GameMain
 {
     [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Camera")]
-    public class CameraComponent : GameFrameworkComponent
+    public class CameraComponent : GameFrameworkComponent,ICustomComponent
     {
         private Dictionary<CameraEffectType, ICameraEffect> m_CameraEffects = new Dictionary<CameraEffectType, ICameraEffect>();
         private List<ICameraBehaviour> m_CameraBehaviour = new List<ICameraBehaviour>(); 
@@ -46,6 +46,12 @@ namespace GameMain
             InitCameraEffect();
 
             InitCameraBehaviour();
+        }
+
+        public void Clear()
+        {
+            m_CameraEffects.Clear();
+            m_CameraBehaviour.Clear();
         }
 
         /// <summary>

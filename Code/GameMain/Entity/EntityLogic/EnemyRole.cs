@@ -24,7 +24,7 @@ namespace GameMain
             int actorEntityId = m_EnemyEntityData.TypeId;
             ActorType actorType = m_EnemyEntityData.ActorType;
             BattleCampType campType = m_EnemyEntityData.CampType;
-            Actor = new ActorEnemy(actorId, actorEntityId, gameObject, actorType, campType, m_CharacterController,
+            Actor = new ActorEnemy(this, actorType, campType, m_CharacterController,
                 m_Animator);
             Actor.Init();
         }

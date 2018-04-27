@@ -59,6 +59,7 @@
     <Compile Include="Base\GameEntry.Builtin.cs" />
     <Compile Include="Base\GameEntry.cs" />
     <Compile Include="Base\GameEntry.Custom.cs" />
+    <Compile Include="Base\ICustomComponent.cs" />
     <Compile Include="Base\MonoSingleton.cs" />
     <Compile Include="Base\Singleton.cs" />
     <Compile Include="Config\AppConfigComponent.cs" />
@@ -81,6 +82,8 @@
     <Compile Include="Camera\ProtectCameraFromWallClip.cs" />
     <Compile Include="Definition\EventArgs\EnterLevelEventArgs.cs" />
     <Compile Include="Definition\EventArgs\RefreshBuffEventArgs.cs" />
+    <Compile Include="Definition\EventArgs\RefreshHeroInfoEventArgs.cs" />
+    <Compile Include="Definition\EventArgs\KillMonsterEventArgs.cs" />
     <Compile Include="Editor\LevelEditor\ElementInspector\InsLevelBarrier.cs" />
     <Compile Include="Editor\LevelEditor\ElementInspector\InsLevelBorn.cs" />
     <Compile Include="Editor\LevelEditor\ElementInspector\InsLevelElement.cs" />
@@ -401,7 +404,7 @@
     <Compile Include="Lua\XLuaHelper.cs" />
     <Compile Include="Procedure\ProcedureCheckVersion.cs" />
     <Compile Include="Procedure\ProcedureInitResource.cs" />
-    <Compile Include="Procedure\ProcedureLevel.cs" />
+    <Compile Include="Procedure\ProcedureCopy.cs" />
     <Compile Include="Procedure\ProcedureMainCity.cs" />
     <Compile Include="Procedure\ProcedureUpdateResource.cs" />
     <Compile Include="Resource\ResourceComponentExtension.cs" />
@@ -458,6 +461,7 @@
     <Compile Include="UI\UIForm\Home\BuffTip.cs" />
     <Compile Include="UI\UIForm\Home\ControllerForm.cs" />
     <Compile Include="UI\UIForm\Home\HomeForm.cs" />
+    <Compile Include="UI\UIForm\Home\SkillButton.cs" />
     <Compile Include="UI\UIForm\Home\TouchPadModule.cs" />
     <Compile Include="UI\UIForm\CommonForm\DialogForm.cs" />
     <Compile Include="UI\UIForm\CommonForm\LoadingForm.cs" />
@@ -496,7 +500,9 @@
       <Name>XLuaSrc</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Network\Packet\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>cd $(SolutionDir)Build

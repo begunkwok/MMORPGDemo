@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace GameMain
 {
@@ -41,6 +42,12 @@ namespace GameMain
         SkillTree GetSkill(SkillPosType pos);
 
         /// <summary>
+        /// 获取所有技能
+        /// </summary>
+        /// <returns></returns>
+        List<SkillTree> GetAllSkill();
+
+            /// <summary>
         /// 根据距离获取下一个技能
         /// </summary>
         /// <param name="dist">距离</param>

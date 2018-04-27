@@ -20,6 +20,8 @@ namespace GameMain
             m_Mask = GetChild("mask").asImage;
             m_Icon = GetChild("icon").asLoader;
             m_Title = GetChild("title").asTextField;
+
+            HideBuff();
         }
 
         public void ShowBuff(BuffBase buff)
@@ -36,8 +38,13 @@ namespace GameMain
             }
 
             m_Buff = buff;
-            this.visible = true;
+            if (m_Buff.GetLeftTime() < float.Epsilon)
+            {
+                HideBuff();
+                return;
+            }
 
+            this.visible = true;
             string iconPath = AssetUtility.GetBuffIconAsset(m_Buff.Data.Icon);
             m_Icon.url = iconPath;
             m_Title.text = GlobalTools.Format("{0}{1}", m_Buff.GetLeftTime().ToString("F1"), "s");
@@ -47,7 +54,7 @@ namespace GameMain
         public void HideBuff()
         {
             m_Buff = null;
-            //this.visible = false;
+            this.visible = false;
             if (m_Icon.texture != null)
             {
                 GameEntry.Resource.UnloadAsset(m_Icon.texture);

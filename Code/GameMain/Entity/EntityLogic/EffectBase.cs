@@ -294,7 +294,8 @@ namespace GameMain
         public void Clear()
         {
             GameEntry.Timer.UnRegister(m_DelayTimer);
-            GameEntry.Entity.HideEntity(m_EffectData.Id);
+            if (GameEntry.Entity.HasEntity(m_EffectData.Id))
+                GameEntry.Entity.HideEntity(m_EffectData.Id);
         }
 
     }

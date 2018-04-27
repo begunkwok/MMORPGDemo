@@ -68,27 +68,9 @@ namespace GameMain
             this.m_AnimController.Play("die");
             Attrbute.UpdateValue(AttributeType.Hp, 0);
             Attrbute.UpdateValue(AttributeType.Mp, 0);
-            this.Destory();
             this.ApplyCharacterCtrl(false);
 
-            //DBEntiny db = ZTConfig.Instance.GetDBEntiny(Id);
-            //if ((this is ActorMainPlayer) == false)
-            //{
-            //    LevelData.AllActors.Remove(this);
-            //}
-            //switch (ActorType)
-            //{
-            //    case EActorType.PLAYER:
-            //        if (this is ActorMainPlayer)
-            //        {
-            //            ZTLevel.Instance.OnMainPlayerDead();
-            //        }
-            //        break;
-            //    case EActorType.MONSTER:
-            //        ZTEvent.FireEvent(EventID.RECV_KILL_MONSTER, GUID, Id);
-            //        ZTTimer.Instance.Register(1.5f, OnDeadEnd);
-            //        break;
-            //}
+            GameEntry.Level.DelRole(this.Entity);
         }
 
         /// <summary>

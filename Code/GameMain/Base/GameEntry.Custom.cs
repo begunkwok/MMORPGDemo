@@ -9,21 +9,39 @@
         {
             Database = UnityGameFramework.Runtime.GameEntry.GetComponent<DatabaseComponent>();
             FairyGui = UnityGameFramework.Runtime.GameEntry.GetComponent<FairyGuiComponent>();
-            AppConfig = UnityGameFramework.Runtime.GameEntry.GetComponent<AppConfigComponent>();
             Lua = UnityGameFramework.Runtime.GameEntry.GetComponent<LuaComponent>();
+            AppConfig = UnityGameFramework.Runtime.GameEntry.GetComponent<AppConfigComponent>();
             Camera = UnityGameFramework.Runtime.GameEntry.GetComponent<CameraComponent>();
             Input = UnityGameFramework.Runtime.GameEntry.GetComponent<InputComponent>();
-            BT = UnityGameFramework.Runtime.GameEntry.GetComponent<BehaviorTreeComponent>();
             Timer = UnityGameFramework.Runtime.GameEntry.GetComponent<TimerComponent>();
+            BT = UnityGameFramework.Runtime.GameEntry.GetComponent<BehaviorTreeComponent>();
             Level = UnityGameFramework.Runtime.GameEntry.GetComponent<LevelComponent>();
             Coroutinue = UnityGameFramework.Runtime.GameEntry.GetComponent<CoroutinueComponent>();
 
             Database.Init();
             FairyGui.Init();
             Lua.Init();
+            AppConfig.Init();
             Camera.Init();
             Input.Init();
+            Timer.Init();
+            BT.Init();
             Level.Init();
+            Coroutinue.Init();
+        }
+
+        private static void ClearCustomComponents()
+        {
+            //Database.Clear();
+            FairyGui.Clear();
+            Lua.Clear();
+            AppConfig.Clear();
+            Camera.Clear();
+            Input.Clear();
+            Timer.Clear();
+            BT.Clear();
+            Level.Clear();
+            Coroutinue.Clear();
         }
 
         public static DatabaseComponent Database

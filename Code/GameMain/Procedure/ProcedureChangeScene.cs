@@ -109,7 +109,7 @@ namespace GameMain
                     ChangeState<ProcedureMainCity>(procedureOwner);
                     break;
                 case SceneId.Level_01:
-                    ChangeState<ProcedureLevel>(procedureOwner);
+                    ChangeState<ProcedureCopy>(procedureOwner);
                     break;
             }
         }

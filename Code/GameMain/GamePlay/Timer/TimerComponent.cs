@@ -7,14 +7,26 @@ namespace GameMain
 {
     [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Timer")]
-    public class TimerComponent : GameFrameworkComponent
+    public class TimerComponent : GameFrameworkComponent,ICustomComponent
     {
-        private Dictionary<int, Timer> m_Timers = new Dictionary<int, Timer>();
-        private List<Timer> m_AddBuffer = new List<Timer>();
-        private List<int> m_DeleteBuffer = new List<int>();
+        private Dictionary<int, Timer> m_Timers = null;
+        private List<Timer> m_AddBuffer = null;
+        private List<int> m_DeleteBuffer = null;
         private int m_Index = 0;
 
+        public void Init()
+        {
+            m_Timers = new Dictionary<int, Timer>();
+            m_AddBuffer = new List<Timer>();
+            m_DeleteBuffer = new List<int>();
+        }
 
+        public void Clear()
+        {
+            m_Timers.Clear();
+            m_AddBuffer.Clear();
+            m_DeleteBuffer.Clear();
+        }
 
         void Update()
         {
@@ -107,11 +119,5 @@ namespace GameMain
             m_DeleteBuffer.Clear();
         }
 
-        public void Clear()
-        {
-            m_Timers.Clear();
-            m_AddBuffer.Clear();
-            m_DeleteBuffer.Clear();
-        }
     }
 }

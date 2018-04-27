@@ -112,6 +112,11 @@ namespace GameMain
             return null;
         }
 
+        public List<SkillTree> GetAllSkill()
+        {
+            return m_SkillPool;
+        }
+
         public float GetMinCastDistance()
         {
             return m_MinCastDistSkillTree == null ? 0 : m_MinCastDistSkillTree.CastDistance;

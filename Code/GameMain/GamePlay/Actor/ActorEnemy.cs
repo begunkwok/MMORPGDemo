@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameFramework;
+using UnityEngine;
 
 namespace GameMain
 {
@@ -6,7 +7,7 @@ namespace GameMain
     {
         public MonsterType MonsterType { get; private set; }
 
-        public ActorEnemy(int entityId, int id, GameObject go, ActorType type, BattleCampType camp, CharacterController cc, Animator anim) : base(entityId, id, go, type, camp, cc, anim)
+        public ActorEnemy(RoleBase entity, ActorType type, BattleCampType camp, CharacterController cc, Animator anim) : base(entity, type, camp, cc, anim)
         {
             MonsterType = (MonsterType) m_ActorData.MonsterType;
 
@@ -22,5 +23,12 @@ namespace GameMain
             return MonsterType == MonsterType.Chest;
         }
 
+        public override void OnDead(DeadCommand ev)
+        {
+            base.OnDead(ev);
+
+            KillMonsterEventArgs args = ReferencePool.Acquire<KillMonsterEventArgs>().Fill(Id, EntityId);
+            GameEntry.Event.Fire(this, args);
+        }
     }
 }

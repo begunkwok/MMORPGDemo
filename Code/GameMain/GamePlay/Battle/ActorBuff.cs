@@ -176,9 +176,6 @@ namespace GameMain
                 m_Owner.UpdateCurAttribute();
                 m_DelBuffList.Clear();
             }
-
-            RefreshBuffEventArgs args = ReferencePool.Acquire<RefreshBuffEventArgs>().Fill(m_Owner);
-            GameEntry.Event.Fire(this, args);
         }
 
         public Map<int, BuffBase> GetAllBuff()

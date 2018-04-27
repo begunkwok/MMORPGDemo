@@ -77,9 +77,9 @@ namespace GameMain
         }
 
 
-        public ActorPlayer(int entityId,int id, GameObject go, ActorType type, BattleCampType camp, CharacterController cc,Animator anim) : base(entityId,id, go, type, camp, cc,anim)
+        public ActorPlayer(RoleBase entity, ActorType type, BattleCampType camp, CharacterController cc,Animator anim) : base(entity, type, camp, cc,anim)
         {
-            m_PlayerData = GameEntry.Database.GetDBRow<DBPlayer>(id);
+            m_PlayerData = GameEntry.Database.GetDBRow<DBPlayer>(Id);
             if (m_PlayerData == null)
             {
                 throw new Exception("Get DBPlayer Failure.");
@@ -91,6 +91,17 @@ namespace GameMain
             base.Init();
             GameEntry.Event.Subscribe(ChangeEquipEventArgs.EventId,ChangeEquipAvatar);
             GameEntry.Event.Subscribe(SkillKeyDownEventArgs.EventId,TryUseSkill);
+            GameEntry.Event.Subscribe(KillMonsterEventArgs.EventId,OnKillMonster);
+
+            BroadcastHeroInfo();
+        }
+
+        public override void Step()
+        {
+            base.Step();
+
+            RefreshBuffEventArgs args = ReferencePool.Acquire<RefreshBuffEventArgs>().Fill(this);
+            GameEntry.Event.Fire(this, args);
         }
 
         protected override void InitAi()
@@ -118,22 +129,26 @@ namespace GameMain
         {
             base.UpdateCurAttribute(init);
 
-            //ZTEvent.FireEvent(EventID.UPDATE_AVATAR_ATTR);
+            RefreshBuffEventArgs args = ReferencePool.Acquire<RefreshBuffEventArgs>().Fill(this);
+            GameEntry.Event.Fire(this, args);
         }
 
-        public Vector3 GetPartnerPosBySort(PartnerSortType sortType)
+        protected override void UpdateHealth()
         {
-            switch (sortType)
-            {
-                case PartnerSortType.Middle:
-                    return Pos + new Vector3(0, 0, 2);
-                case PartnerSortType.Left:
-                    return Pos + new Vector3(-2, 0, 0);
-                case PartnerSortType.Right:
-                    return Pos + new Vector3(2, 0, 0);
-                default:
-                    return Pos;
-            }
+            base.UpdateHealth();
+            int maxHp = Attrbute.GetValue(AttributeType.MaxHp);
+            int curHp = Attrbute.GetValue(AttributeType.Hp);
+            RefreshHeroInfoEventArgs args = ReferencePool.Acquire<RefreshHeroInfoEventArgs>().FillHp(curHp, maxHp);
+            GameEntry.Event.Fire(this, args);
+        }
+
+        protected override void UpdatePower()
+        {
+            base.UpdatePower();
+            int maxMp = Attrbute.GetValue(AttributeType.MaxMp);
+            int curMp = Attrbute.GetValue(AttributeType.Mp);
+            RefreshHeroInfoEventArgs args = ReferencePool.Acquire<RefreshHeroInfoEventArgs>().FillMp(curMp, maxMp);
+            GameEntry.Event.Fire(this, args);
         }
 
         public override void OnBeginRide()
@@ -231,10 +246,27 @@ namespace GameMain
 
             GameEntry.Event.Unsubscribe(ChangeEquipEventArgs.EventId, ChangeEquipAvatar);
             GameEntry.Event.Unsubscribe(SkillKeyDownEventArgs.EventId, TryUseSkill);
+            GameEntry.Event.Unsubscribe(KillMonsterEventArgs.EventId, OnKillMonster);
 
             for (int i = 0; i < 8; i++)
             {
                 RemoveEquip(i);
+            }
+        }
+
+
+        public Vector3 GetPartnerPosBySort(PartnerSortType sortType)
+        {
+            switch (sortType)
+            {
+                case PartnerSortType.Middle:
+                    return Pos + new Vector3(0, 0, 2);
+                case PartnerSortType.Left:
+                    return Pos + new Vector3(-2, 0, 0);
+                case PartnerSortType.Right:
+                    return Pos + new Vector3(2, 0, 0);
+                default:
+                    return Pos;
             }
         }
 
@@ -333,12 +365,23 @@ namespace GameMain
             //ZTLevel.Instance.AddPartner(this, pos, id);
         }
 
-        private void OnKillMonster(int guid, int id)
+        private void OnKillMonster(object sender, GameEventArgs e)
         {
-            //DBEntiny db = ZTConfig.Instance.GetDBEntiny(id);
-            //if (db.Exp > 0)
+            KillMonsterEventArgs ne = e as KillMonsterEventArgs;
+            DRActorEntity drActorEntity = GameEntry.DataTable.GetDataTable<DRActorEntity>().GetDataRow(ne.MonsterId);
+            if (drActorEntity.KillExp <= 0)
+            {
+                return;
+            }
+
+            int maxLevle = GameEntry.DataTable.GetDataTable<DRHeroLevel>().Count;
+
+
+            //if (drActorEntity.KillExp > 0)
             //{
-            //    ZSRole.Instance.TryAddHeroExp(db.Exp);
+            //    int maxExp = 
+            //    RefreshHeroInfoEventArgs args = ReferencePool.Acquire<RefreshHeroInfoEventArgs>().FillHp(drActorEntity.KillExp, maxMp);
+            //    GameEntry.Event.Fire(this, args);
             //}
         }
 
@@ -392,5 +435,11 @@ namespace GameMain
             //}
         }
 
+        private void BroadcastHeroInfo()
+        {
+            int maxExp = GameEntry.DataTable.GetDataTable<DRHeroLevel>().GetDataRow(m_PlayerData.Level).RequireExp;
+            RefreshHeroInfoEventArgs args = ReferencePool.Acquire<RefreshHeroInfoEventArgs>().Fill(m_PlayerData.Name, m_PlayerData.Level, m_PlayerData.Exp, maxExp, m_CurAttribute);
+            GameEntry.Event.Fire(this, args);
+        }
     }
 }

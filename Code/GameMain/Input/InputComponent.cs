@@ -11,7 +11,7 @@ namespace GameMain
 
     [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Input")]
-    public class InputComponent : GameFrameworkComponent
+    public class InputComponent : GameFrameworkComponent,ICustomComponent
     {
         public event OnAxisInput OnAxisInput;
         public event OnAxisInputEnd OnAxisInputEnd;
@@ -29,6 +29,12 @@ namespace GameMain
             SwitchActiveInput();
         
         }
+
+        public void Clear()
+        {
+            
+        }
+
         void Update()
         {
             m_InputX = GetAxis(Constant.Input.HorizontalAxis);

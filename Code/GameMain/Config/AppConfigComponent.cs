@@ -6,7 +6,7 @@ namespace GameMain
 {
     [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/AppConfig")]
-    public class AppConfigComponent : GameFrameworkComponent
+    public class AppConfigComponent : GameFrameworkComponent,ICustomComponent
     {
         [SerializeField]
         private DeviceModelConfig m_DeviceModelConfig = null;
@@ -88,6 +88,16 @@ namespace GameMain
                 Log.Warning("Parse default dictionary failure.");
                 return;
             }
+        }
+
+        public void Init()
+        {
+            
+        }
+
+        public void Clear()
+        {
+           
         }
     }
 }

@@ -7,11 +7,27 @@ namespace GameMain
 {
     [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/BehaviorTree")]
-    public class BehaviorTreeComponent : GameFrameworkComponent
+    public class BehaviorTreeComponent : GameFrameworkComponent,ICustomComponent
     {
-        private List<BTTree> m_BTTrees = new List<BTTree>();
-        private List<BTTree> m_DeleteList = new List<BTTree>();
+        private List<BTTree> m_BTTrees = null;
+        private List<BTTree> m_DeleteList = null;
 
+        public void Init()
+        {
+            m_BTTrees = new List<BTTree>();
+            m_DeleteList = new List<BTTree>();
+        }
+
+        public void Clear()
+        {
+            for (int i = 0; i < m_BTTrees.Count; i++)
+            {
+                BTTree tree = m_BTTrees[i];
+                tree.Clear();
+            }
+            m_BTTrees.Clear();
+            m_DeleteList.Clear();
+        }
 
         void Update()
         {
@@ -130,17 +146,6 @@ namespace GameMain
             }
             m_DeleteList.Add(tree);
         }
-
-        public void Clear()
-        {
-            for (int i = 0; i < m_BTTrees.Count; i++)
-            {
-                BTTree tree = m_BTTrees[i];
-                tree.Clear();
-            }
-            m_BTTrees.Clear();
-        }
-
         
     }
 }

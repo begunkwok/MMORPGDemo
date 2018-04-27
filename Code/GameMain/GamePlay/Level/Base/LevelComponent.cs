@@ -9,7 +9,7 @@ namespace GameMain
 {
     [DisallowMultipleComponent]
     [AddComponentMenu("Game Framework/Level")]
-    public partial class LevelComponent : GameFrameworkComponent
+    public partial class LevelComponent : GameFrameworkComponent,ICustomComponent
     {
         public int LevelID;
         public string MapName = string.Empty;
@@ -31,6 +31,29 @@ namespace GameMain
             IsEditorMode = false;
 
             InitHolder();
+        }
+
+        public void Clear()
+        {
+            CancelInvoke();
+            m_OnLoadNewSceneTasks.Clear();
+            for (int i = LevelData.AllRoles.Count - 1; i >= 0; i--)
+            {
+                RoleBase role = LevelData.AllRoles[i];
+                LevelData.AllRoles.RemoveAt(i);
+                GameEntry.Entity.HideEntity(role.Id);
+            }
+            LevelData.Player = null;
+            foreach (KeyValuePair<MapHolderType, LevelElement> current in m_Holders)
+            {
+                current.Value.transform.DestroyChildren();
+            }
+            foreach (var current in LevelData.CampActors)
+            {
+                current.Value.Clear();
+            }
+
+            GameEntry.Event.Unsubscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
         }
 
         public void InitHolder()
@@ -196,7 +219,6 @@ namespace GameMain
                 if (role.CachedTransform != null)
                 {
                     LevelData.AllRoles.Add(role);
-                    LevelData.AllActors.Add(role.Actor);
                     LevelData.CampActors[camp].Add(role);
                     role.CachedTransform.position = param.Position;
                     role.CachedTransform.eulerAngles = param.EulerAngles;
@@ -331,32 +353,7 @@ namespace GameMain
                 }
             }
         }
-
-        public void Clear()
-        {
-            CancelInvoke();
-            m_OnLoadNewSceneTasks.Clear();
-            for (int i = LevelData.AllActors.Count - 1; i >= 0; i--)
-            {
-                RoleBase role = LevelData.AllRoles[i];
-                LevelData.AllActors.RemoveAt(i);
-                GameEntry.Entity.HideEntity(role.Id);
-            }
-            LevelData.Player = null;
-            foreach (KeyValuePair<MapHolderType, LevelElement> current in m_Holders)
-            {
-                current.Value.transform.DestroyChildren();
-            }
-            foreach (var current in LevelData.CampActors)
-            {
-                current.Value.Clear();
-            }
-        }
-
-        void OnDestroy()
-        {
-            GameEntry.Event.Unsubscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
-        }
+        
 
 
         private void OnLevelStart()
