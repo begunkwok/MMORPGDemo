@@ -6,7 +6,7 @@ namespace GameMain
     [Serializable]
     public class EffectData : EntityData
     {
-        public EffectBindType BindType = EffectBindType.None;
+        public EffectBindType BindType = EffectBindType.World;
         public FlyObjFlyType FlyType = FlyObjFlyType.None;
         public FlyObjDeadType DeadType = FlyObjDeadType.UntilLifeTimeEnd;
 

@@ -70,7 +70,11 @@ namespace GameMain
             Attrbute.UpdateValue(AttributeType.Mp, 0);
             this.ApplyCharacterCtrl(false);
 
-            GameEntry.Level.DelRole(this.Entity);
+            //播放死亡动画后删除
+            GameEntry.Timer.Register(1f, () =>
+            {
+                GameEntry.Level.DelRole(this.Entity);
+            });
         }
 
         /// <summary>

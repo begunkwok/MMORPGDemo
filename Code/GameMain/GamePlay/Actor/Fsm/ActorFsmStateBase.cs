@@ -17,6 +17,11 @@ namespace GameMain
 
         protected ICommand m_Command;
 
+        public ActorFsmStateBase(ActorFsmStateType state)
+        {
+            StateType = state;
+        }
+
         protected override void OnInit(IFsm<ActorBase> fsm)
         {
             base.OnInit(fsm);

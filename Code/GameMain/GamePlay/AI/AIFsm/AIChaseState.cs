@@ -4,6 +4,10 @@ namespace GameMain
 {
     public class AIChaseState : AIFsmStateBase
     {
+        public AIChaseState(AIStateType state) : base(state)
+        {
+        }
+
         protected override void OnUpdate(IFsm<ActorBase> fsm, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);
@@ -19,11 +23,11 @@ namespace GameMain
                     float dist = GlobalTools.GetHorizontalDistance(m_Owner.Pos, m_Owner.Target.Pos);
                     if (dist > AI.WaringDist)
                     {
-                        AI.ChangeAIState<AIBackState>(AIStateType.Back);
+                        ChangeState<AIBackState>();
                     }
                     else if (dist < AI.AttackDist)
                     {
-                        AI.ChangeAIState<AIFightState>(AIStateType.Fight);
+                        ChangeState<AIFightState>();
                         return;
                     }
                 }
@@ -32,19 +36,19 @@ namespace GameMain
                 {
                     if (m_Owner.Target == null)
                     {
-                        AI.ChangeAIState<AIIdleState>(AIStateType.Idle);
+                        ChangeState<AIIdleState>();
                         return;
                     }
 
                     float dist = GlobalTools.GetHorizontalDistance(m_Owner.Pos, m_Owner.Target.Pos);
                     if (dist > AI.WaringDist)
                     {
-                            AI.ChangeAIState<AIIdleState>(AIStateType.Idle);
-                            return;
+                        ChangeState<AIIdleState>();
+                        return;
                     }
                     else if (dist < AI.AttackDist)
                     {
-                        AI.ChangeAIState<AIFightState>(AIStateType.Fight);
+                        ChangeState<AIFightState>();
                         return;
                     }
                 }
@@ -53,15 +57,15 @@ namespace GameMain
                 {
                     if (m_Owner.Target == null)
                     {
-                            AI.ChangeAIState<AIIdleState>(AIStateType.Idle);
-                            return;
+                        ChangeState<AIIdleState>();
+                        return;
                     }
                     float dist = GlobalTools.GetHorizontalDistance(m_Owner.Pos, m_Owner.Target.Pos);
 
                     if (dist < AI.AttackDist)
                     {
-                            AI.ChangeAIState<AIFightState>(AIStateType.Fight);
-                            return;
+                        ChangeState<AIFightState>();
+                        return;
                     }
                 }
                     break;
@@ -74,6 +78,6 @@ namespace GameMain
 
         }
 
-   
+
     }
 }

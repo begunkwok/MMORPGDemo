@@ -17,6 +17,5 @@
         Escape,//逃跑
         Born,  //出生
         Plot,  //剧情
-        Global,//全局
     }
 }

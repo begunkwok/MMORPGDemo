@@ -107,7 +107,7 @@ namespace GameMain
                 {
                     m_MeshFilter = go.GetComponent<MeshFilter>();
                 }
-
+                go.SetActive(false);
                 return m_MeshFilter;
             }
         }

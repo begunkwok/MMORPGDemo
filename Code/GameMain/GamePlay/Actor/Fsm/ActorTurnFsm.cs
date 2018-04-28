@@ -8,6 +8,10 @@ namespace GameMain
         private TurnToCommand m_TurnToCommand;
         private float m_TurnSpeed = 10;
 
+        public ActorTurnFsm(ActorFsmStateType state) : base(state)
+        {
+        }
+
         protected override void OnEnter(IFsm<ActorBase> fsm)
         {
             m_TurnToCommand = m_Command as TurnToCommand;

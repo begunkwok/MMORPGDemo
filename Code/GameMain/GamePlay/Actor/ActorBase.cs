@@ -40,7 +40,7 @@ namespace GameMain
             }
         }
 
-        public IActorAI ActorAI => m_ActorAI;
+        public IActorAI ActorAI => m_ActorAI; 
         public IActorBuff ActorBuff => m_ActorBuff;
         public IActorSkill ActorSkill => m_ActorSkill;
         public IAttribute Attrbute => m_CurAttribute;
@@ -921,26 +921,26 @@ namespace GameMain
         {
             FsmState<ActorBase>[] states =
             {
-                new ActorEmptyFsm(),
-                new ActorIdleFsm(),
-                new ActorRunFsm(), 
-                new ActorWalkFsm(), 
-                new ActorTurnFsm(), 
-                new ActorDeadFsm(), 
-                new ActorSkillFsm(),             
-                new ActorBeatFlyFsm(), 
-                new ActorBeatBackFsm(), 
-                new ActorBeatDownFsm(), 
-                new ActorWoundFsm(), 
-                new ActorStunFsm(), 
-                new ActorFrostFsm(), 
-                new ActorFixBodyFsm(), 
-                new ActorFearFsm(), 
-                new ActorVariationFsm(),
-                new ActorJumpFsm(), 
-                new ActorRebornFsm(), 
-                new ActorCollectMineFsm(), 
-                new ActorInteractiveFsm(), 
+                new ActorEmptyFsm(ActorFsmStateType.FSM_EMPTY),
+                new ActorIdleFsm(ActorFsmStateType.FSM_IDLE),
+                new ActorRunFsm(ActorFsmStateType.FSM_RUN), 
+                new ActorWalkFsm(ActorFsmStateType.FSM_WALK), 
+                new ActorTurnFsm(ActorFsmStateType.FSM_TURN), 
+                new ActorDeadFsm(ActorFsmStateType.FSM_DEAD), 
+                new ActorSkillFsm(ActorFsmStateType.FSM_SKILL),             
+                new ActorBeatFlyFsm(ActorFsmStateType.FSM_BEATFLY), 
+                new ActorBeatBackFsm(ActorFsmStateType.FSM_BEATBACK), 
+                new ActorBeatDownFsm(ActorFsmStateType.FSM_BEATDOWN), 
+                new ActorWoundFsm(ActorFsmStateType.FSM_WOUND), 
+                new ActorStunFsm(ActorFsmStateType.FSM_STUN), 
+                new ActorFrostFsm(ActorFsmStateType.FSM_FROST), 
+                new ActorFixBodyFsm(ActorFsmStateType.FSM_FIXBODY), 
+                new ActorFearFsm(ActorFsmStateType.FSM_FEAR), 
+                new ActorVariationFsm(ActorFsmStateType.FSM_VARIATION),
+                new ActorJumpFsm(ActorFsmStateType.FSM_JUMP), 
+                new ActorRebornFsm(ActorFsmStateType.FSM_REBORN), 
+                new ActorCollectMineFsm(ActorFsmStateType.FSM_MINE), 
+                new ActorInteractiveFsm(ActorFsmStateType.FSM_INTERACTIVE), 
             };
             m_FsmName = GlobalTools.Format("ActorFsm[{0}][{1}]", Id, EntityId);
             m_ActorFsm = GameEntry.Fsm.CreateFsm(m_FsmName, this, states);

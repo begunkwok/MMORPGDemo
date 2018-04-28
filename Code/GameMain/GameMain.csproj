@@ -120,7 +120,6 @@
     <Compile Include="GamePlay\AI\AIFsm\AIFleeState.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIFollowState.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIFsmStateBase.cs" />
-    <Compile Include="GamePlay\AI\AIFsm\AIGlobalState.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIIdleState.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIPatrolState.cs" />
     <Compile Include="GamePlay\Level\Base\LevelComponent.Editor.cs" />

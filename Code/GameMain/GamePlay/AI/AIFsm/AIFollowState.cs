@@ -6,6 +6,9 @@ namespace GameMain
 
     public class AIFollowState : AIFsmStateBase
     {
+        public AIFollowState(AIStateType state) : base(state)
+        {
+        }
 
         protected override void OnUpdate(IFsm<ActorBase> fsm, float elapseSeconds, float realElapseSeconds)
         {
@@ -24,7 +27,7 @@ namespace GameMain
 
         private void OnFollowFinished()
         {
-            AI.ChangeAIState<AIIdleState>(AIStateType.Idle);
+            ChangeState<AIIdleState>();
         }
 
         protected override void OnLeave(IFsm<ActorBase> fsm, bool isShutdown)

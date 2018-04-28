@@ -45,7 +45,7 @@ namespace GameMain
 
         public abstract void Clear();
 
-        public abstract void ChangeAIState<T>(AIStateType stateType) where T : ActorFsmStateBase;
+        public abstract void ChangeAIState(AIStateType stateType);
 
         public virtual void ChangeAIMode(AIModeType mode)
         {

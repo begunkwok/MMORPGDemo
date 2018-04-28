@@ -70,7 +70,7 @@ namespace GameMain
         /// <summary>
         /// 切换AI状态
         /// </summary>
-        void ChangeAIState<T>(AIStateType stateType) where T : ActorFsmStateBase;
+        void ChangeAIState(AIStateType stateType);
 
         /// <summary>
         /// 切换AI模式

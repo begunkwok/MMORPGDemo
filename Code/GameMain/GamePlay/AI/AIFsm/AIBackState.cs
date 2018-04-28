@@ -6,6 +6,10 @@ namespace GameMain
 {
     public class AIBackState : AIFsmStateBase
     {
+        public AIBackState(AIStateType state) : base(state)
+        {
+        }
+
         protected override void OnEnter(IFsm<ActorBase> fsm)
         {
             base.OnEnter(fsm);
@@ -15,7 +19,7 @@ namespace GameMain
 
         private void OnBackFinished()
         {
-            AI.ChangeAIState<AIIdleState>(AIStateType.Idle);
+            ChangeState<AIIdleState>();
         }
     }
 }

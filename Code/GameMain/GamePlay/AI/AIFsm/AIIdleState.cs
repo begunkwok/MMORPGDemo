@@ -4,6 +4,10 @@ namespace GameMain
 {
     public class AIIdleState : AIFsmStateBase
     {
+        public AIIdleState(AIStateType state) : base(state)
+        {
+        }
+
         protected override void OnUpdate(IFsm<ActorBase> fsm, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);
@@ -18,7 +22,7 @@ namespace GameMain
                             float dist = GlobalTools.GetHorizontalDistance(m_Owner.Pos, pTarget.Pos);
                             if (dist < AI.WaringDist)
                             {
-                                AI.ChangeAIState<AIChaseState>(AIStateType.Chase);
+                                ChangeState<AIChaseState>();
                             }
                         }
                     }
@@ -30,7 +34,7 @@ namespace GameMain
                             float dist = GlobalTools.GetHorizontalDistance(m_Owner.Pos, pTarget.Pos);
                             if (dist < AI.WaringDist)
                             {
-                                AI.ChangeAIState<AIChaseState>(AIStateType.Chase);
+                                ChangeState<AIChaseState>();
                             }
                         }
                         ActorBase pHost = m_Owner.Host;
@@ -39,7 +43,7 @@ namespace GameMain
                             float dist = GlobalTools.GetHorizontalDistance(m_Owner.Pos, m_Owner.Host.Pos);
                             if (dist > AI.FollowDist)
                             {
-                                AI.ChangeAIState<AIFollowState>(AIStateType.Follow);
+                                ChangeState<AIFollowState>();
                                 return;
                             }
                         }
@@ -52,7 +56,7 @@ namespace GameMain
                             float dist = GlobalTools.GetHorizontalDistance(m_Owner.Pos, pTarget.Pos);
                             if (dist < AI.WaringDist)
                             {
-                                AI.ChangeAIState<AIChaseState>(AIStateType.Chase);
+                                ChangeState<AIChaseState>();
                             }
                         }
                     }

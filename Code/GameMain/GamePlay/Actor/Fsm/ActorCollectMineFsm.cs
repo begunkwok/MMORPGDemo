@@ -4,6 +4,11 @@ namespace GameMain
 {
     public class ActorCollectMineFsm : ActorFsmStateBase
     {
+        public ActorCollectMineFsm(ActorFsmStateType state) : base(state)
+        {
+
+        }
+
         protected override void OnEnter(IFsm<ActorBase> fsm)
         {
             base.OnEnter(fsm);
@@ -14,5 +19,6 @@ namespace GameMain
             }
             m_Owner.OnCollectMine(ev);
         }
+
     }
 }

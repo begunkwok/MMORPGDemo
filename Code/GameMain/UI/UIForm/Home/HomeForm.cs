@@ -2,6 +2,7 @@
 using FairyGUI;
 using GameFramework;
 using GameFramework.Event;
+using UnityEngine;
 
 namespace GameMain
 {
@@ -41,6 +42,7 @@ namespace GameMain
             m_Hp = m_HeadPanel.GetChild("bar_Hp").asProgress;
             m_Mp = m_HeadPanel.GetChild("bar_Mp").asProgress;
             m_Exp = m_HeadPanel.GetChild("bar_Exp").asImage;
+            m_Exp.color = Color.green;
             BuffTip m_Buff01 = m_HeadPanel.GetChild("buff_01") as BuffTip;
             BuffTip m_Buff02 = m_HeadPanel.GetChild("buff_02") as BuffTip;
             BuffTip m_Buff03 = m_HeadPanel.GetChild("buff_03") as BuffTip;

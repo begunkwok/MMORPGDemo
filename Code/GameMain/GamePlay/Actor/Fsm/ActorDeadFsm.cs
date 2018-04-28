@@ -4,6 +4,10 @@ namespace GameMain
 {
     public class ActorDeadFsm : ActorFsmStateBase
     {
+        public ActorDeadFsm(ActorFsmStateType state) : base(state)
+        {
+        }
+
         protected override void OnEnter(IFsm<ActorBase> fsm)
         {
             base.OnEnter(fsm);

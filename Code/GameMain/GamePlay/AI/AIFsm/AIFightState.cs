@@ -4,6 +4,10 @@ namespace GameMain
 {
     public class AIFightState : AIFsmStateBase
     {
+        public AIFightState(AIStateType state) : base(state)
+        {
+        }
+
         protected override void OnUpdate(IFsm<ActorBase> fsm, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);
@@ -15,7 +19,7 @@ namespace GameMain
                 {
                     if (pTarget == null)
                     {
-                        AI.ChangeAIState<AIBackState>(AIStateType.Back);
+                        ChangeState<AIBackState>();
                         return;
                     }
                     Fight();
@@ -25,8 +29,8 @@ namespace GameMain
                 {
                     if (pTarget == null)
                     {
-                            AI.ChangeAIState<AIFollowState>(AIStateType.Follow);
-                            return;
+                        ChangeState<AIFollowState>();
+                        return;
                     }
                     Fight();
                 }
@@ -35,7 +39,7 @@ namespace GameMain
                 {
                     if (pTarget == null)
                     {
-                        AI.ChangeAIState<AIIdleState>(AIStateType.Idle);
+                        ChangeState<AIIdleState>();
                         return;
                     }
                     Fight();
@@ -51,7 +55,7 @@ namespace GameMain
             float dist = GlobalTools.GetHorizontalDistance(m_Owner.Pos, m_Owner.Target.Pos);
             if (dist > AI.AttackDist)
             {
-                AI.ChangeAIState<AIChaseState>(AIStateType.Chase);
+                ChangeState<AIChaseState>();
                 return;
             }
             if (m_Owner.CurFsmStateType == ActorFsmStateType.FSM_SKILL)
