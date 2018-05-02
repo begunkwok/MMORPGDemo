@@ -32,16 +32,22 @@ namespace GameMain
         
         private void EditorModeInspector()
         {
-            int pMapID = EditorGUILayout.IntField("关卡ID", m_level.LevelID);
-            if (pMapID != m_level.LevelID)
+            int levelID = EditorGUILayout.IntField("关卡ID", m_level.LevelID);
+            if (levelID != m_level.LevelID)
             {
-                m_level.LevelID = pMapID;
+                m_level.LevelID = levelID;
             }
 
-            string pMapName = EditorGUILayout.TextField("关卡名字", m_level.MapName);
-            if (pMapName != null && pMapName != m_level.MapName)
+            string levelName = EditorGUILayout.TextField("关卡名字", m_level.MapName);
+            if (levelName != null && levelName != m_level.MapName)
             {
-                m_level.MapName = pMapName;
+                m_level.MapName = levelName;
+            }
+
+            string configPath = EditorGUILayout.TextField("关卡配置路径", m_level.MapPath);
+            if (configPath != null && configPath != m_level.MapName)
+            {
+                m_level.MapPath = configPath;
             }
 
             EditorGUILayout.Space();
@@ -75,12 +81,12 @@ namespace GameMain
 
         private void ExportAll()
         {
-            string fsPath = Application.dataPath + "/GameMain/Configs/Level";
+            string fsPath = AssetUtility.GetLevelConfigPath();
             if (!Directory.Exists(fsPath))
             {
                 Directory.CreateDirectory(fsPath);
             }
-            string path = GlobalTools.Format("{0}/{1}.xml", fsPath, LevelComponent.Instance.LevelID);
+            string path = GlobalTools.Format("{0}/{1}.xml", fsPath, GameEntry.Level.LevelID);
             MapConfig data = Export();
             if (!File.Exists(path))
             {
@@ -248,7 +254,7 @@ namespace GameMain
             LevelComponent pHandler = target as LevelComponent;
             pHandler.transform.DestroyChildren();
             pHandler.InitHolder();
-            string fsPath = GlobalTools.Format("Assets/GameMain/Configs/Level/{0}.xml", pHandler.LevelID);
+            string fsPath =AssetUtility.GetLevelConfigAsset(pHandler.LevelID.ToString());
             MapConfig data = new MapConfig();
             data.EditorLoad(fsPath);
 

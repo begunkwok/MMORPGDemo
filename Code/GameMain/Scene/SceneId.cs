@@ -28,7 +28,27 @@
         /// <summary>
         /// 关卡01
         /// </summary>
-        Level_01 = 4,
+        Level01 = 4,
+
+        /// <summary>
+        /// 关卡02
+        /// </summary>
+        Level02 = 5,
+
+        /// <summary>
+        /// 关卡03
+        /// </summary>
+        Level03 = 6,
+
+        /// <summary>
+        /// 关卡04
+        /// </summary>
+        Level04 = 7,
+
+        /// <summary>
+        /// 关卡05
+        /// </summary>
+        Level05 = 8,
     }
 
 

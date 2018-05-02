@@ -115,6 +115,7 @@ namespace GameMain
 
             m_ActorData = GameEntry.DataTable.GetDataTable<DRActorEntity>().GetDataRow(Id);
             m_ActorSkill = new ActorSkill(this);
+            m_ActorCard = new ActorCard(this);
             m_ActorBuff = new ActorBuff(this);
         }
 
@@ -173,8 +174,10 @@ namespace GameMain
 
             m_ActorAI = null;
             m_ActorBuff = null;
+            m_ActorCard = null;
             m_ActorSkill = null;
             m_CommandReceiver = null;
+            GameEntry.Fsm.DestroyFsm(m_ActorFsm);
         }
 
         public virtual void UpdateCurAttribute(bool init = false)
@@ -692,12 +695,7 @@ namespace GameMain
                 case AffectType.Self:
                     return new List<ActorBase>() { this };
                 case AffectType.Each:
-                    List<ActorBase> all = new List<ActorBase>();
-                    for (int i = 0; i < LevelData.AllRoles.Count; i++)
-                    {
-                        all.Add(LevelData.AllRoles[i].Actor);
-                    }
-                    return all;
+                    return GameEntry.Level.GetAllRoleActor();
                 default:
                     return new List<ActorBase>();
             }
@@ -728,40 +726,18 @@ namespace GameMain
         public List<ActorBase> GetAllEnemy()
         {
             m_Enemys.Clear();
-            if(Camp == BattleCampType.Ally)
-                FindActorsByCamp(BattleCampType.Enemy, ref m_Enemys, true);
+            if (Camp == BattleCampType.Ally)
+                GameEntry.Level.FindActorsByCamp(BattleCampType.Enemy, ref m_Enemys, true);
             else
-                FindActorsByCamp(BattleCampType.Ally, ref m_Enemys, true);
+                GameEntry.Level.FindActorsByCamp(BattleCampType.Ally, ref m_Enemys, true);
             return m_Enemys;
         }
 
         public List<ActorBase> GetAllAlly()
         {
             m_Allys.Clear();
-            FindActorsByCamp(BattleCampType.Ally,ref m_Allys);
+            GameEntry.Level.FindActorsByCamp(BattleCampType.Ally,ref m_Allys);
             return m_Allys;
-        }
-
-        public void FindActorsByCamp(BattleCampType actorCamp, ref List<ActorBase> list, bool ignoreStealth = false)
-        {
-            for (int i = 0; i < LevelData.AllRoles.Count; i++)
-            {
-                ActorBase actor = LevelData.AllRoles[i].Actor;
-                if (actor.Camp == actorCamp && actor.IsDead == false)
-                {
-                    if (ignoreStealth == false)
-                    {
-                        list.Add(actor);
-                    }
-                    else
-                    {
-                        if (actor.GetActorState(ActorStateType.IsStealth) == false)
-                        {
-                            list.Add(actor);
-                        }
-                    }
-                }
-            }
         }
 
         public ActorBase GetNearestEnemy(float radius = 100)
@@ -780,7 +756,6 @@ namespace GameMain
             }
             return nearest;
         }
-
 
 
 

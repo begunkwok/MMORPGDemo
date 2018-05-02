@@ -1,9 +1,9 @@
 ﻿namespace GameMain
 {
     /// <summary>
-    /// 副本类型
+    /// 关卡类型
     /// </summary>
-    public enum CopyType
+    public enum LevelType
     {
         World = 0,  //世界
         Easy  = 1,  //普通

@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace GameMain
 {
-	public class DRCopy : IDataRow
+	public class DRLevel : IDataRow
 	{
 		/// <summary>
 		/// 编号
@@ -18,9 +18,9 @@ namespace GameMain
 		public int Id { get; private set; }
 
 		/// <summary>
-		/// 副本类型
+		/// 场景
 		/// </summary>
-		public int CopyType { get; private set; }
+		public int Scene { get; private set; }
 
 		/// <summary>
 		/// 名字
@@ -28,14 +28,19 @@ namespace GameMain
 		public string Name { get; private set; }
 
 		/// <summary>
+		/// 关卡类型
+		/// </summary>
+		public int LevelType { get; private set; }
+
+		/// <summary>
 		/// 图标
 		/// </summary>
-		public string Icon { get; private set; }
+		public int Icon { get; private set; }
 
 		/// <summary>
 		/// 背景图片
 		/// </summary>
-		public string Texture { get; private set; }
+		public int Background { get; private set; }
 
 		/// <summary>
 		/// 花费编号
@@ -133,7 +138,7 @@ namespace GameMain
 		public string Desc { get; private set; }
 
 
-		public DRCopy()
+		public DRLevel()
 		{
 		}
 
@@ -142,10 +147,11 @@ namespace GameMain
 			string[] text = DataTableExtension.SplitDataRow(dataRowText);
 			int index = -1;
 			Id = int.Parse(text[++index]);
-			CopyType = int.Parse(text[++index]);
+			Scene = int.Parse(text[++index]);
 			Name = text[++index];
-			Icon = text[++index];
-			Texture = text[++index];
+			LevelType = int.Parse(text[++index]);
+			Icon = int.Parse(text[++index]);
+			Background = int.Parse(text[++index]);
 			CostActionId = int.Parse(text[++index]);
 			CostActionNum = int.Parse(text[++index]);
 			GetMoneyId = int.Parse(text[++index]);

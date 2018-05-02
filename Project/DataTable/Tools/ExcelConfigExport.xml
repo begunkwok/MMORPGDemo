@@ -56,6 +56,20 @@
       </CPP>
     </SourceInfo>
   </ConfigItem>
+  <ConfigItem ExcelFile="../Excel/关卡配置表.xlsx" SheetName="Data_Copy">
+    <ConfigInfo>
+      <Client>../../Assets/GameMain/DataTables/Level.txt</Client>
+      <Server>../../ServerRun/LogicSettings/</Server>
+    </ConfigInfo>
+    <SourceInfo>
+      <CS ClassName="DRLevel" Manager="None">
+        <FilePath>../../../Code/GameMain/DataTable/DRLevel.cs</FilePath>
+      </CS>
+      <CPP ClassName="" Manager="None" Capacity="1024" StepSize="512" KeyCount="64" GroupSize="64">
+        <FilePath>../../Server/Servers/GameLogic/GameConfig/</FilePath>
+      </CPP>
+    </SourceInfo>
+  </ConfigItem>
   <ConfigItem ExcelFile="../Excel/角色Buff配置表.xlsx" SheetName="Data_Buff">
     <ConfigInfo>
       <Client>../../Assets/GameMain/DataTables/Buff.txt</Client>

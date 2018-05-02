@@ -8,37 +8,29 @@ namespace GameMain
     /// </summary>
     public class PlayerRole : RoleBase
     {
-        private RoleEntityData m_PlayerEntityData;
 
-
-        protected override void OnInit(object userData)
+        protected override void OnShow(object userData)
         {
-            base.OnInit(userData);
+            base.OnShow(userData);
 
-            m_PlayerEntityData = userData as RoleEntityData;
-            if (m_PlayerEntityData == null)
+            RoleEntityData playerEntityData = userData as RoleEntityData;
+            if (playerEntityData == null)
             {
                 Log.Error("playerEntityData is null");
                 return;
             }
 
             //创建Actor
-            int actorId = m_PlayerEntityData.Id;
-            int actorEntityId = m_PlayerEntityData.TypeId;
-            ActorType actorType = m_PlayerEntityData.ActorType;
-            BattleCampType campType = m_PlayerEntityData.CampType;
+            int actorId = playerEntityData.Id;
+            int actorEntityId = playerEntityData.TypeId;
+            ActorType actorType = playerEntityData.ActorType;
+            BattleCampType campType = playerEntityData.CampType;
             Actor = new ActorPlayer(this, actorType, campType, m_CharacterController,
                 m_Animator);
             Actor.Init();
 
-            //设置自身,与跟随相机到场景出身点
-            Vector3 spawnPos = GameEntry.Scene.GetCurSceneSpawnPos();
-            CachedTransform.position = spawnPos;
-            GameEntry.Camera.SetCameraRigPos(spawnPos);
-
             AddEventListener();
         }
-
 
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
         {
@@ -52,6 +44,7 @@ namespace GameMain
             base.OnHide(userData);
 
             RemoveEventListener();
+
             Actor?.Destory();
             Actor = null;
         }

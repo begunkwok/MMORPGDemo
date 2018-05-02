@@ -121,7 +121,7 @@ namespace GameMain
 
         void onTriggerEnter(Collider other)
         {
-            if (Region == null|| DestMapID == 0)
+            if (Region == null)
             {
                 return;
             }
@@ -132,17 +132,8 @@ namespace GameMain
                 return;
             }
 
-            if (DestMapID == GameEntry.Level.LevelID)
-            {
-                ActorPlayer actorPlayer = LevelData.Player.Actor as ActorPlayer;
+            GameEntry.UI.OpenUIForm(UIFormId.LevelSelectForm);
 
-                actorPlayer.Vehicle.TranslateTo(DestPos, true);
-            }
-            else
-            {
-                //TODO 进入切换场景流程
-                //GameEntry.Scene.l
-            }
         }
     }
 }

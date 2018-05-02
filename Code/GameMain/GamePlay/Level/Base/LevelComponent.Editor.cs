@@ -6,15 +6,12 @@ namespace GameMain
 {
 
     /// <summary>
-    /// 关卡组件，编辑部分
+    /// 关卡组件，编辑部分         //TODO: 后续再完善编辑器功能
     /// </summary>
     public partial class LevelComponent
     {
         //是否是编辑模式
         public static bool IsEditorMode = false;
-
-//用于编辑器中编辑关卡 
-#if UNITY_EDITOR
 
         private static LevelComponent instance = null;
         private static object lockObject = new object();
@@ -41,9 +38,6 @@ namespace GameMain
                 return instance;
             }
         }
-
-        #region 关卡编辑创建对象，用于预览关卡
-        //TODO: 后续再完善编辑器功能
 
         //编辑资源
         public static string BarrierAsset = "Barrier_01";
@@ -73,7 +67,5 @@ namespace GameMain
             return levelGo;
         }
 
-        #endregion
-#endif
     }
 }

@@ -325,6 +325,7 @@ namespace GameMain
             }
             xmlDocument.LoadXml(pAsset.text);
             this.Read(xmlDocument.DocumentElement);
+            GameEntry.Resource.UnloadAsset(pAsset);
         }
 
         public void EditorLoad(string file)
@@ -337,6 +338,7 @@ namespace GameMain
             }
             xmlDocument.LoadXml(pAsset.text);
             this.Read(xmlDocument.DocumentElement);
+            Resources.UnloadAsset(pAsset);
         }
 
         public void Save(string file)

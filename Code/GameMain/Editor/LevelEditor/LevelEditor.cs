@@ -11,7 +11,7 @@ namespace GameMain
         [MenuItem("MMORPG Demo/Add LevelEditor")]
         static void OpenLevelEditor()
         {
-            LevelComponent.Instance.InitHolder();
+            GameEntry.Level.InitHolder();
         }
 
         [MenuItem("MMORPG Demo/GetSelectGOMeshData")]

@@ -9,7 +9,7 @@ namespace GameMain
     {
         private RoleEntityData m_EnemyEntityData;
 
-        protected override void OnInit(object userData)
+        protected override void OnShow(object userData)
         {
             base.OnInit(userData);
 

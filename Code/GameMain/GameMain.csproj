@@ -80,6 +80,7 @@
     <Compile Include="Camera\CameraEffect\ScreenShakeEffect.cs" />
     <Compile Include="Camera\CameraEffect\WaterDropEffect.cs" />
     <Compile Include="Camera\ProtectCameraFromWallClip.cs" />
+    <Compile Include="DataTable\DRLevel.cs" />
     <Compile Include="Definition\EventArgs\EnterLevelEventArgs.cs" />
     <Compile Include="Definition\EventArgs\RefreshBuffEventArgs.cs" />
     <Compile Include="Definition\EventArgs\RefreshHeroInfoEventArgs.cs" />
@@ -179,7 +180,6 @@
     <Compile Include="DataTable\DRActorEntity.cs" />
     <Compile Include="DataTable\DRBuff.cs" />
     <Compile Include="DataTable\DRBuffAttr.cs" />
-    <Compile Include="DataTable\DRCopy.cs" />
     <Compile Include="DataTable\DRHeroLevel.cs" />
     <Compile Include="Debugger\ChangeLanguageDebuggerWindow.cs" />
     <Compile Include="Debugger\DataTableDebuggerWindow.cs" />
@@ -374,12 +374,11 @@
     <Compile Include="GamePlay\Battle\SkillBT\SkillTree.cs" />
     <Compile Include="GamePlay\Level\Base\LevelBehaviour.cs" />
     <Compile Include="GamePlay\Level\Base\LevelComponent.cs" />
-    <Compile Include="GamePlay\Level\Base\LevelData.cs" />
     <Compile Include="GamePlay\Level\Base\LevelElement.cs" />
     <Compile Include="GamePlay\Level\Base\LevelTask.cs" />
     <Compile Include="GamePlay\Level\Base\LevelVariable.cs" />
     <Compile Include="GamePlay\Level\Define\ConditionRelationType.cs" />
-    <Compile Include="GamePlay\Level\Define\CopyType.cs" />
+    <Compile Include="GamePlay\Level\Define\LevelType.cs" />
     <Compile Include="GamePlay\Level\Define\MapHolderType.cs" />
     <Compile Include="GamePlay\Level\Define\MapTriggerType.cs" />
     <Compile Include="GamePlay\Level\Define\MonsterWaveSpawnType.cs" />
@@ -403,7 +402,7 @@
     <Compile Include="Lua\XLuaHelper.cs" />
     <Compile Include="Procedure\ProcedureCheckVersion.cs" />
     <Compile Include="Procedure\ProcedureInitResource.cs" />
-    <Compile Include="Procedure\ProcedureCopy.cs" />
+    <Compile Include="Procedure\ProcedureLevel.cs" />
     <Compile Include="Procedure\ProcedureMainCity.cs" />
     <Compile Include="Procedure\ProcedureUpdateResource.cs" />
     <Compile Include="Resource\ResourceComponentExtension.cs" />
@@ -465,6 +464,8 @@
     <Compile Include="UI\UIForm\CommonForm\DialogForm.cs" />
     <Compile Include="UI\UIForm\CommonForm\LoadingForm.cs" />
     <Compile Include="UI\UIForm\Home\JoystickModule.cs" />
+    <Compile Include="UI\UIForm\Level\LevelItem.cs" />
+    <Compile Include="UI\UIForm\Level\LevelSelectForm.cs" />
     <Compile Include="UI\UIForm\Login\LoginForm.cs" />
     <Compile Include="UI\UIForm\NativeForm\NativeDialogForm.cs" />
     <Compile Include="UI\UIForm\NativeForm\UpdateResourceForm.cs" />

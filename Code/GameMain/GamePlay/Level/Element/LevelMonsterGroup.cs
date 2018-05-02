@@ -55,10 +55,10 @@ namespace GameMain
         {
             //TODO 击杀怪物事件
             //ZTEvent.AddHandler<int,int>(EventID.RECV_KILL_MONSTER, OnKillMonster);
-            //for(int i=0;i<MaxCount;i++)
-            //{
-            //    CreateMonster();
-            //}
+            for (int i = 0; i < MaxCount; i++)
+            {
+                CreateMonster();
+            }
         }
 
         private void CreateMonster()
@@ -84,7 +84,8 @@ namespace GameMain
             mMonsterGUIDSet.Remove(guid);
             if(mMonsterGUIDSet.Count<MaxCount)
             {
-                Invoke("CreateMonster", RebornCD);
+                if (RebornCD > 0)
+                    Invoke("CreateMonster", RebornCD);
             }
         }
 

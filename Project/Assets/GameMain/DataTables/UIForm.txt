@@ -5,3 +5,4 @@
 2002	Common/DialogForm	Common	False	True
 3001	Home/ControllerForm	Default	False	False
 3002	Home/HomeForm	Default	False	False
+3003	Level/LevelSelectForm	Default	False	False

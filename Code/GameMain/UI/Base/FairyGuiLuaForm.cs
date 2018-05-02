@@ -75,6 +75,7 @@ namespace GameMain
                     return;
                 }
                 script = asset.text;
+                GameEntry.Resource.UnloadAsset(asset);
             }
 
             if (string.IsNullOrEmpty(script))

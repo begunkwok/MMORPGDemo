@@ -14,41 +14,57 @@ namespace GameMain
         public int LevelID;
         public string MapName = string.Empty;
         public string MapPath = string.Empty;
+        public LevelType CurLevelType { get; private set; }
         public SceneId CurSceneId { get; private set; }
         public SceneType CurSceneType { get; private set; }
         public MapConfig Config { get; private set; }
         public PlayerRole Player { get; private set; }
+        public float CurTime => Time.realtimeSinceStartup - m_StartTime;
 
-        private readonly List<LevelTask> m_OnLoadNewSceneTasks = new List<LevelTask>();
-        private readonly Dictionary<MapHolderType, LevelElement> m_Holders = new Dictionary<MapHolderType, LevelElement>();
- 
+        private List<LevelTask> m_OnLoadNewSceneTasks = new List<LevelTask>();
+        private Dictionary<MapHolderType, LevelElement> m_Holders = new Dictionary<MapHolderType, LevelElement>();
+        private List<RoleBase> m_AllRoles = new List<RoleBase>();
+        private Dictionary<BattleCampType, List<RoleBase>> m_CampActors = new Dictionary<BattleCampType, List<RoleBase>>
+        {
+            {BattleCampType.Ally, new List<RoleBase>()},
+            {BattleCampType.Enemy, new List<RoleBase>()},
+            {BattleCampType.Neutral, new List<RoleBase>()},
+            {BattleCampType.Other, new List<RoleBase>()}
+        };
 
+        private float m_StartTime;
+        private float m_EndTime;
+        private bool m_Victory;
 
         public void Init()
         {
-            GameEntry.Event.Subscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
-
-            IsEditorMode = false;
+            m_StartTime = 0;
+            m_EndTime = 0;
+            m_Victory = false;
 
             InitHolder();
+            IsEditorMode = false;
         }
 
         public void Clear()
         {
             CancelInvoke();
             m_OnLoadNewSceneTasks.Clear();
-            for (int i = LevelData.AllRoles.Count - 1; i >= 0; i--)
+            for (int i = m_AllRoles.Count - 1; i >= 0; i--)
             {
-                RoleBase role = LevelData.AllRoles[i];
-                LevelData.AllRoles.RemoveAt(i);
+                RoleBase role = m_AllRoles[i];
+                m_AllRoles.RemoveAt(i);
                 GameEntry.Entity.HideEntity(role.Id);
             }
-            LevelData.Player = null;
+
+            Player = null;
+
             foreach (KeyValuePair<MapHolderType, LevelElement> current in m_Holders)
             {
                 current.Value.transform.DestroyChildren();
             }
-            foreach (var current in LevelData.CampActors)
+
+            foreach (var current in m_CampActors)
             {
                 current.Value.Clear();
             }
@@ -87,12 +103,20 @@ namespace GameMain
         {
             this.LevelID = levelId;
             this.CurSceneId = sceneId;
-       
+
+            GameEntry.Event.Subscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
+
             string assetName = AssetUtility.GetLevelConfigAsset(levelId.ToString());
             Config = new MapConfig();
             Config.Load(assetName);
 
             this.OnLevelStart();
+        }
+
+        public void LeaveCurrentLevel()
+        {
+            OnLevelEnd();
+            Clear();
         }
 
         public LevelElement GetHolder(MapHolderType type)
@@ -116,7 +140,7 @@ namespace GameMain
         public PlayerRole CreatePlayer(int id)
         {
             Player = AddRole<PlayerRole>(id, ActorType.Player, BattleCampType.Ally, TransformParam.Default);
-            LevelData.Player = Player;
+            Player = Player;
             GameEntry.Camera.SwitchCameraBehaviour(CameraBehaviourType.LockLook);
             return Player;
         }
@@ -218,8 +242,8 @@ namespace GameMain
 
                 if (role.CachedTransform != null)
                 {
-                    LevelData.AllRoles.Add(role);
-                    LevelData.CampActors[camp].Add(role);
+                    m_AllRoles.Add(role);
+                    m_CampActors[camp].Add(role);
                     role.CachedTransform.position = param.Position;
                     role.CachedTransform.eulerAngles = param.EulerAngles;
                     role.CachedTransform.localScale = param.Scale;
@@ -231,7 +255,7 @@ namespace GameMain
 
         public void OnPlayerDead()
         {
-            List<RoleBase> pList = LevelData.GetRolesByActorType(ActorType.Monster);
+            List<RoleBase> pList = GetRolesByActorType(ActorType.Monster);
             for (int i = 0; i < pList.Count; i++)
             {
                 pList[i].Actor.SetTarget(null);
@@ -251,8 +275,8 @@ namespace GameMain
         {
             if (role != null)
             {
-                LevelData.AllRoles.Remove(role);
-                LevelData.CampActors[role.Actor.Camp].Remove(role);
+                m_AllRoles.Remove(role);
+                m_CampActors[role.Actor.Camp].Remove(role);
                 GameEntry.Entity.HideEntity(role.Id);
             }
             return false;
@@ -353,8 +377,52 @@ namespace GameMain
                 }
             }
         }
-        
 
+        public List<RoleBase> GetRolesByActorType(ActorType pType)
+        {
+            List<RoleBase> pList = new List<RoleBase>();
+            for (int i = 0; i < m_AllRoles.Count; i++)
+            {
+                if (m_AllRoles[i].Actor.ActorType == pType)
+                {
+                    pList.Add(m_AllRoles[i]);
+                }
+            }
+            return pList;
+        }
+
+        public List<ActorBase> GetAllRoleActor()
+        {
+            List<ActorBase> all = new List<ActorBase>();
+            for (int i = 0; i < m_AllRoles.Count; i++)
+            {
+                all.Add(m_AllRoles[i].Actor);
+            }
+
+            return all;
+        }
+
+        public void FindActorsByCamp(BattleCampType actorCamp, ref List<ActorBase> list, bool ignoreStealth = false)
+        {
+            for (int i = 0; i < m_AllRoles.Count; i++)
+            {
+                ActorBase actor = m_AllRoles[i].Actor;
+                if (actor.Camp == actorCamp && actor.IsDead == false)
+                {
+                    if (ignoreStealth == false)
+                    {
+                        list.Add(actor);
+                    }
+                    else
+                    {
+                        if (actor.GetActorState(ActorStateType.IsStealth) == false)
+                        {
+                            list.Add(actor);
+                        }
+                    }
+                }
+            }
+        }
 
         private void OnLevelStart()
         {
@@ -392,38 +460,38 @@ namespace GameMain
 
         private void OnBattleStart()
         {
-            if (LevelData.CopyID <= 0)
+            if (LevelID <= 0)
             {
                 Log.Error("CopyId is invalid.");
                 return;
             }
 
-            if(!GameEntry.DataTable.GetDataTable<DRCopy>().HasDataRow(LevelData.CopyID))
+            if(!GameEntry.DataTable.GetDataTable<DRLevel>().HasDataRow(LevelID))
             {
                 Log.Error("the copy is no exist.");
                 return;
             }
 
-            LevelData.StrTime = Time.realtimeSinceStartup;
+            m_StartTime = Time.realtimeSinceStartup;
         }
 
         private void OnBattleEnd()
         {
-            if (LevelData.CopyID <= 0)
+            if (LevelID <= 0)
             {
                 Log.Error("CopyId is invalid.");
                 return;
             }
 
-            if (!GameEntry.DataTable.GetDataTable<DRCopy>().HasDataRow(LevelData.CopyID))
+            if (!GameEntry.DataTable.GetDataTable<DRLevel>().HasDataRow(LevelID))
             {
                 Log.Error("the copy is no exist.");
                 return;
             }
 
-            LevelData.EndTime = Time.realtimeSinceStartup - LevelData.StrTime;
-            LevelData.Win = !LevelData.Player.Actor.IsDead;
-            LevelData.CalcResult();
+            m_EndTime = Time.realtimeSinceStartup - m_StartTime;
+            m_Victory = !Player.Actor.IsDead;
+            CalcResult();
         }
 
         private void InitPlayer()
@@ -441,10 +509,11 @@ namespace GameMain
                     EulerAngles = Config.Ally.TransParam.EulerAngles,
                     Scale = Config.Ally.TransParam.Scale
                 };
+
                 Player.UpdateTransform(param);
 
-                AddPartner(LevelData.Player, 1, LevelData.Player.Actor.ActorCard.Partners[0]);
-                AddPartner(LevelData.Player, 2, LevelData.Player.Actor.ActorCard.Partners[1]);
+                AddPartner(Player, 1, Player.Actor.ActorCard.Partners[0]);
+                AddPartner(Player, 2, Player.Actor.ActorCard.Partners[1]);
             }
         }
 
@@ -486,7 +555,7 @@ namespace GameMain
             }
 
             //传送门
-            for (int i = 0; i < Config.Barriers.Count; i++)
+            for (int i = 0; i < Config.Portals.Count; i++)
             {
                 MapPortal data = Config.Portals[i];
                 LevelElement pHolder = GetHolder(MapHolderType.Portal);
@@ -495,6 +564,102 @@ namespace GameMain
                 pPortal.Import(data, false);
                 pPortal.Init();
             }
+        }
+
+        private void CalcResult()
+        {
+            DRLevel drLevel = GameEntry.DataTable.GetDataTable<DRLevel>().GetDataRow(LevelID);
+            if (drLevel == null)
+            {
+                return;
+            }
+
+            int m_Star = CalcStar(drLevel);
+            //TODO 通过副本
+            //  ZSRaid.Instance.TryPassCopy(CopyType, Chapter, CopyID, Star);
+        }
+
+        private void ShowResult()
+        {
+            DRLevel drCopy = GameEntry.DataTable.GetDataTable<DRLevel>().GetDataRow(LevelID);
+            if (drCopy == null)
+            {
+                return;
+            }
+            switch ((LevelType)drCopy.LevelType)
+            {
+                case LevelType.Easy:
+                case LevelType.World:
+                case LevelType.Elite:
+                case LevelType.Daily:
+                    {
+                        //TODO 显示副本通过UI
+                        //ZTUIManager.Instance.OpenWindow(WindowID.UI_MAINRESULT);
+                        //UIMainResult window = (UIMainResult) ZTUIManager.Instance.GetWindow(WindowID.UI_MAINRESULT);
+                        //window.ShowView();
+                    }
+                    break;
+            }
+        }
+
+        private int CalcStar(DRLevel copy)
+        {
+            int star = 0;
+            bool[] passContents = new bool[3] { false, false, false };
+            if (m_Victory == false)
+            {
+                return 0;
+            }
+
+            StarConditionType[] starConditions = new StarConditionType[3];
+            starConditions[1] = (StarConditionType)copy.StarCondition1;
+            starConditions[2] = (StarConditionType)copy.StarCondition2;
+            starConditions[3] = (StarConditionType)copy.StarCondition3;
+
+            int[] starValues = new int[3];
+            starValues[1] = copy.StarValue1;
+            starValues[2] = copy.StarValue2;
+            starValues[3] = copy.StarValue3;
+
+            for (int i = 0; i < starConditions.Length; i++)
+            {
+                StarConditionType type = starConditions[i];
+                int v = starValues[i];
+                switch (type)
+                {
+                    case StarConditionType.Health:
+                        {
+                            if (Player != null)
+                            {
+                                int maxHealth = Player.Actor.Attrbute.GetValue(AttributeType.MaxHp);
+                                int curHealth = Player.Actor.Attrbute.GetValue(AttributeType.Hp);
+                                float ratio = curHealth / (maxHealth * 1f);
+                                if (ratio >= v / 100f)
+                                {
+                                    star++;
+                                    passContents[i] = true;
+                                }
+                            }
+                        }
+                        break;
+                    case StarConditionType.Pass:
+                        {
+                            star++;
+                            passContents[i] = true;
+                        }
+                        break;
+                    case StarConditionType.TimeLimit:
+                        {
+                            if (CurTime < v)
+                            {
+                                star++;
+                                passContents[i] = true;
+                            }
+                        }
+                        break;
+                }
+            }
+            return star;
         }
 
         private void OnLoadSceneSuccess(object sender, GameEventArgs e)

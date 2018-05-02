@@ -108,8 +108,12 @@ namespace GameMain
                 case SceneId.MainCity:
                     ChangeState<ProcedureMainCity>(procedureOwner);
                     break;
-                case SceneId.Level_01:
-                    ChangeState<ProcedureCopy>(procedureOwner);
+                case SceneId.Level01:
+                case SceneId.Level02:
+                case SceneId.Level03:
+                case SceneId.Level04:
+                case SceneId.Level05:
+                    ChangeState<ProcedureLevel>(procedureOwner);
                     break;
             }
         }
@@ -128,7 +132,7 @@ namespace GameMain
             m_IsChangeSceneComplete = true;
 
             //加载场景成功，手动清理资源，确保场景资源卸载干净
-            Resources.UnloadUnusedAssets();
+            GameEntry.Resource.UnloadUnusedAssets(true);
 
             GameEntry.UI.CloseUIForm(UIFormId.LoadingForm);
         }

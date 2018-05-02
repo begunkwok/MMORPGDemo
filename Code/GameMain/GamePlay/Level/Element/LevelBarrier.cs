@@ -56,7 +56,7 @@ namespace GameMain
                     m_Barrier = GameEntry.Level.CreateLevelObject(Id);
                     if (m_Barrier == null)
                     {
-                        Log.Error("Create barrier failure.");
+                        Log.Error("Create barrier failure.ID:{0}",Id);
                         return;
                     }
 

@@ -15,7 +15,7 @@
             Input = UnityGameFramework.Runtime.GameEntry.GetComponent<InputComponent>();
             Timer = UnityGameFramework.Runtime.GameEntry.GetComponent<TimerComponent>();
             BT = UnityGameFramework.Runtime.GameEntry.GetComponent<BehaviorTreeComponent>();
-            Level = UnityGameFramework.Runtime.GameEntry.GetComponent<LevelComponent>();
+            LevelCom = UnityGameFramework.Runtime.GameEntry.GetComponent<LevelComponent>();
             Coroutinue = UnityGameFramework.Runtime.GameEntry.GetComponent<CoroutinueComponent>();
 
             Database.Init();
@@ -26,7 +26,7 @@
             Input.Init();
             Timer.Init();
             BT.Init();
-            Level.Init();
+            LevelCom.Init();
             Coroutinue.Init();
         }
 
@@ -92,10 +92,21 @@
             protected set;
         }
 
+        private static LevelComponent LevelCom;
         public static LevelComponent Level
         {
-            get;
-            protected set;
+            get
+            {
+                if (LevelComponent.IsEditorMode)
+                    return LevelComponent.Instance;
+
+                return LevelCom;
+            }
+
+            protected set
+            {
+                LevelCom = value;
+            }
         }
 
         public static CoroutinueComponent Coroutinue

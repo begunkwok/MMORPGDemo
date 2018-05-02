@@ -83,7 +83,7 @@ namespace GameMain
             LoadDataTable("Buff");
             LoadDataTable("BuffAttr");
             LoadDataTable("HeroLevel");
-            LoadDataTable("Copy");
+            LoadDataTable("Level");
         }
 
         private void LoadDataTable(string dataTableName)

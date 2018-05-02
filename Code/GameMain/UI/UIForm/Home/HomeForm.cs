@@ -163,6 +163,11 @@ namespace GameMain
 
         private void RefreshSkillItems()
         {
+            if (GameEntry.Level.Player == null)
+            {
+                return;
+            }
+
             IActorSkill skill = GameEntry.Level.Player.Actor.ActorSkill;
 
             for (int i = 0; i < m_SkillItems.Length; i++)

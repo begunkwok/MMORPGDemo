@@ -173,11 +173,6 @@ namespace GameMain
 		public string ModelAsset { get; private set; }
 
 		/// <summary>
-		/// 动作控制器资源
-		/// </summary>
-		public string AnimCtrlAsset { get; private set; }
-
-		/// <summary>
 		/// Ai攻击距离
 		/// </summary>
 		public float AiAtkDist { get; private set; }
@@ -249,7 +244,6 @@ namespace GameMain
 			BAF = int.Parse(text[++index]);
 			VoiceAsset = text[++index];
 			ModelAsset = text[++index];
-			AnimCtrlAsset = text[++index];
 			AiAtkDist = float.Parse(text[++index]);
 			AiFollowDist = float.Parse(text[++index]);
 			AiWaringDist = float.Parse(text[++index]);

@@ -29,12 +29,14 @@ namespace GameMain
             GameEntry.UI.OpenUIForm(UIFormId.HomeForm);
 
             CreatePlayer();
-            GameEntry.Level.EnterLevel(1001, SceneId.MainCity);
+            GameEntry.Level.EnterLevel(9999, SceneId.MainCity);
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
         {
             base.OnLeave(procedureOwner, isShutdown);
+
+            GameEntry.UI.CloseUIForm(UIFormId.HomeForm);
 
             GameEntry.Event.Unsubscribe(EnterLevelEventArgs.EventId, OnEnterLevel);
         }
@@ -50,15 +52,7 @@ namespace GameMain
             RefreshHeroInfoEventArgs args = ReferencePool.Acquire<RefreshHeroInfoEventArgs>().FillName(dbPlayer.Name);
             GameEntry.Event.Fire(this, args);
 
-            TransformParam tParam = new TransformParam()
-            {
-                Position = Vector3.zero,
-                EulerAngles = Vector3.zero,
-                Scale = Vector3.one
-            };
-
             GameEntry.Level.CreatePlayer(dbPlayer.Id);
-            GameEntry.Level.CreateEnemy(50001, tParam);
         }
 
         private void OnEnterLevel(object sender, GameEventArgs e)
@@ -67,6 +61,7 @@ namespace GameMain
             m_ProcedureOwner.SetData<VarInt>(Constant.ProcedureData.NextSceneId, (int) ne.SceneId);
             m_ProcedureOwner.SetData<VarInt>(Constant.ProcedureData.NextLevelId, ne.LevelId);
 
+            GameEntry.Level.LeaveCurrentLevel();
             ChangeState<ProcedureChangeScene>(m_ProcedureOwner);
         }
 

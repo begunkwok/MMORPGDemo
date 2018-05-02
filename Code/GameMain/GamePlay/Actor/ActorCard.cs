@@ -16,8 +16,8 @@
         public int[] Partners { get; protected set; } = { 0, 0, 0 };
         public ActorBase Owner { get; protected set; }
 
-        private DBPlayer m_Role = null;
-        private DRActorEntity m_Data = null;
+        private readonly DBPlayer m_Role = null;
+        private readonly DRActorEntity m_Data = null;
 
         public ActorCard(ActorBase pOwner)
         {
@@ -63,6 +63,11 @@
 
         public void SetLevel(int pLevel = -1)
         {
+            if (m_Data == null)
+            {
+                return;
+            }
+
             if (pLevel > 0)
             {
                 this.Level = pLevel;

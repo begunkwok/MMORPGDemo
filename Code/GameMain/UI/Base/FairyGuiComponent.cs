@@ -158,6 +158,7 @@ namespace GameMain
         {
             UIObjectFactory.SetPackageItemExtension("ui://Home/Buff", typeof (BuffTip));
             UIObjectFactory.SetPackageItemExtension("ui://Home/Button_Attack", typeof (SkillButton));
+            UIObjectFactory.SetPackageItemExtension("ui://Level/LevelItem", typeof (LevelItem));
         }
 
         private void RegisterCustomLoader()

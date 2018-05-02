@@ -40,5 +40,9 @@
         /// </summary>
         HomeForm = 3002,
 
+        /// <summary>
+        /// 副本选择界面
+        /// </summary>
+        LevelSelectForm = 3003,
     }
 }
