@@ -115,7 +115,7 @@ namespace GameMain
                 int userId = m_ProcedureOwner.GetData<VarInt>(Constant.ProcedureData.UserId);
                 int playerId = GameEntry.Entity.GenerateSerialId();
 
-                DBPlayer dbPlayer = new DBPlayer(playerId, userId.ToString());
+                DBPlayer dbPlayer = new DBPlayer(playerId, userId);
                 dbPlayer.EntityTypeId = m_SelectRoleTypeId;
                 dbPlayer.Name = roleName;
                 dbPlayer.Level = 1;
