@@ -7,7 +7,7 @@ namespace GameMain
         private static T m_instance;
         private static object syncRoot = new object();
 
-        public static T instance
+        public static T Instance
         {
             get
             {
@@ -39,8 +39,6 @@ namespace GameMain
         {
 
         }
-
-        public abstract void Dispose();
 
     }
 }

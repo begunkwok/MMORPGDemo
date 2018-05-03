@@ -6,12 +6,12 @@ namespace GameMain
     [DatabaseRow]
     public class DBPlayer : IDBRow
     {
-        public DBPlayer() : this(0, "")
+        public DBPlayer() : this(0, 0)
         {
 
         }
 
-        public DBPlayer(int id, string userId)
+        public DBPlayer(int id, int userId)
         {
             this.Id = id;
             this.UserId = userId;
@@ -44,7 +44,7 @@ namespace GameMain
         }
 
         public int Id { get;}
-        public string UserId { get;}
+        public int UserId { get;}
         public int EntityTypeId { get; set; }
         public string Name { get; set; }
         public int Level { get; set; }
@@ -84,17 +84,17 @@ namespace GameMain
             while (dr.Read())
             {
                 EntityTypeId = int.Parse(dr.GetString(dr.GetOrdinal("EntityTypeId")));
-                Name = dr.GetString(dr.GetOrdinal("Name"));
-                Level = int.Parse(dr.GetString(dr.GetOrdinal("Level")));
-                Exp = int.Parse(dr.GetString(dr.GetOrdinal("Exp")));
-                VipLevel = int.Parse(dr.GetString(dr.GetOrdinal("VipLevel")));
-                MountId = int.Parse(dr.GetString(dr.GetOrdinal("MountId")));
-                RelicId = int.Parse(dr.GetString(dr.GetOrdinal("RelicId")));
-                PetId = int.Parse(dr.GetString(dr.GetOrdinal("PetId")));
-                Partner1Id = int.Parse(dr.GetString(dr.GetOrdinal("Partner1Id")));
-                Partner2Id = int.Parse(dr.GetString(dr.GetOrdinal("Partner2Id")));
-                Partner3Id = int.Parse(dr.GetString(dr.GetOrdinal("Partner3Id")));
-                TalentMask = int.Parse(dr.GetString(dr.GetOrdinal("TalentMask")));
+                Name         = dr.GetString(dr.GetOrdinal("Name"));
+                Level        = int.Parse(dr.GetString(dr.GetOrdinal("Level")));
+                Exp          = int.Parse(dr.GetString(dr.GetOrdinal("Exp")));
+                VipLevel     = int.Parse(dr.GetString(dr.GetOrdinal("VipLevel")));
+                MountId      = int.Parse(dr.GetString(dr.GetOrdinal("MountId")));
+                RelicId      = int.Parse(dr.GetString(dr.GetOrdinal("RelicId")));
+                PetId        = int.Parse(dr.GetString(dr.GetOrdinal("PetId")));
+                Partner1Id   = int.Parse(dr.GetString(dr.GetOrdinal("Partner1Id")));
+                Partner2Id   = int.Parse(dr.GetString(dr.GetOrdinal("Partner2Id")));
+                Partner3Id   = int.Parse(dr.GetString(dr.GetOrdinal("Partner3Id")));
+                TalentMask   = int.Parse(dr.GetString(dr.GetOrdinal("TalentMask")));
             }
         }
 

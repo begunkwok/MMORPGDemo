@@ -410,7 +410,7 @@ namespace GameMain
             else
             {
                 FileStream fs = File.Create(path);
-                XmlDeclaration xmlDeclaration = xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", "yes");
+                XmlDeclaration xmlDeclaration = xmlDoc.CreatXmlObjectDeclaration("1.0", "UTF-8", "yes");
                 XmlNode root = xmlDoc.CreateElement(rootElementName);
                 xmlDoc.AppendChild(xmlDeclaration);
                 xmlDoc.AppendChild(root);
