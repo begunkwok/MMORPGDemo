@@ -30,7 +30,7 @@
             /// <summary>
             ///最小寻敌间隔
             /// </summary>
-            public static readonly float MinFindenemyInterval = 0.5f;
+            public static readonly float MinFindenemyInterval = 0.2f;
         }
     }
 }
