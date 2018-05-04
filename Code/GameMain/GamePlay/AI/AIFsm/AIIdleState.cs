@@ -8,6 +8,13 @@ namespace GameMain
         {
         }
 
+        protected override void OnEnter(IFsm<ActorBase> fsm)
+        {
+            base.OnEnter(fsm);
+
+            m_Owner.OnIdle();
+        }
+
         protected override void OnUpdate(IFsm<ActorBase> fsm, float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(fsm, elapseSeconds, realElapseSeconds);

@@ -6,6 +6,7 @@ namespace GameMain
     {
         public AIFightState(AIStateType state) : base(state)
         {
+
         }
 
         protected override void OnUpdate(IFsm<ActorBase> fsm, float elapseSeconds, float realElapseSeconds)
@@ -58,6 +59,7 @@ namespace GameMain
                 ChangeState<AIChaseState>();
                 return;
             }
+
             if (m_Owner.CurFsmStateType == ActorFsmStateType.FSM_SKILL)
             {
                 return;

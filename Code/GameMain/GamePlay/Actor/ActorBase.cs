@@ -18,7 +18,7 @@ namespace GameMain
         public GameObject EntityGo { get; }
         public RoleBase Entity { get; }
         public Transform CachedTransform { get; }
-        public TransformParam BornParam { get; }
+        public TransformParam BornParam { get; private set; }
         
         public ActorType ActorType { get; }
         public BattleCampType Camp { get; }
@@ -106,13 +106,6 @@ namespace GameMain
             ActorType = type;
             Camp = camp;
 
-            BornParam = new TransformParam
-            {
-                Position = CachedTransform.position,
-                EulerAngles = CachedTransform.localScale,
-                Scale = CachedTransform.localScale
-            };
-
             m_ActorData = GameEntry.DataTable.GetDataTable<DRActorEntity>().GetDataRow(Id);
             m_ActorSkill = new ActorSkill(this);
             m_ActorCard = new ActorCard(this);
@@ -126,10 +119,10 @@ namespace GameMain
             InitLayer();
             InitCommands();
             InitAnim();
+            InitAi();
             InitFeature();
             InitState();
             InitFsm();
-            InitAi();
 
             CreateBoard();
         }
@@ -398,8 +391,8 @@ namespace GameMain
 
         public virtual void StopPathFinding()
         {
-            //this.SetActorState(ActorStateType.IsAutoToMove, false);
-            //m_ActorPathFinding.StopPathFinding();
+            this.SetActorState(ActorStateType.IsAutoToMove, false);
+            m_ActorPathFinding.StopPathFinding();
         }
 
         public virtual void SetAlphaVertexColorOff(float time)
@@ -455,6 +448,15 @@ namespace GameMain
         }
 
 
+        public void SetBornParam(TransformParam param)
+        {
+            BornParam = new TransformParam
+            {
+                Position = param.Position,
+                EulerAngles = param.EulerAngles,
+                Scale = param.Scale
+            };
+        }
 
         public Transform[] GetHands()
         {

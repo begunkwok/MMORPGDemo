@@ -10,7 +10,7 @@ namespace GameMain
     public class SubUseSkill : SubTaskBase
     {
         [SerializeField]
-        public ESkillPos Pos;
+        public SkillPosType Pos;
         [SerializeField]
         public int       Times;
 
@@ -27,7 +27,7 @@ namespace GameMain
                 switch (current.Name)
                 {
                     case "Pos":
-                        this.Pos = (ESkillPos)ReadInt(current);
+                        this.Pos = (SkillPosType)ReadInt(current);
                         break;
                     case "Times":
                         this.Times = ReadInt(current);

@@ -32,7 +32,7 @@
 
         private static void ClearCustomComponents()
         {
-            //Database.Clear();
+            Database.Clear();
             FairyGui.Clear();
             Lua.Clear();
             AppConfig.Clear();
@@ -40,7 +40,7 @@
             Input.Clear();
             Timer.Clear();
             BT.Clear();
-            Level.Clear();
+            LevelCom.Clear();
             Coroutinue.Clear();
         }
 

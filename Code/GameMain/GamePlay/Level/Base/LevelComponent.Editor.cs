@@ -10,8 +10,8 @@ namespace GameMain
     /// </summary>
     public partial class LevelComponent
     {
-        //是否是编辑模式
-        public static bool IsEditorMode = false;
+        //默认为编辑模式，运行时切换
+        public static bool IsEditorMode = true;
 
         private static LevelComponent instance = null;
         private static object lockObject = new object();

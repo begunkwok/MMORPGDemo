@@ -25,11 +25,12 @@ namespace GameMain
 
             GameEntry.Event.Subscribe(EnterLevelEventArgs.EventId, OnEnterLevel);
 
+            CreatePlayer();
+
+            GameEntry.Level.EnterLevel(9999, SceneId.MainCity);
+
             GameEntry.UI.OpenUIForm(UIFormId.ControllerForm);
             GameEntry.UI.OpenUIForm(UIFormId.HomeForm);
-
-            CreatePlayer();
-            GameEntry.Level.EnterLevel(9999, SceneId.MainCity);
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)

@@ -510,6 +510,7 @@ namespace GameMain
                     Scale = Config.Ally.TransParam.Scale
                 };
 
+                Player.Actor.SetBornParam(param);
                 Player.UpdateTransform(param);
 
                 AddPartner(Player, 1, Player.Actor.ActorCard.Partners[0]);

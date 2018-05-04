@@ -65,10 +65,9 @@ namespace GameMain
                 var dr = GameEntry.Database.SelectWhere(dbTableName, items, cols, operation, values);
                 while (dr.Read())
                 {
-                    //Log.Warning("CreateDB:" + dr.GetString(dr.GetOrdinal("Id")));
                     int drId = int.Parse(dr.GetString(dr.GetOrdinal("Id")));
-                    string drUserId = dr.GetString(dr.GetOrdinal("UserId"));
-                    IDBRow dbRow = (IDBRow)Activator.CreateInstance(DBRowTypes[i], drId, drUserId);
+                    int drUserId = int.Parse(dr.GetString(dr.GetOrdinal("UserId")));
+                    DBRowBase dbRow = (DBRowBase)Activator.CreateInstance(DBRowTypes[i], drId, drUserId);
                     dbRow.Load();
                     dbTable.AddDBRow(drId, dbRow);
                 }

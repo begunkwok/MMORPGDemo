@@ -107,6 +107,7 @@ namespace GameMain
                 {
                     m_MeshFilter = go.GetComponent<MeshFilter>();
                 }
+                go.transform.parent = GameEntry.Level.transform;
                 go.SetActive(false);
                 return m_MeshFilter;
             }

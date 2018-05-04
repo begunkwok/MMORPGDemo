@@ -453,7 +453,7 @@ MonoBehaviour:
   m_Script: {fileID: -1949914940, guid: a9142b59253c13b4dafb66aa3ef17c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DBName: userData4.db
+  DBName: userData.db
   SaveInterval: 60
 --- !u!114 &114160833603172686
 MonoBehaviour:
@@ -511,8 +511,7 @@ MonoBehaviour:
   m_Script: {fileID: 817493428, guid: a9142b59253c13b4dafb66aa3ef17c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MapID: 0
-  Delay: 0
+  LevelID: 0
   MapName: 
   MapPath: 
 --- !u!114 &114414116229253784

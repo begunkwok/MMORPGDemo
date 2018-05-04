@@ -6,6 +6,7 @@ namespace GameMain
     {
         public AIChaseState(AIStateType state) : base(state)
         {
+
         }
 
         protected override void OnUpdate(IFsm<ActorBase> fsm, float elapseSeconds, float realElapseSeconds)

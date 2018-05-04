@@ -70,7 +70,9 @@ namespace GameMain
             }
             Vector3 pos = GlobalTools.RandomOnCircle(10)+Region.Position;
             Vector3 angle = new Vector3(0, UnityEngine.Random.Range(0, 360), 0);
-            EnemyRole monster = GameEntry.Level.CreateEnemy(MonsterID, TransformParam.Create(pos, angle));
+            TransformParam param = TransformParam.Create(pos, angle);
+            EnemyRole monster = GameEntry.Level.CreateEnemy(MonsterID, param);
+            monster.Actor.SetBornParam(param);
 
             mMonsterGUIDSet.Add(monster.Id);
         }

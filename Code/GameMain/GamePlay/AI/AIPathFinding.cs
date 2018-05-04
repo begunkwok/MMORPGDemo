@@ -6,9 +6,7 @@ namespace GameMain
 {
     public class AIPathFinding : IAIPathFinding
     {
-        public event Action OnArriveEvent;
-
-        private readonly IActor m_Owner;
+        private readonly ActorBase m_Owner;
         private readonly NavMeshAgent m_NavMeshAgent;
         private readonly NavMeshPath m_NavMeshPath;
         private GameObject m_GameObject;
@@ -21,10 +19,12 @@ namespace GameMain
             {
                 return false;
             }
-            return m_NavMeshAgent.remainingDistance <= 1f && m_NavMeshAgent.remainingDistance > 0.01f;
+
+            float dis = Mathf.Abs(m_NavMeshAgent.remainingDistance);
+            return dis <= 1f && dis > 0.01f;
         }
 
-        public AIPathFinding(IActor owner)
+        public AIPathFinding(ActorBase owner)
         {
             m_Owner = owner;
             m_GameObject = m_Owner.EntityGo;
@@ -49,6 +49,7 @@ namespace GameMain
             SetAgentEnable(true);
             this.m_NavMeshAgent.speed = m_Owner.Attrbute.GetValue(AttributeType.Speed);
             m_NavMeshAgent.SetDestination(m_DestPosition);
+            m_Owner.CachedTransform.LookAt2D(new Vector2(m_DestPosition.x, m_DestPosition.z));
         }
 
         public void Step()
@@ -64,12 +65,8 @@ namespace GameMain
             if (!CheckReached())
                 return;
 
-            OnArriveEvent?.Invoke();
-
-            if (m_OnFinished == null)
-                return;
-
-            m_OnFinished();
+            m_Owner.OnArrive();
+            m_OnFinished?.Invoke();
             m_OnFinished = null;
         }
 

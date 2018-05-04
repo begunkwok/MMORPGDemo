@@ -22,8 +22,7 @@ namespace GameMain
         private IDBTableManager m_DBTableManager = null;
         private IDBTable<DBUser> m_UserTable;
 
-        private int m_CurUserId = 0;
-        private int m_CurPlayerId = 0;
+        private DBUser m_UserData;
 
         private float m_ElapseSeconds = 0;
         private static readonly object m_LockObj = new object();
@@ -62,7 +61,7 @@ namespace GameMain
             CloseSqlConnection();
         }
 
-        public bool TryLogin(int account, string password)
+        public bool TryLogin(int account, int password)
         {
             if (!CheckTable(userTableName))
             {
@@ -92,7 +91,7 @@ namespace GameMain
                 string drAccount = dr.GetString(dr.GetOrdinal("Account"));
                 string drPassword = dr.GetString(dr.GetOrdinal("Password"));
 
-                if (account.ToString() == drAccount && password == drPassword)
+                if (account.ToString() == drAccount && password.ToString() == drPassword)
                 {
                     if(!m_UserTable.HasDBRow(account))
                     {
@@ -102,10 +101,9 @@ namespace GameMain
                     }
      
                     m_DBTableManager.Init(account);
+                    m_UserData = GetDBRow<DBUser>(account);
+                    
                     //CloseSqlConnection();
-
-                    m_CurUserId = account;
-                    m_CurPlayerId = GetDBRow<DBUser>(account).Player;
 
                     return true;
                 }
@@ -114,7 +112,7 @@ namespace GameMain
             return false;
         }
 
-        public bool TryRegister(string account, string password)
+        public bool TryRegister(int account, int password)
         {
             string[] items =
             {
@@ -140,12 +138,12 @@ namespace GameMain
             }
 
 
-            DBUser dbUser = new DBUser(int.Parse(account), password);
+            DBUser dbUser = new DBUser(account, password);
             dbUser.Account = account;
             dbUser.Password = password;
             dbUser.Player = 0;
             dbUser.Insert();
-            m_UserTable.AddDBRow(int.Parse(account), dbUser);
+            m_UserTable.AddDBRow(account, dbUser);
             return true;
         }
 
@@ -218,12 +216,12 @@ namespace GameMain
 
         public int GetUserId()
         {
-            return m_CurUserId;
+            return m_UserData.UserId;
         }
 
         public int GetPlayerId()
         {
-            return m_CurPlayerId;
+            return m_UserData.Player;
         }
 
 

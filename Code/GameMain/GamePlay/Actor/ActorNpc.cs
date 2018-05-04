@@ -15,7 +15,7 @@ namespace GameMain
 
         protected override void InitAi()
         {
-            
+            m_ActorPathFinding = new AIPathFinding(this);
         }
     }
 }

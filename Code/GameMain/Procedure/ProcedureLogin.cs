@@ -62,13 +62,21 @@ namespace GameMain
         private void OnLoginClick(string accountInput,string passwordInput)
         {
             int account;
+            int password;
+
             if (!int.TryParse(accountInput, out account))
             {
-                Log.Error("账号只能为数字！");
+                Log.Error("Account must be number！");
                 return;
             }
 
-            if (GameEntry.Database.TryLogin(account,passwordInput))
+            if (!int.TryParse(passwordInput, out password))
+            {
+                Log.Error("Password must be number！");
+                return;
+            }
+
+            if (GameEntry.Database.TryLogin(account, password))
             {
                 m_ProcedureOwner.SetData<VarInt>(Constant.ProcedureData.UserId, account);
                 m_LoginSuccess = true;
@@ -93,7 +101,22 @@ namespace GameMain
 
         private void OnRegisterClick(string account, string password,Action callback)
         {
-            if (GameEntry.Database.TryRegister(account, password))
+            int pAccount = 0;
+            int pPassword = 0;
+
+            if (!int.TryParse(account,out pAccount))
+            {
+                Log.Error("Account is invalid.");
+                return;
+            }
+
+            if (!int.TryParse(password, out pPassword))
+            {
+                Log.Error("Password is invalid.");
+                return;
+            }
+
+            if (GameEntry.Database.TryRegister(pAccount, pPassword))
             {
                 callback?.Invoke();
             }
