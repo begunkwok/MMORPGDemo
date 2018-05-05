@@ -255,7 +255,11 @@ namespace GameMain
 
         protected virtual void UpdateHealth()
         {
-            
+            RefreshBoardEventArgs eventArgs = ReferencePool.Acquire<RefreshBoardEventArgs>();
+            int maxHp = Attrbute.GetValue(AttributeType.MaxHp);
+            int curHp = Attrbute.GetValue(AttributeType.Hp);
+            eventArgs.Fill(EntityId, maxHp, curHp, m_ActorData.Level);
+            GameEntry.Event.Fire(this, eventArgs);
         }
 
         protected virtual void UpdatePower()
@@ -776,14 +780,23 @@ namespace GameMain
             }
         }
 
-        protected void CreateBoard()
+        protected virtual void CreateBoard()
         {
-            //TODO 创建头上ui
+            BoardFormData data = new BoardFormData
+            {
+                OwnerId = EntityId,
+                ActorType = ActorType,
+                CacheTransform = CachedTransform,
+                Name = m_ActorData.Name,
+                Level = m_ActorData.Level,
+                Height = Height
+            };
+            BoardFormManager.Instance.Create(data);
         }
 
         protected void RemoveBoard()
         {
-            //TODO 移除头上ui
+            BoardFormManager.Instance.Release(EntityId);
         }
 
         protected void RemoveEffect()

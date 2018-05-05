@@ -44,5 +44,10 @@
         /// 副本选择界面
         /// </summary>
         LevelSelectForm = 3003,
+
+        /// <summary>
+        /// 角色头上UI
+        /// </summary>
+        RoleBoardForm = 4001,
     }
 }

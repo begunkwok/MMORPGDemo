@@ -864,7 +864,7 @@ MonoBehaviour:
   m_JsonHelperTypeName: GameMain.LitJsonHelper
   m_ProfilerHelperTypeName: UnityGameFramework.Runtime.ProfilerHelper
   m_FrameRate: 30
-  m_GameSpeed: 0.25
+  m_GameSpeed: 0.5
   m_RunInBackground: 1
   m_NeverSleep: 1
 --- !u!1001 &100100000
@@ -993,7 +993,7 @@ MonoBehaviour:
   m_EnableOpenUIFormUpdateEvent: 0
   m_EnableOpenUIFormDependencyAssetEvent: 0
   m_EnableCloseUIFormCompleteEvent: 1
-  m_InstanceAutoReleaseInterval: 10
+  m_InstanceAutoReleaseInterval: 60
   m_InstanceCapacity: 16
   m_InstanceExpireTime: 10
   m_InstancePriority: 0
@@ -1007,6 +1007,8 @@ MonoBehaviour:
     m_Depth: 0
   - m_Name: Default
     m_Depth: 1
+  - m_Name: Dynamic
+    m_Depth: 0
 --- !u!114 &114967677140151710
 MonoBehaviour:
   m_ObjectHideFlags: 1

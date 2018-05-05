@@ -85,6 +85,7 @@
     <Compile Include="DataTable\DRLevel.cs" />
     <Compile Include="Definition\EventArgs\EnterLevelEventArgs.cs" />
     <Compile Include="Definition\EventArgs\OnPlayerDeadEventArgs.cs" />
+    <Compile Include="Definition\EventArgs\RefreshBoardEventArgs.cs" />
     <Compile Include="Definition\EventArgs\RefreshBuffEventArgs.cs" />
     <Compile Include="Definition\EventArgs\RefreshHeroInfoEventArgs.cs" />
     <Compile Include="Definition\EventArgs\KillMonsterEventArgs.cs" />
@@ -484,12 +485,15 @@
     <Compile Include="UI\Base\FairyGuiLuaForm.cs" />
     <Compile Include="UI\Base\FairyGuiStage.cs" />
     <Compile Include="Definition\EventArgs\LoadingFormUpdateProgressEventArgs.cs" />
+    <Compile Include="UI\FormData\BoardFormData.cs" />
     <Compile Include="UI\FormData\DialogFormData.cs" />
     <Compile Include="UI\FormData\HomeFormData.cs" />
     <Compile Include="UI\FormData\LoginFormData.cs" />
     <Compile Include="UI\Define\UIFormId.cs" />
     <Compile Include="UI\FormData\RoleCreateFormData.cs" />
     <Compile Include="UI\Extension\UIExtension.cs" />
+    <Compile Include="UI\UIForm\Dynamic\BoardFormManager.cs" />
+    <Compile Include="UI\UIForm\Dynamic\RoleBoardForm.cs" />
     <Compile Include="UI\UIForm\Home\BuffTip.cs" />
     <Compile Include="UI\UIForm\Home\ControllerForm.cs" />
     <Compile Include="UI\UIForm\Home\HomeForm.cs" />

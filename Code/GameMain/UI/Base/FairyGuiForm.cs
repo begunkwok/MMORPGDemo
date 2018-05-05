@@ -54,10 +54,10 @@ namespace GameMain
         [SerializeField]
         protected bool m_SetNativeChildrenOrder = false;
 
-        protected Camera m_RenderCamera = null;
         protected Vector3 m_Position;
         protected Vector3 m_Scale = new Vector3(1, 1, 1);
         protected Vector3 m_Rotation = new Vector3(0, 0, 0);
+        protected Camera m_RenderCamera = null;
         protected Vector2 m_CachedUISize;
 
         [System.NonSerialized]

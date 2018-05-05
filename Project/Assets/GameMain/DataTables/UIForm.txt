@@ -1,8 +1,9 @@
 #	Id	AssetName	UIGroupName	AllowMultiInstance	PauseCoveredUIForm
-1001	Login/LoginForm	Default	True	False
+1001	Login/LoginForm	Default	False	False
 1002	CreateRole/CreateRoleForm	Default	False	False
 2001	Common/LoadingForm	Common	False	False
 2002	Common/DialogForm	Common	False	True
 3001	Home/ControllerForm	Default	False	False
 3002	Home/HomeForm	Default	False	False
 3003	Level/LevelSelectForm	Default	False	False
+4001	Dynamic/RoleBoardForm	Dynamic	True	False

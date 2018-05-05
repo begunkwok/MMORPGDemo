@@ -152,10 +152,10 @@ namespace GameMain
         /// </summary>
         public void SaveDatabase()
         {
-            OpenDB("URI=file:" + appDBPath);
-            m_DBTableManager.SaveAllToDB();
-            CloseSqlConnection();
-            Log.Info("Save Database...");
+            //OpenDB("URI=file:" + appDBPath);
+            //m_DBTableManager.SaveAllToDB();
+            //CloseSqlConnection();
+            //Log.Info("Save Database...");
         }
 
         /// <summary>

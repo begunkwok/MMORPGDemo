@@ -31,6 +31,11 @@
             ///最小寻敌间隔
             /// </summary>
             public static readonly float MinFindenemyInterval = 0.2f;
+
+            /// <summary>
+            /// 升级特效
+            /// </summary>
+            public static readonly int LevelUpEffect = 65006;
         }
     }
 }

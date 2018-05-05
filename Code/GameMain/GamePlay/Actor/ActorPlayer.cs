@@ -117,6 +117,20 @@ namespace GameMain
             m_ActorAI = new ActorFsmAI(this, AIModeType.Hand, atkDist, followDist, waringDist, findEnemyInterval);
             m_ActorAI.Start();
         }
+        
+        protected override void CreateBoard()
+        {
+            BoardFormData data = new BoardFormData
+            {
+                OwnerId = EntityId,
+                ActorType = ActorType,
+                CacheTransform = CachedTransform,
+                Name = m_PlayerData.Name,
+                Level = m_ActorData.Level,
+                Height = Height
+            };
+            BoardFormManager.Instance.Create(data);
+        }
 
         protected override void InitAttribute(bool init = false)
         {
@@ -137,7 +151,6 @@ namespace GameMain
 
         protected override void UpdateHealth()
         {
-            base.UpdateHealth();
             int maxHp = Attrbute.GetValue(AttributeType.MaxHp);
             int curHp = Attrbute.GetValue(AttributeType.Hp);
             RefreshHeroInfoEventArgs args = ReferencePool.Acquire<RefreshHeroInfoEventArgs>().FillHp(curHp, maxHp);
@@ -250,7 +263,6 @@ namespace GameMain
             GameEntry.Event.Fire(this, args);
         }
 
-
         public override void Destory()
         {
             base.Destory();
@@ -264,6 +276,14 @@ namespace GameMain
                 RemoveEquip(i);
             }
         }
+
+
+
+
+
+
+
+
 
 
         public Vector3 GetPartnerPosBySort(PartnerSortType sortType)
@@ -398,17 +418,23 @@ namespace GameMain
 
         private void OnUpgradeLevel()
         {
-            //this.GetActorCard().SetLevel();
-            //ZTBoard.Instance.Refresh(this);
-            //EffectData data = new EffectData();
-            //data.Owner = this;
-            //data.Id = Define.EFFECT_UPGRADE_ID;
-            //data.LastTime = 3;
-            //data.Bind = EEffectBind.OwnFoot;
-            //data.Dead = EFlyObjDeadType.UntilLifeTimeEnd;
-            //data.Parent = CacheTransform;
-            //data.SetParent = true;
-            //EffectBase effect = ZTEffect.Instance.CreateEffect(data);
+            this.ActorCard.SetLevel();
+
+            RefreshBoardEventArgs eventArgs = ReferencePool.Acquire<RefreshBoardEventArgs>();
+            int maxHp = Attrbute.GetValue(AttributeType.MaxHp);
+            int curHp = Attrbute.GetValue(AttributeType.Hp);
+            eventArgs.Fill(EntityId, maxHp, curHp, m_ActorData.Level);
+            GameEntry.Event.Fire(this, eventArgs);
+
+            int id = GameEntry.Entity.GenerateTempSerialId();
+            EffectData data = new EffectData(id, Constant.Define.LevelUpEffect);
+            data.Owner = this;
+            data.KeepTime = 3;
+            data.BindType = EffectBindType.OwnFoot;
+            data.DeadType = FlyObjDeadType.UntilLifeTimeEnd;
+            data.Parent = CachedTransform;
+            data.SetParent = true;
+            GameEntry.Entity.ShowEffect(data);
         }
 
         private void OnChangeFightValue()
