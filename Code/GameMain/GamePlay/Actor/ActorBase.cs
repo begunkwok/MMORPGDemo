@@ -16,7 +16,7 @@ namespace GameMain
         public int EntityId { get; }
 
         public GameObject EntityGo { get; }
-        public RoleBase Entity { get; }
+        public RoleEntityBase Entity { get; }
         public Transform CachedTransform { get; }
         public TransformParam BornParam { get; private set; }
         
@@ -87,7 +87,7 @@ namespace GameMain
         protected string m_FsmName = String.Empty;
 
 
-        public ActorBase(RoleBase entity,ActorType type, BattleCampType camp,
+        public ActorBase(RoleEntityBase entity,ActorType type, BattleCampType camp,
             CharacterController cc, Animator anim)
         {
             if (entity == null || cc == null || anim == null)
@@ -813,18 +813,22 @@ namespace GameMain
         {
             m_BaseAttribute = new ActorAttribute();
             m_CurAttribute = new ActorAttribute();
-            Attrbute.UpdateValue(AttributeType.Hp, m_ActorData.LHP);
-            Attrbute.UpdateValue(AttributeType.MaxHp, m_ActorData.LHP);
-            Attrbute.UpdateValue(AttributeType.Attack, m_ActorData.ATK);
-            Attrbute.UpdateValue(AttributeType.Defense, m_ActorData.DEF);
-            Attrbute.UpdateValue(AttributeType.Crit, m_ActorData.CRI);
-            Attrbute.UpdateValue(AttributeType.CritDamage, m_ActorData.BUR);
-            Attrbute.UpdateValue(AttributeType.Mp, m_ActorData.LMP);
-            Attrbute.UpdateValue(AttributeType.MaxMp, m_ActorData.LMP);
-            Attrbute.UpdateValue(AttributeType.SuckBlood, m_ActorData.VAM);
-            Attrbute.UpdateValue(AttributeType.Hit, m_ActorData.HIT);
-            Attrbute.UpdateValue(AttributeType.Dodge, m_ActorData.DOG);
-            Attrbute.UpdateValue(AttributeType.Absorb, m_ActorData.BAF);
+
+            m_BaseAttribute.UpdateValue(AttributeType.Hp, m_ActorData.LHP);
+            m_BaseAttribute.UpdateValue(AttributeType.MaxHp, m_ActorData.LHP);
+            m_BaseAttribute.UpdateValue(AttributeType.Attack, m_ActorData.ATK);
+            m_BaseAttribute.UpdateValue(AttributeType.Defense, m_ActorData.DEF);
+            m_BaseAttribute.UpdateValue(AttributeType.Crit, m_ActorData.CRI);
+            m_BaseAttribute.UpdateValue(AttributeType.CritDamage, m_ActorData.BUR);
+            m_BaseAttribute.UpdateValue(AttributeType.Mp, m_ActorData.LMP);
+            m_BaseAttribute.UpdateValue(AttributeType.MaxMp, m_ActorData.LMP);
+            m_BaseAttribute.UpdateValue(AttributeType.SuckBlood, m_ActorData.VAM);
+            m_BaseAttribute.UpdateValue(AttributeType.Hit, m_ActorData.HIT);
+            m_BaseAttribute.UpdateValue(AttributeType.Dodge, m_ActorData.DOG);
+            m_BaseAttribute.UpdateValue(AttributeType.Absorb, m_ActorData.BAF);
+            m_BaseAttribute.UpdateValue(AttributeType.Speed, (int)m_ActorData.Speed);
+
+            m_CurAttribute += m_BaseAttribute;
             UpdateCurAttribute(init);
         }
 

@@ -77,7 +77,7 @@ namespace GameMain
         }
 
 
-        public ActorPlayer(RoleBase entity, ActorType type, BattleCampType camp, CharacterController cc,Animator anim) : base(entity, type, camp, cc,anim)
+        public ActorPlayer(RoleEntityBase entity, ActorType type, BattleCampType camp, CharacterController cc,Animator anim) : base(entity, type, camp, cc,anim)
         {
             m_PlayerData = GameEntry.Database.GetDBRow<DBPlayer>(Id);
             if (m_PlayerData == null)
@@ -100,8 +100,11 @@ namespace GameMain
         {
             base.Step();
 
-            RefreshBuffEventArgs args = ReferencePool.Acquire<RefreshBuffEventArgs>().Fill(this);
-            GameEntry.Event.Fire(this, args);
+            if (!IsDead)
+            {
+                RefreshBuffEventArgs args = ReferencePool.Acquire<RefreshBuffEventArgs>().Fill(this);
+                GameEntry.Event.Fire(this, args);
+            }
         }
 
         protected override void InitAi()
@@ -121,7 +124,6 @@ namespace GameMain
             m_CurAttribute = new ActorAttribute();
             Dictionary<PropertyType, int> propertys = AttributeTools.GetPlayerPropertys(m_PlayerData);
             m_BaseAttribute.CopyFrom(propertys);
-            m_BaseAttribute.UpdateValue(AttributeType.Speed, (int) m_ActorData.Speed);
             UpdateCurAttribute(init);
         }
 
@@ -239,6 +241,15 @@ namespace GameMain
                 base.OnIdle();
             }
         }
+
+        public override void OnDead(DeadCommand ev)
+        {
+            base.OnDead(ev);
+
+            OnPlayerDeadEventArgs args = ReferencePool.Acquire<OnPlayerDeadEventArgs>().Fill(ev.Type);
+            GameEntry.Event.Fire(this, args);
+        }
+
 
         public override void Destory()
         {

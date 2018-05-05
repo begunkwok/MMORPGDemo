@@ -124,6 +124,7 @@ namespace GameMain
 
         public SkillTree FindNextSkillByDist(float dist)
         {
+            List<SkillTree> validSkills = new List<SkillTree>();
             for (int i = 0; i < m_SkillPool.Count; i++)
             {
                 SkillTree skillTree = m_SkillPool[i];
@@ -131,16 +132,34 @@ namespace GameMain
                 {
                     continue;
                 }
+
                 if (skillTree.CastDistance <= 0)
                 {
-                    return skillTree;
+                    return null;
                 }
+
                 if (dist < skillTree.CastDistance)
                 {
-                    return skillTree;
+                    validSkills.Add(skillTree);
                 }
             }
-            return null;
+
+            if (validSkills.Count == 0)
+            {
+                return null;
+            }
+            else
+            {
+                if (validSkills.Count == 1)
+                {
+                    return validSkills[0];
+                }
+                else
+                {
+                    int index = Random.Range(0, validSkills.Count);
+                    return validSkills[index];
+                }
+            }
         }
 
         public SkillTree FindNextSkillByDist(Vector3 dest)

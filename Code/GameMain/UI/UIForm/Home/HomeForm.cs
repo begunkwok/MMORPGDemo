@@ -163,7 +163,7 @@ namespace GameMain
 
         private void RefreshSkillItems()
         {
-            if (GameEntry.Level.Player == null)
+            if (GameEntry.Level.Player?.Actor == null)
             {
                 return;
             }

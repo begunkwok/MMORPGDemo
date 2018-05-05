@@ -20,7 +20,7 @@ namespace BT
             for (int i = 0; i < Count; i++)
             {
                 Vector3 pos = GlobalTools.RandomOnCircle(Owner.Pos, MinRadius, MaxRadius);
-                GameEntry.Level.AddRole<RoleBase>(Id, ActorType, Owner.Camp, pos, Vector3.zero);
+                GameEntry.Level.AddRole<RoleEntityBase>(Id, ActorType, Owner.Camp, pos, Vector3.zero);
             }
             return true;
         }

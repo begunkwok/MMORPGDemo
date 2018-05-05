@@ -38,21 +38,21 @@ namespace GameMain
         {
             if (m_PortalObj == null)
             {
-                if (LevelComponent.IsEditorMode)
-                {
-                    m_PortalObj = LevelComponent.CreateLevelEditorObject(MapHolderType.Portal);
-                    m_PortalObj.transform.parent = transform;
-                    m_PortalObj.transform.localPosition = Vector3.zero;
-                    m_PortalObj.transform.localEulerAngles = Vector3.zero;
-                    m_PortalObj.transform.localScale = Vector3.one;
-                }
-                else
+                if (Application.isPlaying)
                 {
                     LevelObject portal = GameEntry.Level.CreateLevelObject(Id);
                     m_PortalObj = portal.gameObject;
                     portal.CachedTransform.position = transform.position;
                     portal.CachedTransform.rotation = transform.rotation;
                     portal.CachedTransform.localScale = transform.localScale;
+                }
+                else
+                {
+                    m_PortalObj = LevelComponent.CreateLevelEditorObject(MapHolderType.Portal);
+                    m_PortalObj.transform.parent = transform;
+                    m_PortalObj.transform.localPosition = Vector3.zero;
+                    m_PortalObj.transform.localEulerAngles = Vector3.zero;
+                    m_PortalObj.transform.localScale = Vector3.one;
                 }
             }
         }
@@ -103,7 +103,7 @@ namespace GameMain
             this.Build();
             this.SetName();
 
-            if (!LevelComponent.IsEditorMode)
+            if (Application.isPlaying)
             {
                 HolderRegion pHolder = GameEntry.Level.GetHolder(MapHolderType.Region) as HolderRegion;
 

@@ -41,6 +41,9 @@ namespace GameMain
 
         public void ChangeState<T>() where T :ActorFsmStateBase
         {
+            if (m_Fsm?.CurrentState == null)
+                return;
+
             ChangeState<T>(m_Fsm);
         }
     }

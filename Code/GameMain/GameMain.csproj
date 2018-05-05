@@ -84,6 +84,7 @@
     <Compile Include="Database\Data\DBTask.cs" />
     <Compile Include="DataTable\DRLevel.cs" />
     <Compile Include="Definition\EventArgs\EnterLevelEventArgs.cs" />
+    <Compile Include="Definition\EventArgs\OnPlayerDeadEventArgs.cs" />
     <Compile Include="Definition\EventArgs\RefreshBuffEventArgs.cs" />
     <Compile Include="Definition\EventArgs\RefreshHeroInfoEventArgs.cs" />
     <Compile Include="Definition\EventArgs\KillMonsterEventArgs.cs" />
@@ -200,7 +201,7 @@
     <Compile Include="Entity\Define\FlyObjDeadType.cs" />
     <Compile Include="Entity\Define\FlyObjFlyType.cs" />
     <Compile Include="Entity\EntityLogic\EnemyRole.cs" />
-    <Compile Include="Entity\EntityLogic\RoleEntity.cs" />
+    <Compile Include="Entity\EntityLogic\RoleEntityBase.cs" />
     <Compile Include="GamePlay\Actor\ActorBase.Command.cs" />
     <Compile Include="GamePlay\Actor\ActorBase.Action.cs" />
     <Compile Include="GamePlay\Actor\ActorCard.cs" />
@@ -352,7 +353,6 @@
     <Compile Include="Editor\MMORPGDemoBuildEventHandler.cs" />
     <Compile Include="Config\PathConfigs.cs" />
     <Compile Include="Editor\ProjectSaver.cs" />
-    <Compile Include="Entity\Define\EntityTypeId.cs" />
     <Compile Include="Entity\EntityComponent\PlayerController.cs" />
     <Compile Include="Entity\EntityData\PlayerEntityData.cs" />
     <Compile Include="Entity\EntityLogic\PlayerRole.cs" />

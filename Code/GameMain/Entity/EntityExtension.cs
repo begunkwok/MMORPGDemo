@@ -108,10 +108,10 @@ namespace GameMain
         
 
         //-----------------简化使用函数----------------
-        public static RoleBase ShowRole<T>(this EntityComponent entityComponent, RoleEntityData data)
+        public static RoleEntityBase ShowRole<T>(this EntityComponent entityComponent, RoleEntityData data)
         {
             entityComponent.ShowActorEntity(typeof (T), data);
-            return GetGameEntity(entityComponent, data.Id) as RoleBase;
+            return GetGameEntity(entityComponent, data.Id) as RoleEntityBase;
         }
 
         public static EffectBase ShowEffect(this EntityComponent entityComponent, EffectData data)

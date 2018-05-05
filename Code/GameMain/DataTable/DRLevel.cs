@@ -33,6 +33,11 @@ namespace GameMain
 		public int LevelType { get; private set; }
 
 		/// <summary>
+		/// 需求等级
+		/// </summary>
+		public int LevelRequest { get; private set; }
+
+		/// <summary>
 		/// 图标
 		/// </summary>
 		public int Icon { get; private set; }
@@ -150,6 +155,7 @@ namespace GameMain
 			Scene = int.Parse(text[++index]);
 			Name = text[++index];
 			LevelType = int.Parse(text[++index]);
+			LevelRequest = int.Parse(text[++index]);
 			Icon = int.Parse(text[++index]);
 			Background = int.Parse(text[++index]);
 			CostActionId = int.Parse(text[++index]);

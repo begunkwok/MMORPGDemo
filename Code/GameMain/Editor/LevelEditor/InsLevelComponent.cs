@@ -15,18 +15,13 @@ namespace GameMain
         {
             m_level = target as LevelComponent;
 
-            if (GUILayout.Button("切换到编辑模式"))
+            if (Application.isPlaying)
             {
-                LevelComponent.IsEditorMode = true;
-            }
-
-            if (LevelComponent.IsEditorMode)
-            {
-                EditorModeInspector();
+                RunTimeModeInspector();
             }
             else
             {
-                RunTimeModeInspector();
+                EditorModeInspector();
             }
         }
         

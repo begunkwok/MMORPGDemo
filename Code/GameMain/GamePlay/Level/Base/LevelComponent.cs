@@ -23,13 +23,13 @@ namespace GameMain
 
         private List<LevelTask> m_OnLoadNewSceneTasks = new List<LevelTask>();
         private Dictionary<MapHolderType, LevelElement> m_Holders = new Dictionary<MapHolderType, LevelElement>();
-        private List<RoleBase> m_AllRoles = new List<RoleBase>();
-        private Dictionary<BattleCampType, List<RoleBase>> m_CampActors = new Dictionary<BattleCampType, List<RoleBase>>
+        private List<RoleEntityBase> m_AllRoles = new List<RoleEntityBase>();
+        private Dictionary<BattleCampType, List<RoleEntityBase>> m_CampActors = new Dictionary<BattleCampType, List<RoleEntityBase>>
         {
-            {BattleCampType.Ally, new List<RoleBase>()},
-            {BattleCampType.Enemy, new List<RoleBase>()},
-            {BattleCampType.Neutral, new List<RoleBase>()},
-            {BattleCampType.Other, new List<RoleBase>()}
+            {BattleCampType.Ally, new List<RoleEntityBase>()},
+            {BattleCampType.Enemy, new List<RoleEntityBase>()},
+            {BattleCampType.Neutral, new List<RoleEntityBase>()},
+            {BattleCampType.Other, new List<RoleEntityBase>()}
         };
 
         private float m_StartTime;
@@ -43,7 +43,8 @@ namespace GameMain
             m_Victory = false;
 
             InitHolder();
-            IsEditorMode = false;
+
+            GameEntry.Event.Subscribe(OnPlayerDeadEventArgs.EventId,OnPlayerDead);
         }
 
         public void Clear()
@@ -52,7 +53,7 @@ namespace GameMain
             m_OnLoadNewSceneTasks.Clear();
             for (int i = m_AllRoles.Count - 1; i >= 0; i--)
             {
-                RoleBase role = m_AllRoles[i];
+                RoleEntityBase role = m_AllRoles[i];
                 m_AllRoles.RemoveAt(i);
                 GameEntry.Entity.HideEntity(role.Id);
             }
@@ -186,7 +187,7 @@ namespace GameMain
 
             TransformParam param = TransformParam.Create(pPos, host.CachedTransform.eulerAngles, Vector3.one * 1.5f);
 
-            ActorBase partner = AddRole<RoleBase>(id, ActorType.Partner, actorPlayer.Camp, param).Actor;
+            ActorBase partner = AddRole<RoleEntityBase>(id, ActorType.Partner, actorPlayer.Camp, param).Actor;
             if (partner == null)
             {
                 return;
@@ -219,22 +220,22 @@ namespace GameMain
             return false;
         }
 
-        public T AddRole<T>(int id, ActorType type, BattleCampType camp, Vector3 pos, Vector3 angle) where T : RoleBase
+        public T AddRole<T>(int id, ActorType type, BattleCampType camp, Vector3 pos, Vector3 angle) where T : RoleEntityBase
         {
             return AddRole<T>(id, type, camp, TransformParam.Create(pos, angle));
         }
 
-        public T AddRole<T>(int id, ActorType type, BattleCampType camp, Vector3 pos, Vector3 angle, Vector3 scale) where T : RoleBase
+        public T AddRole<T>(int id, ActorType type, BattleCampType camp, Vector3 pos, Vector3 angle, Vector3 scale) where T : RoleEntityBase
         {
             return AddRole<T>(id, type, camp, TransformParam.Create(pos, angle, scale));
         }
 
         public T AddRole<T>(int entityTypeId, ActorType type, BattleCampType camp, TransformParam param)
-            where T : RoleBase
+            where T : RoleEntityBase
         {
             int entityId = GameEntry.Entity.GenerateSerialId();
             RoleEntityData roleData = new RoleEntityData(entityId, entityTypeId, type, camp);
-            RoleBase role = GameEntry.Entity.ShowRole<T>(roleData);
+            RoleEntityBase role = GameEntry.Entity.ShowRole<T>(roleData);
 
             if (role != null)
             {
@@ -253,33 +254,31 @@ namespace GameMain
             return role as T;
         }
 
-        public void OnPlayerDead()
+        public void OnPlayerDead(object sender, GameEventArgs e)
         {
-            List<RoleBase> pList = GetRolesByActorType(ActorType.Monster);
+            List<RoleEntityBase> pList = GetRolesByActorType(ActorType.Monster);
             for (int i = 0; i < pList.Count; i++)
             {
                 pList[i].Actor.SetTarget(null);
             }
-            if (CurSceneType == SceneType.City)
-            {
-                //TODO 打开重生界面
-                //ZTUIManager.Instance.OpenWindow(WindowID.UI_REBORN);
-            }
-            else
-            {
-                this.OnBattleEnd();
-            }
+
+            this.OnBattleEnd();
+
+            this.Player = null;
+
+            //TODO 打开副本结算界面
+            //ZTUIManager.Instance.OpenWindow(WindowID.UI_REBORN);
         }
 
-        public bool DelRole(RoleBase role)
+        public bool DelRole(RoleEntityBase role)
         {
-            if (role != null)
-            {
-                m_AllRoles.Remove(role);
-                m_CampActors[role.Actor.Camp].Remove(role);
-                GameEntry.Entity.HideEntity(role.Id);
-            }
-            return false;
+            if (role?.Actor == null)
+                return false;
+
+            m_AllRoles.Remove(role);
+            m_CampActors[role.Actor.Camp].Remove(role);
+            GameEntry.Entity.HideEntity(role.Id);
+            return true;
         }
 
         public void CreateMapEvent<T, S>(MapEvent pData, LevelRegion pRegion, LevelContainerBase<T> pHolder, List<S> pElemDataList) where T : LevelElement where S : MapElement
@@ -378,9 +377,9 @@ namespace GameMain
             }
         }
 
-        public List<RoleBase> GetRolesByActorType(ActorType pType)
+        public List<RoleEntityBase> GetRolesByActorType(ActorType pType)
         {
-            List<RoleBase> pList = new List<RoleBase>();
+            List<RoleEntityBase> pList = new List<RoleEntityBase>();
             for (int i = 0; i < m_AllRoles.Count; i++)
             {
                 if (m_AllRoles[i].Actor.ActorType == pType)

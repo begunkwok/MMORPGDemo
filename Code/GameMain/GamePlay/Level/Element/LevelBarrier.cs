@@ -41,8 +41,23 @@ namespace GameMain
             float halfCount = count * 0.5f;
             for (int i = 0; i < count; i++)
             {
-                if (LevelComponent.IsEditorMode)
+                if (Application.isPlaying)
                 {
+                    m_Barrier = GameEntry.Level.CreateLevelObject(Id);
+                    if (m_Barrier == null)
+                    {
+                        Log.Error("Create barrier failure.ID:{0}", Id);
+                        return;
+                    }
+
+                    m_Barrier.CachedTransform.position = transform.position;
+                    m_Barrier.CachedTransform.rotation = transform.rotation;
+                    m_Barrier.CachedTransform.localScale = transform.localScale;
+                }
+                else
+                {
+
+
                     GameObject barrier = LevelComponent.CreateLevelEditorObject(MapHolderType.Barrier);
                     barrier.transform.parent = transform;
                     Vector3 localPosition = Vector3.right*(i - halfCount + 0.5f)*m_DefaultWidth;
@@ -50,19 +65,6 @@ namespace GameMain
                     barrier.transform.localPosition = localPosition;
                     barrier.transform.localEulerAngles = Vector3.zero;
                     barrier.transform.localScale = Vector3.one;
-                }
-                else
-                {
-                    m_Barrier = GameEntry.Level.CreateLevelObject(Id);
-                    if (m_Barrier == null)
-                    {
-                        Log.Error("Create barrier failure.ID:{0}",Id);
-                        return;
-                    }
-
-                    m_Barrier.CachedTransform.position   = transform.position;
-                    m_Barrier.CachedTransform.rotation   = transform.rotation;
-                    m_Barrier.CachedTransform.localScale = transform.localScale;
                 }
             }
 

@@ -1,4 +1,6 @@
-﻿namespace GameMain
+﻿using UnityEngine;
+
+namespace GameMain
 {
     /// <summary>
     /// 游戏入口。
@@ -97,10 +99,10 @@
         {
             get
             {
-                if (LevelComponent.IsEditorMode)
-                    return LevelComponent.Instance;
+                if (Application.isPlaying)
+                    return LevelCom;
 
-                return LevelCom;
+                return LevelComponent.Instance;
             }
 
             protected set

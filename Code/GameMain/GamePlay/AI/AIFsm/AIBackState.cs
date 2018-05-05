@@ -35,17 +35,10 @@ namespace GameMain
             }
         }
 
-        protected override void OnLeave(IFsm<ActorBase> fsm, bool isShutdown)
-        {
-            base.OnLeave(fsm, isShutdown);
-
-            m_Owner.CachedTransform.localPosition = m_Owner.BornParam.Position;
-            m_Owner.CachedTransform.localEulerAngles = m_Owner.BornParam.EulerAngles;
-        }
-
         private void OnBackFinished()
         {
-            ChangeState<AIIdleState>();
+            if (!m_Owner.IsDead)
+                ChangeState<AIIdleState>();
         }
     }
 }

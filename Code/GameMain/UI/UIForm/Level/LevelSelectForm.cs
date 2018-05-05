@@ -40,6 +40,10 @@ namespace GameMain
                 item.Init(drLevels[i]);
                 m_LevelItems[i] = item;
             }
+
+            //默认选中第一个
+            m_CurSelectLevelId = m_LevelItems[0].LevelId;
+            m_LevelScene = m_LevelItems[0].SceneId;
         }
 
         protected override void OnOpen(object userData)
@@ -51,11 +55,14 @@ namespace GameMain
                 int levelId = m_LevelItems[i].LevelId;
                 string levelName = m_LevelItems[i].LevelName;
                 SceneId sceneId = m_LevelItems[i].SceneId;
-                m_LevelItems[i].onClick.Add(() =>
+                LevelItem item = m_LevelItems[i];
+
+                item.onClick.Add(() =>
                 {
                     m_CurSelectLevelId = levelId;
                     m_LevelScene = sceneId;
                     m_SelectText.text = levelName;
+                    m_EnterButton.enabled = !item.IsLock;
                 });
             }
           

@@ -9,7 +9,7 @@ namespace GameMain
     /// <summary>
     /// 角色基类
     /// </summary>
-    public class RoleBase : EntityBase
+    public class RoleEntityBase : EntityBase
     {
         public ActorBase Actor { get; protected set; }
 
@@ -22,6 +22,21 @@ namespace GameMain
 
             m_Animator = gameObject.GetComponent<Animator>();
             m_CharacterController = gameObject.GetOrAddComponent<CharacterController>();
+        }
+
+        protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
+        {
+            base.OnUpdate(elapseSeconds, realElapseSeconds);
+
+            Actor?.Step();
+        }
+
+        protected override void OnHide(object userData)
+        {
+            base.OnHide(userData);
+
+            Actor?.Destory();
+            Actor = null;
         }
 
         public void UpdateTransform(TransformParam param)

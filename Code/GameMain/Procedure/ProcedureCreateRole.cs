@@ -22,6 +22,9 @@ namespace GameMain
         private PoseRoleData m_MasterData = null;
         private PoseRoleData m_ShooterData = null;
 
+        private int m_WarriorTypeId = 10001;
+        private int m_MasterTypeId  = 10002;
+        private int m_ShooterTypeId = 10003;
         private int m_SelectRoleTypeId = 0;
 
         protected override void OnEnter(ProcedureOwner procedureOwner)
@@ -34,7 +37,7 @@ namespace GameMain
 
             //显示第一个职业
             GameEntry.Entity.ShowPoseRole(m_WarriorData);
-            m_SelectRoleTypeId = (int)EntityTypeId.PlayerWarrior;
+            m_SelectRoleTypeId = m_WarriorTypeId;
 
             //打开创建角色界面
             RoleCreateFormData data = new RoleCreateFormData();
@@ -65,9 +68,9 @@ namespace GameMain
 
         private void InitData()
         {
-            m_WarriorData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), 10001);
-            m_MasterData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), 10002);
-            m_ShooterData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), 10003);
+            m_WarriorData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), m_WarriorTypeId);
+            m_MasterData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), m_MasterTypeId);
+            m_ShooterData = new PoseRoleData(GameEntry.Entity.GenerateTempSerialId(), m_ShooterTypeId);
         }
 
         private void OnClickRoleType(int type)
@@ -77,7 +80,7 @@ namespace GameMain
             {
                 case ProfessionType.Warrior:
                     GameEntry.Entity.ShowPoseRole(m_WarriorData);
-                    m_SelectRoleTypeId = (int)EntityTypeId.PlayerWarrior;
+                    m_SelectRoleTypeId = m_WarriorTypeId;
 
                     if (GameEntry.Entity.HasEntity(m_MasterData.Id))
                         GameEntry.Entity.HideEntity(m_MasterData.Id);
@@ -86,7 +89,7 @@ namespace GameMain
                     break;
                 case ProfessionType.Master:
                     GameEntry.Entity.ShowPoseRole(m_MasterData);
-                    m_SelectRoleTypeId = (int)EntityTypeId.PlayerMaster;
+                    m_SelectRoleTypeId = m_MasterTypeId;
 
                     if (GameEntry.Entity.HasEntity(m_WarriorData.Id))
                         GameEntry.Entity.HideEntity(m_WarriorData.Id);
@@ -95,7 +98,7 @@ namespace GameMain
                     break;
                 case ProfessionType.Shoooter:
                     GameEntry.Entity.ShowPoseRole(m_ShooterData);
-                    m_SelectRoleTypeId = (int)EntityTypeId.PlayerShooter;
+                    m_SelectRoleTypeId = m_ShooterTypeId;
 
                     if (GameEntry.Entity.HasEntity(m_MasterData.Id))
                         GameEntry.Entity.HideEntity(m_MasterData.Id);

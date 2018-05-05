@@ -7,7 +7,7 @@ namespace GameMain
     {
         public MonsterType MonsterType { get; private set; }
 
-        public ActorEnemy(RoleBase entity, ActorType type, BattleCampType camp, CharacterController cc, Animator anim) : base(entity, type, camp, cc, anim)
+        public ActorEnemy(RoleEntityBase entity, ActorType type, BattleCampType camp, CharacterController cc, Animator anim) : base(entity, type, camp, cc, anim)
         {
             MonsterType = (MonsterType) m_ActorData.MonsterType;
 

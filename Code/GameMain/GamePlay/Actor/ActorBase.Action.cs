@@ -71,7 +71,7 @@ namespace GameMain
             this.ApplyCharacterCtrl(false);
 
             //播放死亡动画后删除
-            GameEntry.Timer.Register(1f, () =>
+            GameEntry.Timer.Register(2f, () =>
             {
                 GameEntry.Level.DelRole(this.Entity);
             });

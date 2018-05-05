@@ -45,6 +45,14 @@ namespace GameMain
         protected override void OnInit(object userData)
         {
             base.OnInit(userData);
+
+            CachedAnimator = GetComponent<Animator>();
+        }
+
+        protected override void OnShow(object userData)
+        {
+            base.OnShow(userData);
+
             m_EntityData = userData as EntityData;
             if (m_EntityData == null)
             {
@@ -52,14 +60,7 @@ namespace GameMain
                 return;
             }
             Name = $"{m_GoName}[{m_EntityData.TypeId}][{Id}]";
-
-            CachedAnimator = GetComponent<Animator>();
-            m_GoName = gameObject.name;
-        }
-
-        protected override void OnShow(object userData)
-        {
-            base.OnShow(userData);   
+            m_GoName = Name;
         }
 
         protected override void OnHide(object userData)

@@ -47,20 +47,20 @@ namespace GameMain
         public override void Build()
         {
             transform.DestroyChildren();
-            if (LevelComponent.IsEditorMode)
+            if (Application.isPlaying)
+            {
+                m_Mine = GameEntry.Level.CreateLevelObject(Id);
+                m_Mine.CachedTransform.position = transform.position;
+                m_Mine.CachedTransform.rotation = transform.rotation;
+                m_Mine.CachedTransform.localScale = transform.localScale;
+            }
+            else
             {
                 GameObject mine = LevelComponent.CreateLevelEditorObject(MapHolderType.MineGroup);
                 mine.transform.SetParent(transform, false);
                 mine.transform.localPosition = Vector3.zero;
                 mine.transform.localScale = Vector3.one;
                 mine.transform.localRotation = Quaternion.identity;
-            }
-            else
-            {
-                m_Mine = GameEntry.Level.CreateLevelObject(Id);
-                m_Mine.CachedTransform.position = transform.position;
-                m_Mine.CachedTransform.rotation = transform.rotation;
-                m_Mine.CachedTransform.localScale = transform.localScale;
             }
 
         }

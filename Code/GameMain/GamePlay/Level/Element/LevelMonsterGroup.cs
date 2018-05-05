@@ -68,7 +68,7 @@ namespace GameMain
                 Debug.LogError("找不到区域" + Region.Id);
                 return;
             }
-            Vector3 pos = GlobalTools.RandomOnCircle(10)+Region.Position;
+            Vector3 pos = GlobalTools.RandomOnCircle(5)+Region.Position;
             Vector3 angle = new Vector3(0, UnityEngine.Random.Range(0, 360), 0);
             TransformParam param = TransformParam.Create(pos, angle);
             EnemyRole monster = GameEntry.Level.CreateEnemy(MonsterID, param);
