@@ -393,7 +393,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1531456286908540}
   m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 0, y: 4, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4327237861314588}
@@ -453,7 +453,7 @@ MonoBehaviour:
   m_Script: {fileID: -1949914940, guid: a9142b59253c13b4dafb66aa3ef17c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DBName: userData.db
+  DBName: userData6.db
   SaveInterval: 60
 --- !u!114 &114160833603172686
 MonoBehaviour:
@@ -545,7 +545,7 @@ MonoBehaviour:
   m_Script: {fileID: -2035424662, guid: a9142b59253c13b4dafb66aa3ef17c8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PivotOffset: {x: 0, y: 2, z: 0}
+  m_PivotOffset: {x: 0, y: 4, z: -5}
   m_CameraOffset: {x: 0, y: 0, z: -4}
 --- !u!114 &114719894827122620
 MonoBehaviour:
