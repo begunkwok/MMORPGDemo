@@ -1,0 +1,130 @@
+<Root Type="TaskData">
+    <Id>0</Id>
+    <Name></Name>
+    <TaskType>0</TaskType>
+    <CanbeCancle>False</CanbeCancle>
+    <CanbeSearch>False</CanbeSearch>
+    <IsAutoPathFind>True</IsAutoPathFind>
+    <IsFinishedTaskCount>True</IsFinishedTaskCount>
+    <IsAutoFinish>False</IsAutoFinish>
+    <PreTaskID>0</PreTaskID>
+    <SubTasks>
+        <Item Type="SubTalk">
+            <Desc>去寻找圣光女神，询问他最近发生了什么天大的事情？</Desc>
+            <Func>1</Func>
+            <Npc Type="TaskNpc">
+                <NpcID>40006</NpcID>
+                <LifeTime>0</LifeTime>
+                <Location Type="TaskLocation">
+                    <MapID>10015</MapID>
+                    <Pos>(17.41,-2.04,10.66)</Pos>
+                </Location>
+            </Npc>
+            <Dialogs>
+                <Item Type="TaskDialog">
+                    <Role>1</Role>
+                    <NpcID>40006</NpcID>
+                    <Pos>0</Pos>
+                    <Action>0</Action>
+                    <ContentType>1</ContentType>
+                    <Content>勇敢的[ROLE]，我们将要遭受到炎魔大军的全面进攻，这个城市即将遭到破坏，无数人民将生灵涂炭！为了圣光女神，请求您去月光之城请求援军，共同抵抗军团入侵！</Content>
+                    <VoiceID>0</VoiceID>
+                    <Delay>0</Delay>
+                    <NpcAnim>xiuxian</NpcAnim>
+                </Item>
+                <Item Type="TaskDialog">
+                    <Role>0</Role>
+                    <NpcID>0</NpcID>
+                    <Pos>1</Pos>
+                    <Action>0</Action>
+                    <ContentType>1</ContentType>
+                    <Content>给我足够的好处，我就去！不然，我就去投奔炎魔之王了！</Content>
+                    <VoiceID>0</VoiceID>
+                    <Delay>0</Delay>
+                    <NpcAnim>badao</NpcAnim>
+                </Item>
+                <Item Type="TaskDialog">
+                    <Role>1</Role>
+                    <NpcID>40006</NpcID>
+                    <Pos>0</Pos>
+                    <Action>0</Action>
+                    <ContentType>1</ContentType>
+                    <Content>你没有信仰！圣光将诅咒你！哼!不过，你要是去的话我们将给你很多很多的金币和一件至高无上的法宝</Content>
+                    <VoiceID>0</VoiceID>
+                    <Delay>0</Delay>
+                    <NpcAnim>xiuxian</NpcAnim>
+                </Item>
+                <Item Type="TaskDialog">
+                    <Role>0</Role>
+                    <NpcID>0</NpcID>
+                    <Pos>1</Pos>
+                    <Action>0</Action>
+                    <ContentType>1</ContentType>
+                    <Content>嗯，说话算话，否则你就是个超级大骗子！</Content>
+                    <VoiceID>0</VoiceID>
+                    <Delay>0</Delay>
+                    <NpcAnim>denglu_huiwei</NpcAnim>
+                </Item>              
+            </Dialogs>
+        </Item>
+
+        <Item Type="SubTalk">
+            <Desc>前往月光之城，寻找城主月霞仙子共商抗敌大计</Desc>
+            <Func>1</Func>
+            <Npc Type="TaskNpc">
+                <NpcID>90002</NpcID>
+                <LifeTime>0</LifeTime>
+                <Location Type="TaskLocation">
+                    <MapID>10013</MapID>
+                    <Pos>(1.98,3.80,13.95)</Pos>
+               </Location>
+            </Npc>
+            <Dialogs>
+                <Item Type="TaskDialog">
+                    <Role>1</Role>
+                    <NpcID>90002</NpcID>
+                    <Pos>0</Pos>
+                    <Action>0</Action>
+                    <ContentType>1</ContentType>
+                    <Content>亲爱的[ROLE]，你有什么事吗！</Content>
+                    <VoiceID>0</VoiceID>
+                    <Delay>0</Delay>
+                    <NpcAnim>xiuxian</NpcAnim>
+                </Item>
+                <Item Type="TaskDialog">
+                    <Role>0</Role>
+                    <NpcID>0</NpcID>
+                    <Pos>1</Pos>
+                    <Action>0</Action>
+                    <ContentType>1</ContentType>
+                    <Content>听说你们兵强马壮，我们城主想和你们联合起来共同抵抗炎魔大军的入侵！</Content>
+                    <VoiceID>0</VoiceID>
+                    <Delay>0</Delay>
+                    <NpcAnim>badao</NpcAnim>
+                </Item>
+                <Item Type="TaskDialog">
+                    <Role>1</Role>
+                    <NpcID>90002</NpcID>
+                    <Pos>0</Pos>
+                    <Action>0</Action>
+                    <ContentType>1</ContentType>
+                    <Content>额，原来是这样！卫兵们，把他抓起来，献给炎魔大大做祭品！</Content>
+                    <VoiceID>0</VoiceID>
+                    <Delay>0</Delay>
+                    <NpcAnim>xiuxian</NpcAnim>
+                </Item>
+                <Item Type="TaskDialog">
+                    <Role>0</Role>
+                    <NpcID>0</NpcID>
+                    <Pos>1</Pos>
+                    <Action>0</Action>
+                    <ContentType>1</ContentType>
+                    <Content>额，其实我是炎魔的使者，来看看你是不是衷心归顺于我们的！不要逃耍花样!</Content>
+                    <VoiceID>0</VoiceID>
+                    <Delay>0</Delay>
+                    <NpcAnim>denglu_huiwei</NpcAnim>
+                </Item>
+            </Dialogs>
+        </Item>        
+    </SubTasks>
+</Root>

@@ -13,7 +13,7 @@ namespace GameMain
         private Vector3 m_Size;
 
         private LevelObject m_Barrier;
-        private float m_DefaultWidth = 14;
+        private float m_DefaultWidth = 18;
 
         public override void Build()
         {
@@ -43,10 +43,10 @@ namespace GameMain
             {
                 if (Application.isPlaying)
                 {
-                    m_Barrier = GameEntry.Level.CreateLevelObject(Id);
+                    m_Barrier = GameEntry.Level.CreateLevelObject(Constant.Define.Barrier);
                     if (m_Barrier == null)
                     {
-                        Log.Error("Create barrier failure.ID:{0}", Id);
+                        Log.Error("Create barrier failure.ID:{0}", Constant.Define.Barrier);
                         return;
                     }
 
@@ -56,8 +56,6 @@ namespace GameMain
                 }
                 else
                 {
-
-
                     GameObject barrier = LevelComponent.CreateLevelEditorObject(MapHolderType.Barrier);
                     barrier.transform.parent = transform;
                     Vector3 localPosition = Vector3.right*(i - halfCount + 0.5f)*m_DefaultWidth;
@@ -72,6 +70,12 @@ namespace GameMain
             m_Collider.size = m_Size;
             m_Collider.center = new Vector3(0, m_Size.y * 0.5f, m_Size.z * 0.5f);
             GlobalTools.SetLayer(gameObject, Constant.Layer.BarrerId);
+        }
+
+        public override void Hide()
+        {
+            GameEntry.Entity.HideEntity(m_Barrier);
+            transform.gameObject.SetActive(false);
         }
 
         public override void SetName()

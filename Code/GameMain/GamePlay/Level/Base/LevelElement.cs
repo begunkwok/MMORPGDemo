@@ -41,6 +41,11 @@ namespace GameMain
 
         }
 
+        public virtual void Hide()
+        {
+            
+        }
+
         public override void Init()
         {
 

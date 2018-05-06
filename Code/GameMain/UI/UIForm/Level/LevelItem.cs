@@ -53,7 +53,7 @@ namespace GameMain
             }
             else
             {
-                IsLock = true;
+                //IsLock = true;
                 m_Ctrl.selectedIndex = 0;
                 m_Level.color = Color.red;
             }

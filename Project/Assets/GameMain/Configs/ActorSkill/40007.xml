@@ -1,0 +1,22 @@
+﻿<Actor Id="50001" Name="变异亡灵">
+  
+  <Skill Id="5000101"  Name="普攻"  StateTime="1.966"  CD="6"  CastDistance="15" Pos="0">
+       <Sequence>
+           <Anim   AnimName="attack_01"/>
+           <Parallel>
+               <Anim   AnimName="attack_02"/>
+               <Clone>
+                    <Parallel>                    
+                         <Effect Id="62024" LastTime="1.5"  Dead="1" Bind="1" Fly="2"  FlySpeed="30" Sound="10017"  Offset="(0,-0.2,0)" JudgeName="Owner"/>
+                         <Judge  Region="1"  Affect="2"  Radius="0.5"  MaxCount="1"  JudgeName="Owner"  LifeTime="1.5">
+                            <Parallel>
+                               <Hurt    Damage="1"  Percent="1.08"/>
+                               <AddBuff BuffID="201024" Affect="2" Ratio="0.10"/>
+                           </Parallel>
+                        </Judge>
+                   </Parallel>
+              </Clone>
+          </Parallel>
+      </Sequence>
+  </Skill>
+</Actor>

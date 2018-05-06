@@ -310,7 +310,19 @@ namespace GameMain
 
         public virtual void TakeDamage(IActor attacker, int damage, bool strike = false)
         {
-            ShowFlyword(strike ? FlyWordType.CritHurt : FlyWordType.Hurt, damage);
+            AttackResultType result = AttributeTools.CalcAttackResult(attacker.Attrbute, this.Attrbute);
+            if (result == AttackResultType.Parry)
+            {
+                ShowFlyword(FlyWordType.Parry, 0);
+                return;
+            }
+            else if (result == AttackResultType.Miss)
+            {
+                ShowFlyword(FlyWordType.Miss, 0);
+                return;
+            }
+
+            ShowFlyword(strike ? FlyWordType.CritHurt : FlyWordType.NormalHurt, damage);
 
             int curHp = Attrbute.GetValue(AttributeType.Hp);
 
@@ -401,12 +413,12 @@ namespace GameMain
 
         public virtual void SetAlphaVertexColorOff(float time)
         {
-           //TODO: 模型渐出
+            throw new NotImplementedException();
         }
 
         public virtual void SetAlphaVertexColorOn(float time)
         {
-            //TODO: 模型渐入
+            throw new NotImplementedException();
         }
 
         public virtual bool CannotControlSelf()
@@ -532,7 +544,7 @@ namespace GameMain
 
         public void ChangeModel(int id)
         {
-            //TODO 更换模型
+            throw new NotImplementedException();
         }
 
         public void GotoEmptyFsm()
@@ -561,6 +573,9 @@ namespace GameMain
 
         public CommandReplyType ExecuteCommand<T>(T command) where T : ICommand
         {
+            if (this.IsDead)
+                return CommandReplyType.NO;
+
             if (m_CommandReceiver == null)
                 return CommandReplyType.NO;
 
@@ -811,7 +826,14 @@ namespace GameMain
                 return;
             }
 
-            //TODO:显示飞字
+            FlyWordData data = new FlyWordData
+            {
+                Type = type,
+                Value = value,
+                Target = CachedTransform,
+                Height = Height
+            };
+            FlyWordManager.Instance.Show(data);
         }
 
         protected void ShowWarning(string localKey)

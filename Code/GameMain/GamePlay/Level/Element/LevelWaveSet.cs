@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GameFramework.Event;
 using UnityEngine;
 
 namespace GameMain
@@ -58,8 +59,7 @@ namespace GameMain
             this.CurrIndex = 0;
             this.Enter();
 
-            //TODO: 击杀怪物事件
-            //ZTEvent.AddHandler<int, int>(EventID.RECV_KILL_MONSTER, OnKillMonster);
+            GameEntry.Event.Subscribe(KillMonsterEventArgs.EventId, OnKillMonster);
         }
 
         public void Enter()
@@ -75,8 +75,7 @@ namespace GameMain
                 Region.ActiveEventsByCondition(TriggerConditionType.WavesetEnd, mWaveSet.Id);
             }
 
-            //TODO: 击杀怪物事件
-            //ZTEvent.RemoveHandler<int, int>(EventID.RECV_KILL_MONSTER, OnKillMonster);
+            GameEntry.Event.Unsubscribe(KillMonsterEventArgs.EventId, OnKillMonster);
             DestroyImmediate(gameObject);
         }
 
@@ -144,13 +143,17 @@ namespace GameMain
             }
         }
 
-        private void OnKillMonster(int guid, int id)
+        private void OnKillMonster(object sender, GameEventArgs e)
         {
-            if (!this.mMonsterGUIDSet.Contains(guid))
+            KillMonsterEventArgs ne = e as KillMonsterEventArgs;
+            if (ne == null)
+                return;
+
+            if (!this.mMonsterGUIDSet.Contains(ne.MonsterEntityId))
             {
                 return;
             }
-            this.mMonsterGUIDSet.Remove(guid);
+            this.mMonsterGUIDSet.Remove(ne.MonsterEntityId);
             this.CurrKillNum++;
             this.CurrMonsterNum = mMonsterGUIDSet.Count;
             if (CurrMonsterNum > 0)

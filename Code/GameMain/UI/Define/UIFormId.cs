@@ -49,5 +49,10 @@
         /// 角色头上UI
         /// </summary>
         RoleBoardForm = 4001,
+
+        /// <summary>
+        /// 伤害数值界面
+        /// </summary>
+        FlyWordForm = 4002,
     }
 }

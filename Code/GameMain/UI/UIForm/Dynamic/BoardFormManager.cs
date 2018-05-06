@@ -17,12 +17,6 @@ namespace GameMain
 
         public void Clear()
         {
-            foreach (var roleBoardForm in m_BoardForms)
-            {
-                GameEntry.UI.CloseUIForm(roleBoardForm.Value);
-            }
-            m_BoardForms.Clear();
-
             GameEntry.Event.Unsubscribe(RefreshBoardEventArgs.EventId, OnRefreshBoard);
         }
 

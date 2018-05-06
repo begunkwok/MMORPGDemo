@@ -1,0 +1,126 @@
+<Root Type="TaskData">
+    <Id>0</Id>
+    <Name></Name>
+    <TaskType>0</TaskType>
+    <CanbeCancle>False</CanbeCancle>
+    <CanbeSearch>False</CanbeSearch>
+    <IsAutoPathFind>True</IsAutoPathFind>
+    <IsFinishedTaskCount>True</IsFinishedTaskCount>
+    <IsAutoFinish>False</IsAutoFinish>
+    <PreTaskID>0</PreTaskID>
+    <SubTasks>
+        <Item Type="SubTalk">
+            <Desc>寻找大魔导师，寻求最新动向</Desc>
+            <Func>1</Func>
+            <Npc Type="TaskNpc">
+                <NpcID>40006</NpcID>
+                <LifeTime>0</LifeTime>
+                <Location Type="TaskLocation">
+                    <MapID>10015</MapID>
+                    <Pos>(17.41,-2.04,10.66)</Pos>
+                </Location>
+            </Npc>
+            <Dialogs>
+                <Item Type="TaskDialog">
+                    <Role>1</Role>
+                    <NpcID>40006</NpcID>
+                    <Pos>0</Pos>
+                    <Action>0</Action>
+                    <ContentType>0</ContentType>
+                    <Content>天空之城最近来了一群恶魔，十分可怕！</Content>
+                    <VoiceID>0</VoiceID>
+                    <Delay>0</Delay>
+                    <NpcAnim>idle</NpcAnim>
+                </Item>
+                <Item Type="TaskDialog">
+                    <Role>0</Role>
+                    <NpcID>0</NpcID>
+                    <Pos>1</Pos>
+                    <Action>0</Action>
+                    <ContentType>0</ContentType>
+                    <Content>是不是要我去杀他们！</Content>
+                    <VoiceID>0</VoiceID>
+                    <Delay>0</Delay>
+                    <NpcAnim>idle</NpcAnim>
+                </Item>
+                <Item Type="TaskDialog">
+                    <Role>1</Role>
+                    <NpcID>40006</NpcID>
+                    <Pos>0</Pos>
+                    <Action>0</Action>
+                    <ContentType>0</ContentType>
+                    <Content>额，阁下英明无比，我等佩服!祝你好运!</Content>
+                    <VoiceID>0</VoiceID>
+                    <Delay>0</Delay>
+                    <NpcAnim>idle</NpcAnim>
+                </Item>
+                <Item Type="TaskDialog">
+                    <Role>0</Role>
+                    <NpcID>0</NpcID>
+                    <Pos>1</Pos>
+                    <Action>0</Action>
+                    <ContentType>0</ContentType>
+                    <Content>我这就去干掉他们</Content>
+                    <VoiceID>0</VoiceID>
+                    <Delay>0</Delay>
+                    <NpcAnim>idle</NpcAnim>
+                </Item>
+            </Dialogs>
+        </Item>
+        <Item Type="SubKillMonster">
+            <Desc>去干掉那批怪物，不要让他们活下来，至少杀死5只</Desc>
+            <Func>2</Func>
+            <ID>50003</ID>
+            <Count>5</Count>
+            <Location Type="TaskLocation">
+                <MapID>10014</MapID>
+                <Pos>(4.36,1.50,93.20)</Pos>
+            </Location>
+        </Item>
+        <Item Type="SubGather">
+            <Desc>去采集一些矿石回来</Desc>
+            <Func>10</Func>
+            <ID>600001</ID>
+            <Count>5</Count>
+            <Location Type="TaskLocation">
+                <MapID>10014</MapID>
+                <Pos>(92.00,5.00,70.10)</Pos>
+            </Location>
+        </Item>
+        <Item Type="SubUseItem">
+            <Desc></Desc>
+            <Func>8</Func>
+            <ID>501</ID>
+            <Times>1</Times>
+        </Item>
+        <Item Type="SubUseSkill">
+            <Desc></Desc>
+            <Func>9</Func>
+            <Pos>0</Pos>
+            <Times>1</Times>
+        </Item>
+        <Item Type="SubTriggerPlot">
+            <Desc></Desc>
+            <Func>6</Func>
+            <PlotID>1</PlotID>
+        </Item>
+        <Item Type="SubTriggerCutscene">
+            <Desc></Desc>
+            <Func>7</Func>
+            <CutsceneID>1</CutsceneID>
+        </Item>
+        <Item Type="SubInterActive">
+            <Desc></Desc>
+            <Func>4</Func>
+            <Npc Type="TaskNpc">
+                <NpcID>40006</NpcID>
+                <LifeTime>0</LifeTime>
+                <Location Type="TaskLocation">
+                    <MapID>10015</MapID>
+                    <Pos>(17.41,-2.04,10.66)</Pos>
+                </Location>
+            </Npc>
+            <Cmd>idle</Cmd>
+        </Item>
+    </SubTasks>
+</Root>

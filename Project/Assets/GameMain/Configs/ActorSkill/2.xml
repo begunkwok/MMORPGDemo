@@ -1,0 +1,217 @@
+﻿<Actor Id="1">
+  <Skill Id="2001"  Name="攻击1"  StateTime="0.267"  CD="0"   CastDistance="15" Pos="0">
+      <Parallel>
+        <Anim   AnimName="attack_01"/>
+        <Clone>
+            <Sequence>
+                 <Wait Seconds="0.167"/>
+                 <Parallel>
+                    <Effect Id="62011" LastTime="1"  Dead="1"  FlySpeed="30"  Bind="1" Fly="2"  Sound="sound_firebomb"  JudgeName="Owner"/>
+                    <Judge  Region="1"  Affect="2"  Radius="0.5"  MaxCount="1"  JudgeName="Owner"  LifeTime="1">
+                         <SuckBlood  Percent="3.15" Rate="1"/>
+                   </Judge>
+                </Parallel>
+           </Sequence>
+        </Clone>
+      </Parallel>
+    </Skill>
+
+  <Skill  Id="2002"  Name="攻击2"  StateTime="0.433"  CD="0"    CastDistance="15"  Pos="0">
+      <Parallel>
+        <Anim   AnimName="attack_02"/>
+        <Clone>
+          <Sequence>
+            <Wait Seconds="0.200"/>
+            <Parallel>
+              <Effect Id="62011" LastTime="1"  Dead="1" FlySpeed="30"  Bind="1" Fly="2"  Sound="sound_firebomb"    JudgeName="Owner"/>
+              <Judge  Region="1"  Affect="2"  Radius="0.5"  MaxCount="1"  JudgeName="Owner"  LifeTime="1">
+                <Hurt    Damage="1"  Percent="1.75"/>
+              </Judge>
+            </Parallel>
+          </Sequence>
+        </Clone>
+      </Parallel>
+  </Skill>
+
+  <Skill  Id="2003"  Name="攻击3"  StateTime="0.267"  CD="0"    CastDistance="15"  Pos="0">
+      <Parallel>
+        <Anim   AnimName="attack_02"/>
+        <Clone>
+          <Sequence>
+            <Wait Seconds="0.167"/>
+            <Parallel>
+              <Effect Id="62011" LastTime="1" Dead="1" FlySpeed="30"  Bind="1" Fly="2"  Sound="sound_firebomb"    JudgeName="Owner"/>
+              <Judge  Region="1"  Affect="2"  Radius="0.5"  MaxCount="1"  JudgeName="Owner"  LifeTime="1">
+                <Hurt    Damage="1"  Percent="1.88"/>
+              </Judge>
+            </Parallel>
+          </Sequence>
+        </Clone>
+      </Parallel>
+  </Skill>
+
+  <Skill  Id="2004"  Name="攻击4"  StateTime="0.967"  CD="0"    CastDistance="15"  Pos="0">
+      <Parallel>
+        <Anim   AnimName="attack_04"/>
+         <Clone>
+           <Sequence>
+             <Wait Seconds="0.767"/>
+             <Parallel>
+               <Effect Id="62011" LastTime="1"  Dead="1"  FlySpeed="30"  Bind="1" Fly="2"  Sound="sound_firebomb"    JudgeName="Owner"/>
+               <Judge  Region="1"  Affect="2"  Radius="0.5"  MaxCount="1"  JudgeName="Owner"  LifeTime="1">
+                 <Hurt    Damage="1"  Percent="1.93"/>
+               </Judge>
+             </Parallel>
+           </Sequence>
+        </Clone>        
+     </Parallel>
+  </Skill>
+
+  <Skill  Id="2005"  Name="攻击5"  StateTime="1.067"  CD="0"    CastDistance="15"  Pos="0">
+      <Parallel>
+        <Anim   AnimName="attack_05"  Sound="1001005"/>
+        <Clone>
+          <Sequence>
+            <Wait Seconds="0.467"/>
+            <Parallel>
+              <Effect Id="62011" LastTime="1" Dead="1"  FlySpeed="30"  Bind="1" Fly="2"  Sound="sound_firebomb"    JudgeName="Owner"/>
+              <Judge  Region="1"  Affect="2"  Radius="0.5"  MaxCount="1"  JudgeName="Owner"  LifeTime="1">
+                <Hurt    Damage="1"  Percent="2.23"/>
+              </Judge>
+            </Parallel>
+          </Sequence>
+        </Clone>
+      </Parallel>
+  </Skill>
+
+
+  <Skill  Id="2006"  Name="寒冰散射"  StateTime="1.500"  CostType="1"  CostNum="10"  CD="5"  CastDistance="15"  Pos="1">
+      <Sequence>
+        <Anim   AnimName="skill_hanbingqiu_01"/>
+        <Parallel>
+           <Anim   AnimName="skill_hanbingqiu_02"/>
+           <Sequence>
+             <Wait Seconds="0.2"/>
+             <Clone>
+               <Parallel>
+                   <Effect Id="62012" LastTime="1" Dead="1"  FlySpeed="30" Bind="1"  Fly="2"  Sound="sound_icebomb"  Euler="(0,10,0)"  JudgeName="Owner"/>
+                   <Judge  Region="3"  Affect="2"  Radius="0.5"  MaxCount="1"  JudgeName="Owner"  LifeTime="1">
+                        <Hurt    Damage="1"  Percent="2.20"/>
+                  </Judge>
+              </Parallel>
+             </Clone>             
+          </Sequence>
+       </Parallel>
+      </Sequence>
+  </Skill>
+
+  <Skill  Id="2007"  Name="龙息术"  StateTime="2.432"  CostType="1"  CostNum="10"  CD="7"   CastDistance="5"  Pos="2">
+        <Sequence>
+            <Anim   AnimName="skill_longxi_01" JudgeName="Owner"/>
+            <Parallel>
+                <Effect Id="64004" LastTime="1.732"  Bind="3"  Sound="sound_longxi"/>
+                <LoopSequence Times="4">
+                    <Anim   AnimName="skill_longxi_03"/>
+                    <Judge Region="3"  Affect="2"  MaxDis="6.0"  HAngle="60"  Height="2"  JudgeName="Owner">
+                        <Hurt Damage="1"  Percent="4.45"/>
+                   </Judge>
+               </LoopSequence>
+            </Parallel>
+            <Anim   AnimName="skill_longxi_04"/>
+        </Sequence>
+    </Skill>
+
+  <Skill Id="2008"  Name="冰霜风暴" StateTime="3.200"  CostType="1"  CostNum="10"  CD="10"  CastDistance="7"  Pos="3">
+        <Parallel>
+            <Effect Id="64053" LastTime="4"  Bind="3"/>
+            <Sequence>
+                <Anim   AnimName="skill_bingshuangfengbao_01"/>
+                <Anim   AnimName="skill_bingshuangfengbao_02"/>
+                <Anim   AnimName="skill_bingshuangfengbao_03"/>
+                <Anim   AnimName="skill_bingshuangfengbao_04"/>
+           </Sequence>
+            <Sequence>
+                <Wait Seconds="1.7"/>
+                <Parallel>
+                    <Effect Id="64023" LastTime="3"  Bind="2"  Sound="sound_explosion"  JudgeName="Owner"/>                
+                    <Judge  Region="3"  Affect="2"  MaxDis="7.0"  HAngle="360"  Height="3"  JudgeName="Owner">
+                         <Hurt Damage="1"  Percent="5.50"/>
+                         <AddBuff BuffID="201025" Affect="2" Ratio="1"/>
+                   </Judge>
+               </Parallel>
+           </Sequence>
+        </Parallel>
+    </Skill>
+
+  <Skill Id="2009" Name="地火攻击"  StateTime="3.105"  CostType="1"  CostNum="10"  CD="5"   CastDistance="5"  Pos="4">
+        <Parallel>
+            <Effect Id="64022" LastTime="3.105"  Bind="3"/>
+            <Sequence>
+                <Anim   AnimName="skill_dihuogongji_01"/>
+                <Anim   AnimName="skill_dihuogongji_02"/>
+                <LoopSequence Times="4">
+                      <Anim   AnimName="skill_dihuogongji_03" JudgeName="Owner1"    Sound="sound_longxi"/>
+                      <Judge  Region="3"  Affect="2"  MaxDis="6.0"  HAngle="360"  Height="3"  JudgeName="Owner1">
+                             <Hurt Damage="1" Percent="0.80"/>
+                     </Judge>
+               </LoopSequence>
+                <Parallel>
+                      <Anim   AnimName="skill_dihuogongji_04" JudgeName="Owner2"/>
+                      <Effect Id="64034" LastTime="0.667"  Bind="3"  Sound="sound_explosion"/>
+                      <Judge  Region="3"  Affect="2"  MaxDis="6.0"  HAngle="360"  Height="3"  JudgeName="Owner2">
+                            <Hurt Damage="1" Percent="3.50"/>
+                      </Judge>
+               </Parallel>                    
+           </Sequence>
+        </Parallel>
+    </Skill>
+
+    <Skill Id="2010" Name="冰封"  StateTime="1.667"  CostType="1"  CostNum="10"  CD="3"  CastDistance="5"  Pos="5">
+        <Sequence>
+            <Parallel>
+                <Anim   AnimName="xuli_01"  Sound="sound_roar_fashi_01"/>
+                <Effect Id="64053" LastTime="1.000" Bind="3"/>
+           </Parallel>
+            <Parallel>
+                <Anim   AnimName="xuli_02"  Sound="sound_roar_fashi_02"/>
+                <Effect Id="64052" LastTime="0.667" Bind="7"  JudgeName="Owner"/>
+                <Judge  Region="3"  Affect="2"  MaxDis="3.0"  HAngle="360"  Height="2"  JudgeName="Owner">
+                    <Hurt Damage="1" Percent="7.50"/>
+               </Judge>    
+           </Parallel>
+        </Sequence>
+    </Skill>
+
+    <Skill Id="2011" Name="投掷"   StateTime="1.167"  CostType="1"  CostNum="10"  CD="6" CastDistance="15"  Pos="6"  >
+        <Sequence>
+            <Parallel>
+                <Anim   AnimName="touzhi"  Sound="1001001"/>
+                <Clone>
+                   <Sequence>
+                       <Wait Seconds="0.167"/>
+                       <Parallel>
+                            <Effect Id="62014" LastTime="1"  Dead="1"  FlySpeed="30"  Bind="1" Fly="2"  Sound="sound_firebomb"  JudgeName="Owner"/>
+                            <Judge  Region="1"  Affect="2"  Radius="0.5"  MaxCount="1"  JudgeName="Owner"  LifeTime="1">
+                                 <Hurt    Damage="1"  Percent="1.93"/>
+                           </Judge>
+                      </Parallel>
+                  </Sequence>
+              </Clone>    
+            </Parallel>
+        </Sequence>
+    </Skill>
+
+  <Skill Id="2012" Name="登陆展示技能"  StateTime="1.667"  CostType="0"  CD="3"  Pos="9">
+    <Sequence>
+      <Parallel>
+        <Anim   AnimName="xuli_01"/>
+        <Effect Id="64053" LastTime="1.000"  Bind="3"  Sound=""/>
+      </Parallel>
+      <Parallel>
+        <Anim   AnimName="xuli_02"/>
+        <Effect Id="64052" LastTime="0.667"  Bind="3"  Sound=""/>
+      </Parallel>
+    </Sequence>
+  </Skill>
+
+</Actor>

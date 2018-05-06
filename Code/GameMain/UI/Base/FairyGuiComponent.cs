@@ -23,6 +23,11 @@ namespace GameMain
             RegisterCustomLoader();
         }
 
+        public void Update()
+        {
+            FlyWordManager.Instance.Step();
+        }
+
         public void Clear()
         {
             foreach (KeyValuePair<int, string> luaFormInfo in m_LuaForms)
@@ -32,6 +37,10 @@ namespace GameMain
                 FairyGuiLuaForm luaForm = GameEntry.UI.GetUIForm(luaFormInfo.Key, formGroup) as FairyGuiLuaForm;
                 GameEntry.UI.CloseUIForm(luaForm);
             }
+
+            BoardFormManager.Instance.Clear();
+            FlyWordManager.Instance.Clear();
+
             m_LuaForms.Clear();
             m_UIPackages.Clear();
             UIPackage.RemoveAllPackages();

@@ -1,0 +1,46 @@
+﻿<Actor Id="50016" Name="亡灵勇士">
+  
+   <Skill Id="5001601"  Name="普攻"     StateTime="1.800"  CD="2"  CastDistance="3" Pos="0">
+      <Parallel>
+         <Anim   AnimName="attack_01"  Sound="1001001"/>
+         <Effect Id="61023" LastTime="1.800"  Bind="3"  Type="1"/>
+     </Parallel>
+  </Skill>
+
+  <Skill  Id="5001602"  Name="灵魂冲击"  StateTime="2.167"  CD="5"  CastDistance="15" Pos="1">
+    <Sequence>
+      <Anim   AnimName="skill_linghunchongji_01"  Sound="1001001"/>
+      <Anim   AnimName="skill_linghunchongji_02"  Sound="1001001"/>      
+      <Parallel>
+          <Anim   AnimName="skill_linghunchongji_03"  Sound="1001001"/>
+          <Clone>
+              <Effect Id="61024" LastTime="3.000"  Bind="1"  Fly="2" FlySpeed="20" Type="1"/>
+         </Clone>
+     </Parallel>
+    </Sequence>
+  </Skill>
+
+  <Skill  Id="5001603"  Name="死亡之斧"  StateTime="2.7000" CD="5"   CastDistance="4" Pos="2">
+    <Sequence>
+      <Anim   AnimName="skill_siwangzhifu_01"  Sound="1001001"/>
+      <Anim   AnimName="skill_siwangzhifu_02"  Sound="1001001"/>
+      <Parallel>        
+           <Anim   AnimName="skill_siwangzhifu_03"  Sound="1001001"/>
+           <Effect Id="61026" LastTime="1.367"  Bind="3"  Type="1"/>
+      </Parallel>
+    </Sequence>
+  </Skill>
+
+
+  <Skill  Id="5001604"  Name="亡灵之光"  StateTime="2.966"  CD="5"   CastDistance="4" Pos="3">
+    <Sequence>
+         <Anim   AnimName="skill_wanglingzhiguang_01"  Sound="1001001"/>
+         <Anim   AnimName="skill_wanglingzhiguang_02"  Sound="1001001"/>
+         <Parallel>
+            <Anim   AnimName="skill_wanglingzhiguang_03"  Sound="1001001"/>
+            <Effect Id="61027" LastTime="1.500"  Bind="3"  Type="1"/>
+        </Parallel>
+  </Sequence>
+ </Skill>
+  
+</Actor>

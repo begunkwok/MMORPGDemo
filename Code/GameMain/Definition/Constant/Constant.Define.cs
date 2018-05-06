@@ -36,6 +36,16 @@
             /// 升级特效
             /// </summary>
             public static readonly int LevelUpEffect = 65006;
+
+            /// <summary>
+            /// 障碍物
+            /// </summary>
+            public static readonly int Barrier = 20001;
+
+            /// <summary>
+            /// 传送门
+            /// </summary>
+            public static readonly int Portal = 20002;
         }
     }
 }

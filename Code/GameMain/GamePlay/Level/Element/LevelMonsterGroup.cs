@@ -1,24 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using GameFramework.Event;
 
 namespace GameMain
 {
     public class LevelMonsterGroup : LevelElement
     {
-        private HashSet<int> mMonsterGUIDSet = new HashSet<int>();
+        public int   MonsterID = 0;
+        public float RebornCD = 0;
+        public int   MaxCount = 0;
 
-        public int   MonsterID;
-        public float RebornCD = 3;
-        public int   MaxCount = 4;
+        private HashSet<int> m_Monsters = new HashSet<int>();
 
         public LevelRegion Region
         {
             get; set;
         }
 
+        public LevelBarrier Barrier
+        {
+            get;
+            set;
+        }
+
+        private MapMonsterGroup data;
+
+
         public int RegionID
         {
             get { return Region == null ? 0 : Region.Id; }
+        }
+
+        public int BarrierID
+        {
+            get { return Barrier == null ? 0 : Barrier.Id; }
         }
 
         public override void SetName()
@@ -28,7 +43,7 @@ namespace GameMain
 
         public override void Import(XmlObject pData,bool pBuild)
         {
-            MapMonsterGroup data = pData as MapMonsterGroup;
+            data = pData as MapMonsterGroup;
             Id = data.Id;
             RebornCD = data.RebornCD;
             MaxCount = data.MaxCount;
@@ -45,6 +60,7 @@ namespace GameMain
             MapMonsterGroup data = new MapMonsterGroup();
             data.Id = Id;
             data.RegionID = RegionID;
+            data.UnlockBarrierId = BarrierID;
             data.RebornCD = RebornCD;
             data.MaxCount = MaxCount;
             data.MonsterID = MonsterID;
@@ -53,8 +69,7 @@ namespace GameMain
 
         public override void Init()
         {
-            //TODO 击杀怪物事件
-            //ZTEvent.AddHandler<int,int>(EventID.RECV_KILL_MONSTER, OnKillMonster);
+            GameEntry.Event.Subscribe(KillMonsterEventArgs.EventId, OnKillMonster);
             for (int i = 0; i < MaxCount; i++)
             {
                 CreateMonster();
@@ -74,28 +89,38 @@ namespace GameMain
             EnemyRole monster = GameEntry.Level.CreateEnemy(MonsterID, param);
             monster.Actor.SetBornParam(param);
 
-            mMonsterGUIDSet.Add(monster.Id);
+            m_Monsters.Add(monster.Id);
         }
 
-        private void OnKillMonster(int guid,int id)
+        private void OnKillMonster(object sender,GameEventArgs e)
         {
-            if (!this.mMonsterGUIDSet.Contains(guid))
+            KillMonsterEventArgs ne = e as KillMonsterEventArgs;
+            if(ne == null)
+                return;
+
+            if (!this.m_Monsters.Contains(ne.MonsterEntityId))
             {
                 return;
             }
-            mMonsterGUIDSet.Remove(guid);
-            if(mMonsterGUIDSet.Count<MaxCount)
+            m_Monsters.Remove(ne.MonsterEntityId);
+            //if(m_Monsters.Count<MaxCount)
+            //{
+            //    if (RebornCD > 0)
+            //        Invoke("CreateMonster", RebornCD);
+            //}
+
+            if (m_Monsters.Count == 0)
             {
-                if (RebornCD > 0)
-                    Invoke("CreateMonster", RebornCD);
+                HolderBarrier pHolder = GameEntry.Level.GetHolder(MapHolderType.Barrier) as HolderBarrier;
+                this.Barrier = pHolder.FindElement(data.UnlockBarrierId);
+                Barrier.Hide();
             }
         }
 
         void OnDestroy()
         {
             CancelInvoke();
-            //TODO 移除击杀怪物时间
-            //ZTEvent.RemoveHandler<int,int>(EventID.RECV_KILL_MONSTER, OnKillMonster);
+            GameEntry.Event.Unsubscribe(KillMonsterEventArgs.EventId, OnKillMonster);
         }
     }
 }

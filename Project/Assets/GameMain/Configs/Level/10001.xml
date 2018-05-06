@@ -1,0 +1,163 @@
+<Root Type="MapConfig">
+<Id>10001</Id>
+<Delay>0</Delay>
+<MapName>关卡01</MapName>
+<MapPath></MapPath>
+<AllowRide>True</AllowRide>
+<AllowPK>True</AllowPK>
+<AllowTrade>True</AllowTrade>
+<AllowFight>True</AllowFight>
+<Ally Type="MapBorn">
+<Camp>1</Camp>
+<TransParam Type="MapTransform">
+<Position>(-41.36,1.54,54.08)</Position>
+<EulerAngles>(0.00,139.05,0.00)</EulerAngles>
+<Scale>(1.00,1.00,1.00)</Scale>
+</TransParam>
+</Ally>
+<Barriers>
+<Item Type="MapBarrier">
+<Id>1</Id>
+<TransParam Type="MapTransform">
+<Position>(-9.87,0.78,14.99)</Position>
+<EulerAngles>(0.00,315.44,0.00)</EulerAngles>
+<Scale>(1.00,1.00,1.00)</Scale>
+</TransParam>
+</Item>
+<Item Type="MapBarrier">
+<Id>2</Id>
+<TransParam Type="MapTransform">
+<Position>(5.86,1.06,-6.58)</Position>
+<EulerAngles>(0.00,327.07,0.00)</EulerAngles>
+<Scale>(1.00,1.00,1.00)</Scale>
+</TransParam>
+</Item>
+</Barriers>
+<Regions>
+<Item Type="MapRegion">
+<Id>50001</Id>
+<Center>(-21.01,3.85,26.92)</Center>
+<EulerAngles>(0.00,316.91,0.00)</EulerAngles>
+<Size>(15.00,6.33,29.60)</Size>
+<AllowRide>True</AllowRide>
+<AllowPK>True</AllowPK>
+<AllowTrade>True</AllowTrade>
+<AllowFight>True</AllowFight>
+<StartActive>True</StartActive>
+<Events>
+<Item Type="MapEvent">
+<Type>11</Type>
+<Id>50001</Id>
+<Active>True</Active>
+<TriggerDelay>0</TriggerDelay>
+<Relation1>0</Relation1>
+<Conditions1>
+<Item Type="MapEventCondition">
+<Type>1</Type>
+<Args></Args>
+</Item>
+</Conditions1>
+</Item>
+</Events>
+</Item>
+<Item Type="MapRegion">
+<Id>50003</Id>
+<Center>(-2.09,3.54,4.74)</Center>
+<EulerAngles>(0.00,323.09,0.00)</EulerAngles>
+<Size>(17.10,5.60,25.02)</Size>
+<AllowRide>True</AllowRide>
+<AllowPK>True</AllowPK>
+<AllowTrade>True</AllowTrade>
+<AllowFight>True</AllowFight>
+<StartActive>True</StartActive>
+<Events>
+<Item Type="MapEvent">
+<Type>11</Type>
+<Id>50003</Id>
+<Active>True</Active>
+<TriggerDelay>0</TriggerDelay>
+<Relation1>0</Relation1>
+<Conditions1>
+<Item Type="MapEventCondition">
+<Type>1</Type>
+<Args></Args>
+</Item>
+</Conditions1>
+</Item>
+</Events>
+</Item>
+<Item Type="MapRegion">
+<Id>50016</Id>
+<Center>(33.95,4.54,-43.87)</Center>
+<EulerAngles>(0.00,325.11,0.00)</EulerAngles>
+<Size>(20.70,9.21,38.10)</Size>
+<AllowRide>True</AllowRide>
+<AllowPK>True</AllowPK>
+<AllowTrade>True</AllowTrade>
+<AllowFight>True</AllowFight>
+<StartActive>True</StartActive>
+<Events>
+<Item Type="MapEvent">
+<Type>11</Type>
+<Id>50016</Id>
+<Active>True</Active>
+<TriggerDelay>0</TriggerDelay>
+<Relation1>0</Relation1>
+<Conditions1>
+<Item Type="MapEventCondition">
+<Type>1</Type>
+<Args></Args>
+</Item>
+</Conditions1>
+</Item>
+</Events>
+</Item>
+</Regions>
+<MonsterGroups>
+<Item Type="MapMonsterGroup">
+<Id>50001</Id>
+<RegionID>50001</RegionID>
+<RebornCD>-1</RebornCD>
+<MonsterID>50001</MonsterID>
+<MaxCount>4</MaxCount>
+<UnlockBarrierId>1</UnlockBarrierId>
+</Item>
+<Item Type="MapMonsterGroup">
+<Id>50003</Id>
+<RegionID>50003</RegionID>
+<RebornCD>-1</RebornCD>
+<MonsterID>50003</MonsterID>
+<MaxCount>4</MaxCount>
+<UnlockBarrierId>2</UnlockBarrierId>
+</Item>
+<Item Type="MapMonsterGroup">
+<Id>50016</Id>
+<RegionID>50016</RegionID>
+<RebornCD>-1</RebornCD>
+<MonsterID>50016</MonsterID>
+<MaxCount>1</MaxCount>
+<UnlockBarrierId>0</UnlockBarrierId>
+</Item>
+</MonsterGroups>
+<WaveSets>
+<Item Type="MapWaveSet">
+<Id>50001</Id>
+<AddBuffID>0</AddBuffID>
+<Waves>
+<Item Type="MapMonsterWave">
+<Index>50001</Index>
+<IndexName>1</IndexName>
+<Delay>2</Delay>
+<Spawn>2</Spawn>
+<Monsters>
+<Item Type="MapMonsterCall">
+<Id>50001</Id>
+<Position>(0.00,0.00,0.00)</Position>
+<EulerAngles>(0.00,0.00,0.00)</EulerAngles>
+</Item>
+</Monsters>
+</Item>
+</Waves>
+</Item>
+</WaveSets>
+</Root>

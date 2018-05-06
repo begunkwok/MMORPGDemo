@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using GameFramework;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.WSA;
 using Application = UnityEngine.Application;
@@ -40,7 +41,14 @@ namespace GameMain
             {
                 if (Application.isPlaying)
                 {
-                    LevelObject portal = GameEntry.Level.CreateLevelObject(Id);
+                    LevelObject portal = GameEntry.Level.CreateLevelObject(Constant.Define.Portal);
+                    if (portal == null)
+                    {
+                        Log.Error("Create portal failure.ID:{0}", Constant.Define.Portal);
+                        return;
+                    }
+
+
                     m_PortalObj = portal.gameObject;
                     portal.CachedTransform.position = transform.position;
                     portal.CachedTransform.rotation = transform.rotation;

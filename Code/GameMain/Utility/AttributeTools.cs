@@ -20,6 +20,11 @@ namespace GameMain
             }
         }
 
+        public static AttackResultType CalcAttackResult(IAttribute attacker, IAttribute defender)
+        {
+            return Strategy.CalcAttackResult(attacker, defender);
+        }
+        
         public static Dictionary<PropertyType, int> New()
         {
             Dictionary<PropertyType, int> propertys = new Dictionary<PropertyType, int>();

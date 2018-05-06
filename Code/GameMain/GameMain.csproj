@@ -127,6 +127,7 @@
     <Compile Include="GamePlay\AI\AIFsm\AIFsmStateBase.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIIdleState.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIPatrolState.cs" />
+    <Compile Include="GamePlay\Attribute\Define\AttackResultType.cs" />
     <Compile Include="GamePlay\Level\Base\LevelComponent.Editor.cs" />
     <Compile Include="GamePlay\Level\Base\LevelContainerBase.cs" />
     <Compile Include="GamePlay\Level\Element\LevelBarrier.cs" />
@@ -245,7 +246,7 @@
     <Compile Include="GamePlay\AI\Base\IAIPathFinding.cs" />
     <Compile Include="GamePlay\Battle\Define\BattleCampType.cs" />
     <Compile Include="GamePlay\Actor\Define\ActorBindPosType.cs" />
-    <Compile Include="Definition\Enum\FlyWordType.cs" />
+    <Compile Include="UI\Define\FlyWordType.cs" />
     <Compile Include="GamePlay\Actor\Define\ActorStateType.cs" />
     <Compile Include="GamePlay\AI\ActorFsmAI.cs" />
     <Compile Include="GamePlay\AI\AIPathFinding.cs" />
@@ -487,12 +488,15 @@
     <Compile Include="Definition\EventArgs\LoadingFormUpdateProgressEventArgs.cs" />
     <Compile Include="UI\FormData\BoardFormData.cs" />
     <Compile Include="UI\FormData\DialogFormData.cs" />
+    <Compile Include="UI\FormData\FlyWordData.cs" />
     <Compile Include="UI\FormData\HomeFormData.cs" />
     <Compile Include="UI\FormData\LoginFormData.cs" />
     <Compile Include="UI\Define\UIFormId.cs" />
     <Compile Include="UI\FormData\RoleCreateFormData.cs" />
     <Compile Include="UI\Extension\UIExtension.cs" />
     <Compile Include="UI\UIForm\Dynamic\BoardFormManager.cs" />
+    <Compile Include="UI\UIForm\Dynamic\FlyWordForm.cs" />
+    <Compile Include="UI\UIForm\Dynamic\FlyWordManager.cs" />
     <Compile Include="UI\UIForm\Dynamic\RoleBoardForm.cs" />
     <Compile Include="UI\UIForm\Home\BuffTip.cs" />
     <Compile Include="UI\UIForm\Home\ControllerForm.cs" />

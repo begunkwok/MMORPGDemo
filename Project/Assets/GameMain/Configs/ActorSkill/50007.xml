@@ -1,0 +1,37 @@
+﻿<Actor Id="50007" Name="灰烬教徒">
+  
+  <Skill Id="5000701"  Name="暗影突击"  StateTime="0.933"  CD="4"  CastDistance="15" Pos="0">
+      <Parallel>
+           <Sequence>
+               <Wait Seconds="0.600"/>
+               <Clone>
+                 <Parallel>
+                   <Effect Id="62015" LastTime="2"  Dead="1" Bind="1" Fly="2"  FlySpeed="30" Sound="sound_firebomb"  JudgeName="Owner"/>
+                   <Judge  Region="1"  Affect="2"  Radius="0.5"  MaxCount="1"  JudgeName="Owner"  LifeTime="2">
+                     <Hurt    Damage="1"  Percent="1.77"/>
+                   </Judge>
+                 </Parallel>
+              </Clone>
+           </Sequence>
+           <Anim   AnimName="attack_01"/>
+     </Parallel>
+  </Skill>
+
+  <Skill Id="5000702"  Name="暗影爆裂"  StateTime="0.567"  CD="4"  CastDistance="15" Pos="1">
+    <Parallel>
+      <Sequence>
+        <Wait Seconds="0.600"/>
+        <Clone>
+          <Parallel>
+            <Effect Id="62015" LastTime="2"  Dead="1" Bind="1" Fly="2"  FlySpeed="30" Sound="sound_firebomb"  JudgeName="Owner"/>
+            <Judge  Region="1"  Affect="2"  Radius="0.5"  MaxCount="1"  JudgeName="Owner"  LifeTime="2">
+              <Hurt    Damage="1"  Percent="1.35"/>
+            </Judge>
+          </Parallel>
+        </Clone>
+      </Sequence>
+       <Anim   AnimName="attack_02"  Sound="1001001"/>
+   </Parallel>
+  </Skill>
+  
+</Actor>

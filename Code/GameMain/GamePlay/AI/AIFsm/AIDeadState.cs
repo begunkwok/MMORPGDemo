@@ -7,6 +7,7 @@ namespace GameMain
     {
         public AIDeadState(AIStateType state) : base(state)
         {
+
         }
     }
 }

@@ -8,6 +8,11 @@ namespace GameMain
     public interface IAttributeStrategy
     {
         /// <summary>
+        /// 根据属性计算攻击结果
+        /// </summary>
+        AttackResultType CalcAttackResult(IAttribute attack, IAttribute defender);
+
+        /// <summary>
         /// 根据等级计算英雄属性
         /// </summary>
         void CalcHeroLevel(Dictionary<PropertyType, int> curData, int level);

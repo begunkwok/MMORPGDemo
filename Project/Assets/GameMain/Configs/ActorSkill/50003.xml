@@ -1,0 +1,15 @@
+﻿<Actor Id="50003" Name="巨型恶魔">
+  
+  <Skill Id="5000301"  Name="普攻"  StateTime="1.933"  CD="4"  CastDistance="6.5" Pos="0">
+       <Parallel>
+           <Effect Id="64043"  Delay="0.333" LastTime="1.600"   Bind="3"  Type="1" Sound=""  JudgeName="Owner"/>
+           <Sequence>
+               <Wait  Seconds="0.7"/>
+               <Judge Region="2"  Affect="2" H="2"  L="8"  W="1"  JudgeName="Owner"/>
+               <Hurt  Damage="1"  Percent="1.35"/>
+          </Sequence>             
+           <Anim   AnimName="attack_01"  Sound="1001001"/>   
+      </Parallel>
+  </Skill>
+
+</Actor>

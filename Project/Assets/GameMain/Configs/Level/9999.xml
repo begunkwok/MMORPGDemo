@@ -1,0 +1,102 @@
+<Root Type="MapConfig">
+<Id>9999</Id>
+<Delay>0</Delay>
+<MapName></MapName>
+<MapPath></MapPath>
+<AllowRide>True</AllowRide>
+<AllowPK>True</AllowPK>
+<AllowTrade>True</AllowTrade>
+<AllowFight>True</AllowFight>
+<Barriers>
+<Item Type="MapBarrier">
+<Id>20001</Id>
+<TransParam Type="MapTransform">
+<Position>(23.99,-2.07,11.26)</Position>
+<EulerAngles>(0.00,90.84,0.00)</EulerAngles>
+<Scale>(1.00,1.00,1.00)</Scale>
+</TransParam>
+</Item>
+</Barriers>
+<Portals>
+<Item Type="MapPortal">
+<Id>20002</Id>
+<RegionID>0</RegionID>
+<DestMapID>0</DestMapID>
+<DestPos>(0.00,0.00,0.00)</DestPos>
+<DisplayText>False</DisplayText>
+<PortalName></PortalName>
+<Center>(2.62,-2.38,28.75)</Center>
+<Euler>(0.00,0.00,0.00)</Euler>
+<ConditionRelation>0</ConditionRelation>
+<OpenLevel>0</OpenLevel>
+<OpenItemID>0</OpenItemID>
+<OpenVIP>0</OpenVIP>
+</Item>
+</Portals>
+<Regions>
+<Item Type="MapRegion">
+<Id>0</Id>
+<Center>(2.59,-0.63,28.14)</Center>
+<EulerAngles>(0.00,6.65,0.00)</EulerAngles>
+<Size>(3.74,4.06,1.00)</Size>
+<AllowRide>True</AllowRide>
+<AllowPK>True</AllowPK>
+<AllowTrade>True</AllowTrade>
+<AllowFight>True</AllowFight>
+<StartActive>True</StartActive>
+<Events>
+<Item Type="MapEvent">
+<Type>9</Type>
+<Id>1</Id>
+<Active>True</Active>
+<TriggerDelay>0</TriggerDelay>
+<Relation1>0</Relation1>
+<Conditions1>
+<Item Type="MapEventCondition">
+<Type>1</Type>
+<Args></Args>
+</Item>
+</Conditions1>
+</Item>
+</Events>
+</Item>
+</Regions>
+<Npcs>
+<Item Type="MapNpc">
+<Id>40001</Id>
+<Position>(8.36,-2.24,-4.84)</Position>
+<Euler>(0.00,325.23,0.00)</Euler>
+<Scale>(1.00,1.00,1.00)</Scale>
+</Item>
+<Item Type="MapNpc">
+<Id>40002</Id>
+<Position>(0.05,-2.07,-7.66)</Position>
+<Euler>(0.00,-0.374,0.00)</Euler>
+<Scale>(1.00,1.00,1.00)</Scale>
+</Item>
+<Item Type="MapNpc">
+<Id>40003</Id>
+<Position>(14.60,-2.01,1.96)</Position>
+<Euler>(0.00,292.26,0.00)</Euler>
+<Scale>(1.00,1.00,1.00)</Scale>
+</Item>
+<Item Type="MapNpc">
+<Id>40004</Id>
+<Position>(20,-1.64,10.79)</Position>
+<Euler>(0.00,269.60,0.00)</Euler>
+<Scale>(1.00,1.00,1.00)</Scale>
+</Item>
+<Item Type="MapNpc">
+<Id>40005</Id>
+<Position>(11.38,-2.18,22.87)</Position>
+<Euler>(0.00,226.86,0.00)</Euler>
+<Scale>(1.00,1.00,1.00)</Scale>
+</Item>
+<Item Type="MapNpc">
+<Id>40007</Id>
+<Position>(14.80,-2.26,19.16)</Position>
+<Euler>(0.00,239.79,0.00)</Euler>
+<Scale>(1.00,1.00,1.00)</Scale>
+</Item>
+</Npcs>
+</Root>

@@ -43,6 +43,14 @@ namespace GameMain
                 pElem.Region = pRegion;
             }
             EditorGUILayout.LabelField("使用触发器ID", pElem.RegionID.ToString());
+
+            EditorGUILayout.Space();
+            LevelBarrier pBarrier = (LevelBarrier)EditorGUILayout.ObjectField("解锁障碍物", pElem.Barrier, typeof(LevelBarrier), true);
+            if (pBarrier != pElem.Barrier)
+            {
+                pElem.Barrier = pBarrier;
+            }
+            EditorGUILayout.LabelField("解锁障碍物ID", pElem.BarrierID.ToString());
         }
     }
 }

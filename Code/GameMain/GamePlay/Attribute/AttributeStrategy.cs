@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameFramework;
+using UnityEngine;
 
 namespace GameMain
 {
@@ -9,6 +10,20 @@ namespace GameMain
     /// </summary>
     public class AttributeStrategy : IAttributeStrategy
     {
+        public AttackResultType CalcAttackResult(IAttribute attacker, IAttribute defender)
+        {
+            //暂时未设计计算策略，先随机
+            float randomParry = UnityEngine.Random.Range(0f, 1f);
+            if (randomParry > 0.9f)
+            return AttackResultType.Parry;
+
+            float randomMiss = UnityEngine.Random.Range(0f, 1f);
+            if (randomMiss > 0.9f)
+                return AttackResultType.Miss;
+
+            return AttackResultType.Normal;
+        }
+        
         public void CalcHeroLevel(Dictionary<PropertyType, int> curData, int level)
         {
             DRHeroLevel drHero = GameEntry.DataTable.GetDataTable<DRHeroLevel>().GetDataRow(level);
