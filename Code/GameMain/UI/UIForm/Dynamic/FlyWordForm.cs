@@ -74,7 +74,7 @@ namespace GameMain
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);
 
-            if(m_Data == null)
+            if(m_Data == null || m_Data.Target == null)
                 return;
 
             Vector3 wordPos = m_Data.Target.position + new Vector3(0, m_Data.Height/2, 0);

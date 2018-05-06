@@ -807,6 +807,7 @@ namespace GameMain
                 Height = Height
             };
             BoardFormManager.Instance.Create(data);
+            UpdateHealth();
         }
 
         protected void RemoveBoard()

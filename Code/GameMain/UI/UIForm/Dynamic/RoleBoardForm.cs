@@ -13,6 +13,7 @@ namespace GameMain
         protected BoardFormData m_Data;
 
         protected GProgressBar m_HpBar;
+        protected GTextField m_BarText;
         protected GTextField m_Name;
 
         protected override void OnInit(object userData)
@@ -20,6 +21,7 @@ namespace GameMain
             base.OnInit(userData);
 
             m_HpBar = UI.GetChild("bar_Hp").asProgress;
+            m_BarText = m_HpBar.GetChild("title").asTextField;
             m_Name = UI.GetChild("tf_Name").asTextField;
         }
 
@@ -97,8 +99,9 @@ namespace GameMain
             if (maxHp == 0)
                 return;
 
-            m_Name.text = GlobalTools.Format("Lv.{0} {1}", level, m_Data.Name);
             m_HpBar.value = 100*(float) curHp/maxHp;
+            m_Name.text = GlobalTools.Format("Lv.{0} {1}", level, m_Data.Name);            
+            m_BarText.text = GlobalTools.Format("{0}/{1}", curHp, maxHp);
         }
 
     }
