@@ -6,7 +6,7 @@ namespace GameMain
     {
         public float LastTime;
 
-        public BeatDownCommand()
+        public BeatDownCommand():this(0)
         {
             
         }

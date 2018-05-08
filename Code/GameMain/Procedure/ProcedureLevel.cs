@@ -25,7 +25,9 @@ namespace GameMain
             CreatePlayer();
             GameEntry.Level.EnterLevel(levelId, (SceneId) sceneId);
 
-            GameEntry.UI.OpenUIForm(UIFormId.HomeForm);
+            HomeFormData data = new HomeFormData();
+            data.SceneType = SceneType.Battle;
+            GameEntry.UI.OpenUIForm(UIFormId.HomeForm, data);
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)

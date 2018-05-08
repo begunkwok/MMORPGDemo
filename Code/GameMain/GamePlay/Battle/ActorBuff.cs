@@ -5,9 +5,8 @@ namespace GameMain
 {
     public class ActorBuff : IActorBuff
     {
-        private List<int> m_DelBuffList = new List<int>();
-        private List<int> m_AddBuffList = new List<int>();
-        private Map<int, BuffBase> m_BuffMap = new Map<int, BuffBase>();
+        private readonly List<int> m_DelBuffList = new List<int>();
+        private readonly Map<int, BuffBase> m_BuffMap = new Map<int, BuffBase>();
         private ActorBase m_Owner;
 
         public ActorBuff(ActorBase owner)
@@ -64,6 +63,21 @@ namespace GameMain
                 case BattleActType.Variation:
                     {
                         reply = m_Owner.ExecuteCommand(new VariationCommand(db.LifeTime, db.ChangeModelID));
+                    }
+                    break;
+                case BattleActType.Hitfly:
+                    {
+                        reply = m_Owner.ExecuteCommand(new BeatFlyCommand());
+                    }   
+                    break;
+                case BattleActType.Hitdown:
+                    {
+                        reply = m_Owner.ExecuteCommand(new BeatDownCommand());
+                    }
+                    break;
+                case BattleActType.Hitback:
+                    {
+                        reply = m_Owner.ExecuteCommand(new BeatBackCommand());
                     }
                     break;
                 case BattleActType.Stun:
@@ -150,6 +164,9 @@ namespace GameMain
 
         public void Step()
         {
+            if(m_Owner.IsDead)
+                return;
+
             if (m_BuffMap.Count > 0)
             {
                 for (m_BuffMap.Begin(); m_BuffMap.Next();)

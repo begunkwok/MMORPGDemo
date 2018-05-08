@@ -263,9 +263,9 @@ namespace GameMain
             GameEntry.Event.Fire(this, args);
         }
 
-        public override void Destory()
+        public override void Clear()
         {
-            base.Destory();
+            base.Clear();
 
             GameEntry.Event.Unsubscribe(ChangeEquipEventArgs.EventId, ChangeEquipAvatar);
             GameEntry.Event.Unsubscribe(SkillKeyDownEventArgs.EventId, TryUseSkill);

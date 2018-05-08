@@ -6,7 +6,11 @@
            <Sequence>
                <Wait  Seconds="0.7"/>
                <Judge Region="2"  Affect="2" H="2"  L="8"  W="1"  JudgeName="Owner"/>
-               <Hurt  Damage="1"  Percent="1.35"/>
+               <Parallel>
+                    <Hurt  Damage="1"  Percent="1.35"/>
+                    <AddBuff BuffID="201037" Affect="2" Ratio="0.50"/>
+                    <AddBuff BuffID="201010" Affect="2" Ratio="0.20"/>
+               </Parallel>
           </Sequence>             
            <Anim   AnimName="attack_01"  Sound="1001001"/>   
       </Parallel>

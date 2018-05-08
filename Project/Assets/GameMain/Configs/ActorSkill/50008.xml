@@ -12,7 +12,11 @@
                      <Parallel>
                          <Effect Id="62025" LastTime="2"  Dead="1" Bind="1" Fly="2"  FlySpeed="30" Sound="sound_firebomb"  JudgeName="Owner"/>
                          <Judge  Region="1"  Affect="2"  Radius="0.5"  MaxCount="1"  JudgeName="Owner"  LifeTime="2">
-                             <Hurt    Damage="1"  Percent="1.89"/>
+                             <Parallel>
+                                <Hurt    Damage="1"  Percent="1.89"/>
+                                <AddBuff BuffID="201009" Affect="2" Ratio="0.20"/>
+                                <AddBuff BuffID="201024" Affect="2" Ratio="0.10"/>
+                             </Parallel>
                         </Judge>
                     </Parallel>
                  </Clone>          

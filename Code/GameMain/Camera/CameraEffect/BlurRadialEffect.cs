@@ -25,8 +25,9 @@ namespace GameMain
         public static float ChangeValue4;
 
         private float defaultValue = 0;
-        private float minValue = 0;
-        private float maxValue = 0.5f;
+        private float minValue = -0.1f;
+        private float maxValue = 0f;
+        private bool isShowing = false;
 
         Material material
         {
@@ -41,11 +42,6 @@ namespace GameMain
             }
         }
 
-        void Start()
-        {
-            Init();
-        }
-
         public override void Init()
         {
             Hide();
@@ -53,7 +49,15 @@ namespace GameMain
 
         public override void Show()
         {
-            Show(defaultValue);
+            if(isShowing)
+                return;
+
+            Show(0);
+            FadeIn(0.3f, () =>
+            {
+                Hide();
+                isShowing = false;
+            });
         }
 
         public void Show(float value)

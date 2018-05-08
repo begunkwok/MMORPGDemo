@@ -148,7 +148,7 @@ namespace GameMain
                 ChangeState<ActorIdleFsm>();
         }
 
-        public virtual void Destory()
+        public virtual void Clear()
         {
             RemoveBoard();
             RemoveEffect();
@@ -549,7 +549,7 @@ namespace GameMain
 
         public void GotoEmptyFsm()
         {
-            ChangeState<ActorEmptyFsm>();
+            ChangeState<ActorIdleFsm>();
         }
 
         public void SetActorState(ActorStateType type, bool flag)

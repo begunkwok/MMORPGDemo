@@ -14,11 +14,11 @@ namespace GameMain
         {
             //暂时未设计计算策略，先随机
             float randomParry = UnityEngine.Random.Range(0f, 1f);
-            if (randomParry > 0.9f)
+            if (randomParry > 0.95f)
             return AttackResultType.Parry;
 
             float randomMiss = UnityEngine.Random.Range(0f, 1f);
-            if (randomMiss > 0.9f)
+            if (randomMiss > 0.95f)
                 return AttackResultType.Miss;
 
             return AttackResultType.Normal;

@@ -8,7 +8,8 @@
                  <Judge  Region="3"  Affect="2"  MaxDis="4.0"  HAngle="180"  Height="2"  JudgeName="Owner">
                      <Parallel>
                          <SuckBlood  Percent="2.15" Rate="1"/>
-                         <ShakeScreen/>
+                         <AddBuff BuffID="201039" Affect="2" Ratio="0.3"/>
+                         <BlurScreen/>
                     </Parallel>
                 </Judge>               
            </Sequence>
@@ -22,7 +23,11 @@
            <Sequence>
                <Wait Seconds="0.2"/>
                <Judge  Region="3"  Affect="2"  MaxDis="4.0"  HAngle="180"  Height="2"  JudgeName="Owner">
-                 <Hurt   Damage="1"  Percent="1.12"/>
+                    <Parallel>
+                        <Hurt   Damage="1"  Percent="1.12"/>
+                        <AddBuff BuffID="201039" Affect="2" Ratio="0.3"/>
+                        <BlurScreen/>
+                    </Parallel>
               </Judge>
           </Sequence>
       </Parallel>
@@ -35,7 +40,11 @@
            <Sequence>
                <Wait Seconds="0.2"/>
                <Judge  Region="3"  Affect="2"  MaxDis="4.0"  HAngle="180"  Height="2"  JudgeName="Owner">
+                <Parallel>
                    <Hurt   Damage="1"  Percent="1.14"/>
+                   <AddBuff BuffID="201039" Affect="2" Ratio="0.3"/>
+                   <BlurScreen/>
+                </Parallel>
               </Judge>
           </Sequence>
       </Parallel>
@@ -48,7 +57,11 @@
         <Sequence>
              <Wait Seconds="0.7"/>
              <Judge   Region="2"  Affect="2"  H="2.0" L="5.0" W="2.0" JudgeName="Owner">
-                 <Hurt   Damage="1"  Percent="1.30"/>
+                <Parallel>
+                   <Hurt   Damage="1"  Percent="1.30"/>
+                   <AddBuff BuffID="201037" Affect="2" Ratio="0.5"/>
+                   <ShakeScreen/>                   
+                </Parallel>
             </Judge>
        </Sequence>        
     </Parallel>
@@ -57,12 +70,12 @@
   <Skill Id="1005"   Name="半月斩"  StateTime="2.333"  CostType="1"  CostNum="10"  CD="12"   CastDistance="3.0" Pos="1">
     <Sequence>
        <Parallel>
-            <Anim   AnimName="xuli_01"  Sound="10008"/>
+            <Anim   AnimName="xuli_01"  Sound="sound_roar_shengwushi_01"/>
             <Effect Id="61020" LastTime="1.233"  Bind="3"  Sound=""/>
       </Parallel>
        <Parallel>
-            <Anim   AnimName="xuli_02"  Sound="10009"/>
-            <Effect Id="64054" LastTime="1.133"  Bind="3"  Sound="10010" JudgeName="Owner"/>
+            <Anim   AnimName="xuli_02"  Sound="sound_roar_shengwushi_02"/>
+            <Effect Id="64054" LastTime="1.133"  Bind="3"  Sound="sound_explosion" JudgeName="Owner"/>
             <Sequence>
                  <Judge  Region="3"  Affect="2"  MaxDis="5.0"  HAngle="360"  Height="2"  JudgeName="Owner"/>
                  <Hurt   Damage="1"  Percent="1.70"/>
@@ -83,7 +96,10 @@
                       <Hurt   Damage="1"  Percent="3.20"/>
                   </Judge>
                    <Judge  Region="3"  Affect="1"  MaxDis="5"  HAngle="360"  Height="2" JudgeName="Owner">
-                      <Hurt   Damage="3"  Percent="2.50"/>
+                      <Parallel>
+                        <Hurt   Damage="3"  Percent="2.50"/>
+                        <AddBuff BuffID="201039" Affect="2" Ratio="0.5"/>
+                      </Parallel>
                   </Judge>
               </Sequence>             
           </Parallel>
@@ -129,7 +145,8 @@
                             <Judge  Region="3"  Affect="2"  MaxDis="2.0"  HAngle="360"  Height="2" JudgeName="Owner5">
                                 <Hurt   Damage="1"  Percent="1.45"/>
                             </Judge>
-                        </Parallel>                        
+                        </Parallel> 
+                        <AddBuff BuffID="201039" Affect="2" Ratio="0.5"/>                       
                     </Parallel>
               </Sequence>                         
           </Parallel>                
@@ -145,7 +162,11 @@
                <Effect Id="61017" LastTime="1.000"  Bind="3"/>
                <Effect Id="64054" LastTime="1.000"  Bind="3"  Sound="10010" JudgeName="Owner"/>
                <Judge  Region="3"  Affect="2"  MaxDis="5.0"  HAngle="360"  Height="2" JudgeName="Owner">
-                    <Hurt   Damage="1"  Percent="1.45"/>
+                    <Parallel>
+                        <Hurt   Damage="1"  Percent="1.45"/>
+                        <AddBuff BuffID="201029"  Affect="1"  Ratio="1"/>
+                        <AddBuff BuffID="201039" Affect="2" Ratio="0.5"/>
+                    </Parallel>
               </Judge>
         </Parallel>
          <Anim   AnimName="skill_chengjiezitai_04"/>

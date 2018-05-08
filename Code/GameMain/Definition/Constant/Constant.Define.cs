@@ -8,6 +8,11 @@
         public static class Define
         {
             /// <summary>
+            /// 主城关卡id
+            /// </summary>
+            public static readonly int MainCityLevelId = 9999;
+
+            /// <summary>
             /// 伤害比例
             /// </summary>
             public static readonly float DamageRatio = 1f;

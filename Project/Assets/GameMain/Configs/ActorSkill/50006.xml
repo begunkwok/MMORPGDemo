@@ -6,10 +6,11 @@
             <Sequence>
                 <Wait Seconds="0.75"/>
                 <Judge  Region="3"  Affect="2"  MaxDis="2.5"  HAngle="120"  Height="2"  JudgeName="Owner">
-                      <Sequence>
+                      <Parallel>
                              <Hurt   Damage="1"  Percent="1.21"/>
-                             <Hit/>
-                     </Sequence>
+                             <AddBuff BuffID="201038" Affect="2" Ratio="0.50"/>
+                             <AddBuff BuffID="201010" Affect="2" Ratio="0.30"/>
+                     </Parallel>
                </Judge>
            </Sequence>
       </Parallel>

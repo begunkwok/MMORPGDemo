@@ -43,8 +43,6 @@ namespace GameMain
             m_Victory = false;
 
             InitHolder();
-
-            GameEntry.Event.Subscribe(OnPlayerDeadEventArgs.EventId,OnPlayerDead);
         }
 
         public void Clear()
@@ -105,7 +103,13 @@ namespace GameMain
             this.LevelID = levelId;
             this.CurSceneId = sceneId;
 
+            m_StartTime = 0;
+            m_EndTime = 0;
+            m_Victory = false;
+
             GameEntry.Event.Subscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
+            GameEntry.Event.Subscribe(OnPlayerDeadEventArgs.EventId, OnPlayerDead);
+            GameEntry.Event.Subscribe(PassLevelEventArgs.EventId,OnPassLevel);
 
             string assetName = AssetUtility.GetLevelConfigAsset(levelId.ToString());
             Config = new MapConfig();
@@ -116,6 +120,10 @@ namespace GameMain
 
         public void LeaveCurrentLevel()
         {
+            GameEntry.Event.Unsubscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
+            GameEntry.Event.Unsubscribe(OnPlayerDeadEventArgs.EventId, OnPlayerDead);
+            GameEntry.Event.Unsubscribe(PassLevelEventArgs.EventId, OnPassLevel);
+
             OnLevelEnd();
             Clear();
         }
@@ -252,22 +260,6 @@ namespace GameMain
             }
 
             return role as T;
-        }
-
-        public void OnPlayerDead(object sender, GameEventArgs e)
-        {
-            List<RoleEntityBase> pList = GetRolesByActorType(ActorType.Monster);
-            for (int i = 0; i < pList.Count; i++)
-            {
-                pList[i].Actor.SetTarget(null);
-            }
-
-            this.OnBattleEnd();
-
-            this.Player = null;
-
-            //TODO 打开副本结算界面
-            //ZTUIManager.Instance.OpenWindow(WindowID.UI_REBORN);
         }
 
         public bool DelRole(RoleEntityBase role)
@@ -453,7 +445,7 @@ namespace GameMain
         {
             if (CurSceneType == SceneType.Battle)
             {
-                OnBattleEnd();
+                OnBattleEnd(false);
             }
         }
 
@@ -474,17 +466,17 @@ namespace GameMain
             m_StartTime = Time.realtimeSinceStartup;
         }
 
-        private void OnBattleEnd()
+        private void OnBattleEnd(bool isPlayerDead)
         {
             if (LevelID <= 0)
             {
-                Log.Error("CopyId is invalid.");
+                Log.Error("LevelID is invalid.");
                 return;
             }
 
-            if (!GameEntry.DataTable.GetDataTable<DRLevel>().HasDataRow(LevelID))
+            if (isPlayerDead)
             {
-                Log.Error("the copy is no exist.");
+
                 return;
             }
 
@@ -571,10 +563,13 @@ namespace GameMain
             DRLevel drLevel = GameEntry.DataTable.GetDataTable<DRLevel>().GetDataRow(LevelID);
             if (drLevel == null)
             {
+                Log.Error("the level dr data is no exist.");
                 return;
             }
 
             int m_Star = CalcStar(drLevel);
+            Log.Error("xingxing  --m_Star", m_Star);
+
             //TODO 通过副本
             //  ZSRaid.Instance.TryPassCopy(CopyType, Chapter, CopyID, Star);
         }
@@ -605,21 +600,21 @@ namespace GameMain
         private int CalcStar(DRLevel copy)
         {
             int star = 0;
-            bool[] passContents = new bool[3] { false, false, false };
+            bool[] passContents = new bool[3];
             if (m_Victory == false)
             {
                 return 0;
             }
 
             StarConditionType[] starConditions = new StarConditionType[3];
-            starConditions[1] = (StarConditionType)copy.StarCondition1;
-            starConditions[2] = (StarConditionType)copy.StarCondition2;
-            starConditions[3] = (StarConditionType)copy.StarCondition3;
+            starConditions[0] = (StarConditionType)copy.StarCondition1;
+            starConditions[1] = (StarConditionType)copy.StarCondition2;
+            starConditions[2] = (StarConditionType)copy.StarCondition3;
 
             int[] starValues = new int[3];
-            starValues[1] = copy.StarValue1;
-            starValues[2] = copy.StarValue2;
-            starValues[3] = copy.StarValue3;
+            starValues[0] = copy.StarValue1;
+            starValues[1] = copy.StarValue2;
+            starValues[2] = copy.StarValue3;
 
             for (int i = 0; i < starConditions.Length; i++)
             {
@@ -644,8 +639,11 @@ namespace GameMain
                         break;
                     case StarConditionType.Pass:
                         {
-                            star++;
-                            passContents[i] = true;
+                            if (m_Victory)
+                            {
+                                star++;
+                                passContents[i] = true;
+                            }
                         }
                         break;
                     case StarConditionType.TimeLimit:
@@ -669,5 +667,30 @@ namespace GameMain
                 CurSceneId = (SceneId)ne.UserData;
         }
 
+        private void OnPlayerDead(object sender, GameEventArgs e)
+        {
+            List<RoleEntityBase> pList = GetRolesByActorType(ActorType.Monster);
+            for (int i = 0; i < pList.Count; i++)
+            {
+                pList[i].Actor.SetTarget(null);
+            }
+
+            this.OnBattleEnd(true);
+
+            this.Player = null;
+
+            GameEntry.Camera.ShowEffect(CameraEffectType.ScreenGray);
+
+            GameEntry.UI.CloseUIForm(UIFormId.ControllerForm);
+            GameEntry.UI.CloseUIForm(UIFormId.HomeForm);
+
+            //TODO 打开副本结算界面
+            //ZTUIManager.Instance.OpenWindow(WindowID.UI_REBORN);
+        }
+
+        private void OnPassLevel(object sender, GameEventArgs e)
+        {
+            OnBattleEnd(false);
+        }
     }
 }

@@ -71,7 +71,7 @@ namespace GameMain
             this.ApplyCharacterCtrl(false);
 
             //播放死亡动画后删除
-            GameEntry.Timer.Register(2f, () =>
+            GameEntry.Timer.Register(3f, () =>
             {
                 GameEntry.Level.DelRole(this.Entity);
             });
@@ -102,6 +102,7 @@ namespace GameMain
         public virtual void OnBeatBack(BeatBackCommand ev)
         {
             StopPathFinding();
+            m_AnimController.Play("hit", GotoEmptyFsm, false);
         }
 
         /// <summary>

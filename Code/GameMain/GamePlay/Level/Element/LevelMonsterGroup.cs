@@ -9,6 +9,7 @@ namespace GameMain
         public int   MonsterID = 0;
         public float RebornCD = 0;
         public int   MaxCount = 0;
+        public bool TriggerResult = false;
 
         private HashSet<int> m_Monsters = new HashSet<int>();
 
@@ -48,6 +49,7 @@ namespace GameMain
             RebornCD = data.RebornCD;
             MaxCount = data.MaxCount;
             MonsterID = data.MonsterID;
+            TriggerResult = data.TriggerResult;
             HolderRegion pHolder = GameEntry.Level.GetHolder(MapHolderType.Region) as HolderRegion;
             this.Region = pHolder.FindElement(data.RegionID);
    
@@ -64,6 +66,7 @@ namespace GameMain
             data.RebornCD = RebornCD;
             data.MaxCount = MaxCount;
             data.MonsterID = MonsterID;
+            data.TriggerResult = TriggerResult;
             return data;
         }
 
@@ -113,7 +116,12 @@ namespace GameMain
             {
                 HolderBarrier pHolder = GameEntry.Level.GetHolder(MapHolderType.Barrier) as HolderBarrier;
                 this.Barrier = pHolder.FindElement(data.UnlockBarrierId);
-                Barrier.Hide();
+                Barrier?.Hide();
+
+                if (TriggerResult)
+                {
+                    GameEntry.Event.Fire(this,new PassLevelEventArgs());
+                }
             }
         }
 

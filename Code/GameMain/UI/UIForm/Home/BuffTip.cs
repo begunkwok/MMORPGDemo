@@ -44,6 +44,9 @@ namespace GameMain
                 return;
             }
 
+            if(m_Buff.Data.Icon == 0)
+                return;
+
             this.visible = true;
             string iconPath = AssetUtility.GetBuffIconAsset(m_Buff.Data.Icon);
             m_Icon.url = iconPath;

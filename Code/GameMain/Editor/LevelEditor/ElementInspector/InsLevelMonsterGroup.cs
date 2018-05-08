@@ -29,12 +29,17 @@ namespace GameMain
                 pElem.RebornCD = pRebornCD;
             }
 
+            bool TriggerResult = EditorGUILayout.Toggle("是否触发结算", pElem.TriggerResult);
+            if (TriggerResult != pElem.TriggerResult)
+            {
+                pElem.TriggerResult = TriggerResult;
+            }
+
             int pMaxCount = EditorGUILayout.IntField("创建怪物最大数量", pElem.MaxCount);
             if (pMaxCount != pElem.MaxCount)
             {
                 pElem.MaxCount = pMaxCount;
             }
-
 
             EditorGUILayout.Space();
             LevelRegion pRegion = (LevelRegion)EditorGUILayout.ObjectField("传送门触发器", pElem.Region, typeof(LevelRegion), true);

@@ -11,7 +11,7 @@
                          <Judge  Region="1"  Affect="2"  Radius="0.5"  MaxCount="1"  JudgeName="Owner"  LifeTime="1.5">
                             <Parallel>
                                <Hurt    Damage="1"  Percent="1.08"/>
-                               <AddBuff BuffID="201024" Affect="2" Ratio="0.10"/>
+                               <AddBuff BuffID="201008" Affect="2" Ratio="0.20"/>
                            </Parallel>
                         </Judge>
                    </Parallel>

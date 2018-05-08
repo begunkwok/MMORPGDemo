@@ -35,7 +35,7 @@ namespace GameMain
         {
             base.OnHide(userData);
 
-            Actor?.Destory();
+            Actor.Clear();
             Actor = null;
         }
 

@@ -85,6 +85,7 @@
     <Compile Include="DataTable\DRLevel.cs" />
     <Compile Include="Definition\EventArgs\EnterLevelEventArgs.cs" />
     <Compile Include="Definition\EventArgs\OnPlayerDeadEventArgs.cs" />
+    <Compile Include="Definition\EventArgs\PassLevelEventArgs.cs" />
     <Compile Include="Definition\EventArgs\RefreshBoardEventArgs.cs" />
     <Compile Include="Definition\EventArgs\RefreshBuffEventArgs.cs" />
     <Compile Include="Definition\EventArgs\RefreshHeroInfoEventArgs.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="GamePlay\AI\AIFsm\AIIdleState.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIPatrolState.cs" />
     <Compile Include="GamePlay\Attribute\Define\AttackResultType.cs" />
+    <Compile Include="GamePlay\Battle\SkillBT\BTBlurScreen.cs" />
     <Compile Include="GamePlay\Level\Base\LevelComponent.Editor.cs" />
     <Compile Include="GamePlay\Level\Base\LevelContainerBase.cs" />
     <Compile Include="GamePlay\Level\Element\LevelBarrier.cs" />

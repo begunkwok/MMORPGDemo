@@ -27,10 +27,13 @@ namespace GameMain
 
             CreatePlayer();
 
-            GameEntry.Level.EnterLevel(9999, SceneId.MainCity);
+            GameEntry.Level.EnterLevel(Constant.Define.MainCityLevelId, SceneId.MainCity);
 
             GameEntry.UI.OpenUIForm(UIFormId.ControllerForm);
-            GameEntry.UI.OpenUIForm(UIFormId.HomeForm);
+
+            HomeFormData data = new HomeFormData();
+            data.SceneType = SceneType.City;
+            GameEntry.UI.OpenUIForm(UIFormId.HomeForm, data);
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)

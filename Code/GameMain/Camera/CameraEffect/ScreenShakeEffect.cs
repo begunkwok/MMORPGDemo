@@ -24,7 +24,7 @@ namespace GameMain
 
         public override void Show()
         {
-            GameEntry.Camera.MainCamera.DOShakePosition(m_DefaultDuration, m_DefaultShakePos).SetAutoKill(true);
+            GameEntry.Camera.MainCamera.transform.parent?.DOShakePosition(m_DefaultDuration, m_DefaultShakePos).SetAutoKill(true);
         }
 
         public override void Hide()

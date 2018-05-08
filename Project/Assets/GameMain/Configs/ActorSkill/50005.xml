@@ -8,7 +8,10 @@
                <Parallel>
                    <Effect Id="61028" LastTime="0.867"  Bind="3"/>
                    <Judge  Region="3"  Affect="2"  MaxDis="2.0"  HAngle="180"  Height="2"  JudgeName="Owner">
-                        <Hurt   Damage="1"  Percent="0.77"/>
+                        <Parallel>
+                            <Hurt   Damage="1"  Percent="0.77"/>
+                            <AddBuff BuffID="201039" Affect="2" Ratio="0.20"/>
+                        </Parallel>
                   </Judge>
               </Parallel>
          </Sequence>
@@ -24,7 +27,10 @@
                 <Parallel>
                     <Effect Id="62010" LastTime="1.5"  Dead="1" Bind="3" Fly="2"  FlySpeed="30" Sound="sound_firebomb"  JudgeName="Owner"/>
                     <Judge  Region="1"  Affect="2"  Radius="0.5"  MaxCount="1"  JudgeName="Owner"  LifeTime="1.5">
+                         <Parallel>
                          <Hurt    Damage="1"  Percent="1.08"/>
+                         <AddBuff BuffID="201007" Affect="2" Ratio="0.8"/>
+                         </Parallel>
                    </Judge>
                </Parallel>             
            </Clone>

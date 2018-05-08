@@ -14,6 +14,7 @@ namespace GameMain
         public float RebornCD;
         public int MaxCount;
         public int UnlockBarrierId;
+        public bool TriggerResult;
 
         public override void Read(XmlNode os)
         {
@@ -39,6 +40,9 @@ namespace GameMain
                     case "UnlockBarrierId":
                         this.UnlockBarrierId = ReadInt(current);
                         break;
+                    case "TriggerResult":
+                        this.TriggerResult = ReadBool(current);
+                        break;
                 }
             }
         }
@@ -51,7 +55,9 @@ namespace GameMain
             XmlObject.Write(os, "MonsterID", this.MonsterID);
             XmlObject.Write(os, "MaxCount", this.MaxCount);
             XmlObject.Write(os, "UnlockBarrierId", this.UnlockBarrierId);
+            XmlObject.Write(os, "TriggerResult", this.TriggerResult);          
         }
+
     }
 }
 

@@ -46,6 +46,9 @@ namespace GameMain
 
         public void Step()
         {
+            if(m_Owner.IsDead)
+                return;
+
             if (Time.realtimeSinceStartup - m_StartTime >= m_ComboValidTime)
             {
                 m_ComboIndex = 0;

@@ -81,7 +81,7 @@ namespace GameMain
         /// <summary>
         /// 销毁
         /// </summary>
-        void Destory();
+        void Clear();
 
         /// <summary>
         /// 执行命令

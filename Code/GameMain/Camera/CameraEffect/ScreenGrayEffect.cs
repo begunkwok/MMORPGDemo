@@ -24,11 +24,6 @@ namespace GameMain
             }
         }
 
-        void Start()
-        {
-            Init();
-        }
-
         public override void Init()
         {
             Hide();
@@ -42,9 +37,8 @@ namespace GameMain
                 return;
             }
 
-            enabled = true;
-
             SCShader = Shader.Find("Camera/ScreenGrayScale");
+            enabled = true;
         }
 
         public override void Hide()

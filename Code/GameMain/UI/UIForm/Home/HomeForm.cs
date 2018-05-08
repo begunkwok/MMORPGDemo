@@ -25,11 +25,12 @@ namespace GameMain
 
         private GButton m_RoleButton  = null;
         private GButton m_BagButton   = null;
-        private GButton m_SkillButton = null;
+        private GButton m_PartnerButton = null;
         private GButton m_TaskButton  = null;
         private GButton m_MountButton = null;
-        private GButton m_AiButton        = null;
+        private GButton m_AiButton    = null;
 
+        private HomeFormData m_Data;
 
         protected override void OnInit(object userData)
         {
@@ -51,7 +52,7 @@ namespace GameMain
 
             m_RoleButton = UI.GetChild("btn_Role").asButton;
             m_BagButton = UI.GetChild("btn_Bag").asButton;
-            m_SkillButton = UI.GetChild("btn_Skill").asButton;
+            m_PartnerButton = UI.GetChild("btn_Partner").asButton;
             m_TaskButton = UI.GetChild("btn_Task").asButton;
             m_MountButton = UI.GetChild("btn_Mount").asButton;
             m_AiButton = UI.GetChild("btn_Ai").asButton;
@@ -82,6 +83,18 @@ namespace GameMain
             base.OnOpen(userData);
 
             AddListener();
+
+            m_Data = userData as HomeFormData;
+            if (m_Data == null)
+            {
+                Log.Error("UI Data is null.");
+                return;
+            }
+
+            if (m_Data.SceneType == SceneType.City)
+                m_Ctrl.selectedIndex = 0;
+            else
+                m_Ctrl.selectedIndex = 1;
         }
 
         protected override void OnClose(object userData)
@@ -96,6 +109,9 @@ namespace GameMain
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);
+
+            if(m_Data?.SceneType != SceneType.Battle)
+                return;
 
             RefreshSkillItems();
         }
@@ -138,6 +154,8 @@ namespace GameMain
             RefreshBuffEventArgs ne = e as RefreshBuffEventArgs;
             ActorBase actor = ne.Actor;
             if(actor == null)
+                return;
+            if(actor.IsDead)
                 return;
 
             Map<int, BuffBase> buffs = actor.ActorBuff.GetAllBuff();
