@@ -64,7 +64,7 @@ namespace GameMain
         /// </summary>
         public virtual void OnDead(DeadCommand ev)
         {
-            StopPathFinding();
+            StopPathFinding();         
             this.m_AnimController.Play("die");
             Attrbute.UpdateValue(AttributeType.Hp, 0);
             Attrbute.UpdateValue(AttributeType.Mp, 0);

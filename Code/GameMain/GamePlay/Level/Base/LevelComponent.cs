@@ -42,13 +42,22 @@ namespace GameMain
             m_EndTime = 0;
             m_Victory = false;
 
-            InitHolder();
+            InitHolder();       
+        }
+
+        public void Update()
+        {
+            FlyWordManager.Instance.Step();
         }
 
         public void Clear()
         {
             CancelInvoke();
+
             m_OnLoadNewSceneTasks.Clear();
+
+            GameEntry.BT.Clear();
+
             for (int i = m_AllRoles.Count - 1; i >= 0; i--)
             {
                 RoleEntityBase role = m_AllRoles[i];
@@ -68,7 +77,7 @@ namespace GameMain
                 current.Value.Clear();
             }
 
-            GameEntry.Event.Unsubscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
+            FlyWordManager.Instance.Clear();
         }
 
         public void InitHolder()
@@ -120,9 +129,9 @@ namespace GameMain
 
         public void LeaveCurrentLevel()
         {
-            GameEntry.Event.Unsubscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
             GameEntry.Event.Unsubscribe(OnPlayerDeadEventArgs.EventId, OnPlayerDead);
             GameEntry.Event.Unsubscribe(PassLevelEventArgs.EventId, OnPassLevel);
+            GameEntry.Event.Unsubscribe(LoadSceneSuccessEventArgs.EventId, OnLoadSceneSuccess);
 
             OnLevelEnd();
             Clear();
@@ -417,6 +426,8 @@ namespace GameMain
 
         private void OnLevelStart()
         {
+            GameEntry.Camera.HideAllEffect();
+
             CurSceneType = GameEntry.Scene.GetSceneTypeBySceneId(CurSceneId);
 
             if (CurSceneType == SceneType.Battle)
@@ -445,7 +456,7 @@ namespace GameMain
         {
             if (CurSceneType == SceneType.Battle)
             {
-                OnBattleEnd(false);
+                OnBattleEnd();
             }
         }
 
@@ -464,9 +475,15 @@ namespace GameMain
             }
 
             m_StartTime = Time.realtimeSinceStartup;
+
+            HomeFormData data = new HomeFormData();
+            data.SceneType = SceneType.Battle;
+            GameEntry.UI.OpenUIForm(UIFormId.HomeForm, data);
+            GameEntry.UI.OpenUIForm(UIFormId.ControllerForm);
+            GameEntry.UI.OpenUIForm(UIFormId.ComboForm);
         }
 
-        private void OnBattleEnd(bool isPlayerDead)
+        private void OnBattleEnd()
         {
             if (LevelID <= 0)
             {
@@ -474,13 +491,13 @@ namespace GameMain
                 return;
             }
 
-            if (isPlayerDead)
-            {
-
-                return;
-            }
-
+            GameEntry.UI.CloseUIForm(UIFormId.ComboForm);
+            FlyWordManager.Instance.Clear();
+            GameEntry.UI.CloseUIForm(UIFormId.ControllerForm);
+            GameEntry.UI.CloseUIForm(UIFormId.HomeForm);
+           
             m_EndTime = Time.realtimeSinceStartup - m_StartTime;
+
             m_Victory = !Player.Actor.IsDead;
             CalcResult();
         }
@@ -560,6 +577,17 @@ namespace GameMain
 
         private void CalcResult()
         {
+            LevelResultFormData data = new LevelResultFormData();
+            if (m_Victory == false)
+            {
+                data.Victory = false;
+                data.StarCount = 0;
+                data.GlodAward = 0;
+                data.ExpAward = 0;
+                GameEntry.UI.OpenUIForm(UIFormId.LevelResultForm, data);
+                return;
+            }
+
             DRLevel drLevel = GameEntry.DataTable.GetDataTable<DRLevel>().GetDataRow(LevelID);
             if (drLevel == null)
             {
@@ -567,34 +595,16 @@ namespace GameMain
                 return;
             }
 
-            int m_Star = CalcStar(drLevel);
-            Log.Error("xingxing  --m_Star", m_Star);
+            int starCount = CalcStar(drLevel); 
+            int money = drLevel.GetMoneyRatio;
+            int exp = drLevel.GetExpRatio;
 
-            //TODO 通过副本
-            //  ZSRaid.Instance.TryPassCopy(CopyType, Chapter, CopyID, Star);
-        }
 
-        private void ShowResult()
-        {
-            DRLevel drCopy = GameEntry.DataTable.GetDataTable<DRLevel>().GetDataRow(LevelID);
-            if (drCopy == null)
-            {
-                return;
-            }
-            switch ((LevelType)drCopy.LevelType)
-            {
-                case LevelType.Easy:
-                case LevelType.World:
-                case LevelType.Elite:
-                case LevelType.Daily:
-                    {
-                        //TODO 显示副本通过UI
-                        //ZTUIManager.Instance.OpenWindow(WindowID.UI_MAINRESULT);
-                        //UIMainResult window = (UIMainResult) ZTUIManager.Instance.GetWindow(WindowID.UI_MAINRESULT);
-                        //window.ShowView();
-                    }
-                    break;
-            }
+            data.Victory = true;
+            data.StarCount = starCount;
+            data.GlodAward = money;
+            data.ExpAward = exp;
+            GameEntry.UI.OpenUIForm(UIFormId.LevelResultForm, data);
         }
 
         private int CalcStar(DRLevel copy)
@@ -675,22 +685,16 @@ namespace GameMain
                 pList[i].Actor.SetTarget(null);
             }
 
-            this.OnBattleEnd(true);
+            this.LeaveCurrentLevel();
 
             this.Player = null;
 
             GameEntry.Camera.ShowEffect(CameraEffectType.ScreenGray);
-
-            GameEntry.UI.CloseUIForm(UIFormId.ControllerForm);
-            GameEntry.UI.CloseUIForm(UIFormId.HomeForm);
-
-            //TODO 打开副本结算界面
-            //ZTUIManager.Instance.OpenWindow(WindowID.UI_REBORN);
         }
 
         private void OnPassLevel(object sender, GameEventArgs e)
         {
-            OnBattleEnd(false);
+            LeaveCurrentLevel();
         }
     }
 }

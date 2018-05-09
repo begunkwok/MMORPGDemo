@@ -83,7 +83,11 @@
     <Compile Include="Database\Base\DBRowBase.cs" />
     <Compile Include="Database\Data\DBTask.cs" />
     <Compile Include="DataTable\DRLevel.cs" />
+    <Compile Include="Definition\EventArgs\ChangeVehicleEventArgs.cs" />
+    <Compile Include="Definition\EventArgs\ChangeAiModeEventArgs.cs" />
+    <Compile Include="Definition\EventArgs\BackCityEventArgs.cs" />
     <Compile Include="Definition\EventArgs\EnterLevelEventArgs.cs" />
+    <Compile Include="Definition\EventArgs\OnPlayerAttackEventArgs.cs" />
     <Compile Include="Definition\EventArgs\OnPlayerDeadEventArgs.cs" />
     <Compile Include="Definition\EventArgs\PassLevelEventArgs.cs" />
     <Compile Include="Definition\EventArgs\RefreshBoardEventArgs.cs" />
@@ -116,7 +120,9 @@
     <Compile Include="Editor\LevelEditor\LevelEditor.cs" />
     <Compile Include="Entity\EntityData\LevelObjectData.cs" />
     <Compile Include="Entity\EntityLogic\LevelObject.cs" />
+    <Compile Include="Entity\EntityLogic\MountRole.cs" />
     <Compile Include="Entity\EntityLogic\NpcRole.cs" />
+    <Compile Include="GamePlay\Actor\ActorMount.cs" />
     <Compile Include="GamePlay\Actor\ActorNpc.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIBackState.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIChaseState.cs" />
@@ -492,11 +498,13 @@
     <Compile Include="UI\FormData\DialogFormData.cs" />
     <Compile Include="UI\FormData\FlyWordData.cs" />
     <Compile Include="UI\FormData\HomeFormData.cs" />
+    <Compile Include="UI\FormData\LevelResultFormData.cs" />
     <Compile Include="UI\FormData\LoginFormData.cs" />
     <Compile Include="UI\Define\UIFormId.cs" />
     <Compile Include="UI\FormData\RoleCreateFormData.cs" />
     <Compile Include="UI\Extension\UIExtension.cs" />
     <Compile Include="UI\UIForm\Dynamic\BoardFormManager.cs" />
+    <Compile Include="UI\UIForm\Dynamic\ComboForm.cs" />
     <Compile Include="UI\UIForm\Dynamic\FlyWordForm.cs" />
     <Compile Include="UI\UIForm\Dynamic\FlyWordManager.cs" />
     <Compile Include="UI\UIForm\Dynamic\RoleBoardForm.cs" />
@@ -509,7 +517,9 @@
     <Compile Include="UI\UIForm\CommonForm\LoadingForm.cs" />
     <Compile Include="UI\UIForm\Home\JoystickModule.cs" />
     <Compile Include="UI\UIForm\Level\LevelItem.cs" />
+    <Compile Include="UI\UIForm\Level\LevelResultForm.cs" />
     <Compile Include="UI\UIForm\Level\LevelSelectForm.cs" />
+    <Compile Include="UI\UIForm\Level\ThreeStar.cs" />
     <Compile Include="UI\UIForm\Login\LoginForm.cs" />
     <Compile Include="UI\UIForm\NativeForm\NativeDialogForm.cs" />
     <Compile Include="UI\UIForm\NativeForm\UpdateResourceForm.cs" />

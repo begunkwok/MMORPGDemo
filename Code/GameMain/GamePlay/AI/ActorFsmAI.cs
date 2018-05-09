@@ -35,6 +35,11 @@ namespace GameMain
                 return;
             }
 
+            if (m_AIFsm.IsRunning)
+            {
+                return;
+            }
+
             m_AIFsm.Start<AIIdleState>();
             this.AIStateType = AIStateType.Idle;
         }

@@ -1,4 +1,6 @@
-﻿using GameFramework;
+﻿using System;
+using GameFramework;
+using GameFramework.Event;
 using UnityGameFramework.Runtime;
 using ProcedureOwner = GameFramework.Fsm.IFsm<GameFramework.Procedure.IProcedureManager>;
 
@@ -25,16 +27,20 @@ namespace GameMain
             CreatePlayer();
             GameEntry.Level.EnterLevel(levelId, (SceneId) sceneId);
 
-            HomeFormData data = new HomeFormData();
-            data.SceneType = SceneType.Battle;
-            GameEntry.UI.OpenUIForm(UIFormId.HomeForm, data);
+            GameEntry.Event.Subscribe(BackCityEventArgs.EventId,OnBackCity);
         }
 
         protected override void OnLeave(ProcedureOwner procedureOwner, bool isShutdown)
         {
             base.OnLeave(procedureOwner, isShutdown);
 
+            GameEntry.Event.Unsubscribe(BackCityEventArgs.EventId, OnBackCity);          
+        }
 
+        private void OnBackCity(object sender, GameEventArgs e)
+        {
+            m_ProcedureOwner.SetData<VarInt>(Constant.ProcedureData.NextSceneId, (int)SceneId.MainCity);
+            ChangeState<ProcedureChangeScene>(m_ProcedureOwner);
         }
 
         private void CreatePlayer()
@@ -45,10 +51,11 @@ namespace GameMain
             int playerId = m_ProcedureOwner.GetData<VarInt>(Constant.ProcedureData.PlayerId);
 
             DBPlayer dbPlayer = GameEntry.Database.GetDBRow<DBPlayer>(playerId);
+
+            GameEntry.Level.CreatePlayer(dbPlayer.Id);
             RefreshHeroInfoEventArgs args = ReferencePool.Acquire<RefreshHeroInfoEventArgs>().FillName(dbPlayer.Name);
             GameEntry.Event.Fire(this, args);
 
-            GameEntry.Level.CreatePlayer(dbPlayer.Id);
         }
     }
 }

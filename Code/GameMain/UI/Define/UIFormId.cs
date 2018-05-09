@@ -46,6 +46,12 @@
         LevelSelectForm = 3003,
 
         /// <summary>
+        /// 副本结算界面
+        /// </summary>
+        LevelResultForm = 3004,
+
+
+        /// <summary>
         /// 角色头上UI
         /// </summary>
         RoleBoardForm = 4001,
@@ -54,5 +60,10 @@
         /// 伤害数值界面
         /// </summary>
         FlyWordForm = 4002,
+
+        /// <summary>
+        /// Combo界面
+        /// </summary>
+        ComboForm = 4003,
     }
 }

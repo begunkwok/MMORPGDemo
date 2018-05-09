@@ -16,9 +16,7 @@ namespace GameMain
         private GLoader m_Icon = null;
         private GTextField m_Title = null;
         private GTextField m_Level = null;
-        private GComponent m_Star01 = null;
-        private GComponent m_Star02 = null;
-        private GComponent m_Star03 = null;
+        private ThreeStar m_Star = null;
 
         public override void ConstructFromXML(XML xml)
         {
@@ -28,9 +26,7 @@ namespace GameMain
             m_Icon = GetChild("icon").asLoader;
             m_Title = GetChild("title").asTextField;
             m_Level = GetChild("tf_Level").asTextField;
-            m_Star01 = GetChild("star01").asCom;
-            m_Star02 = GetChild("star02").asCom;
-            m_Star03 = GetChild("star03").asCom;
+            m_Star = GetChild("star") as ThreeStar;
         }
 
         public void Init(DRLevel levelData)
@@ -61,5 +57,15 @@ namespace GameMain
             m_Level.text = "LV." + levelData.LevelRequest;
         }
 
+        public void SetStar(int count)
+        {
+            if (count < 0 || count > 3)
+            {
+                Log.Error("Count is invalid");
+                return;
+            }
+
+            m_Star.SetStar(count);
+        }
     }
 }

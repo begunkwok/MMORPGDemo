@@ -113,8 +113,8 @@ namespace GameMain
         public RefreshHeroInfoEventArgs FillExp(int curExp, int maxExp)
         {
             Type = RefreshType.Exp;
-            this.CurHp = curExp;
-            this.MaxHp = maxExp;
+            this.CurExp = curExp;
+            this.MaxExp = maxExp;
             return this;
         }
 

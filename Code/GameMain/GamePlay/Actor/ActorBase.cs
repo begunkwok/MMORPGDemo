@@ -125,6 +125,7 @@ namespace GameMain
             InitFsm();
 
             CreateBoard();
+            ApplyCharacterCtrl(true);
         }
 
         public virtual void Step()
@@ -228,7 +229,7 @@ namespace GameMain
             int dodge = (m_BaseAttribute.Dodge + bfAttr.Dodge) * (1 + bpAttr.Dodge / Constant.Define.PerBase);
             m_CurAttribute.UpdateValue(AttributeType.Dodge, dodge);
 
-           int hit = (m_BaseAttribute.Hit + bfAttr.Hit) * (1 + bpAttr.Hit / Constant.Define.PerBase);
+            int hit = (m_BaseAttribute.Hit + bfAttr.Hit) * (1 + bpAttr.Hit / Constant.Define.PerBase);
             m_CurAttribute.UpdateValue(AttributeType.Hit, hit);
 
             int mpRecover = (m_BaseAttribute.MpRecover + bfAttr.MpRecover) * (1 + bpAttr.MpRecover / Constant.Define.PerBase);

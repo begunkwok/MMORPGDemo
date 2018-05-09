@@ -120,8 +120,8 @@
 <RebornCD>-1</RebornCD>
 <MonsterID>50005</MonsterID>
 <MaxCount>4</MaxCount>
-<UnlockBarrierId>0</UnlockBarrierId>
-<TriggerResult>0</TriggerResult>
+<UnlockBarrierId>1</UnlockBarrierId>
+<TriggerResult>False</TriggerResult>
 </Item>
 <Item Type="MapMonsterGroup">
 <Id>50006</Id>
@@ -129,8 +129,8 @@
 <RebornCD>-1</RebornCD>
 <MonsterID>50006</MonsterID>
 <MaxCount>4</MaxCount>
-<UnlockBarrierId>0</UnlockBarrierId>
-<TriggerResult>0</TriggerResult>
+<UnlockBarrierId>2</UnlockBarrierId>
+<TriggerResult>False</TriggerResult>
 </Item>
 <Item Type="MapMonsterGroup">
 <Id>50016</Id>

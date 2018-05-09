@@ -23,11 +23,6 @@ namespace GameMain
             RegisterCustomLoader();
         }
 
-        public void Update()
-        {
-            FlyWordManager.Instance.Step();
-        }
-
         public void Clear()
         {
             foreach (KeyValuePair<int, string> luaFormInfo in m_LuaForms)
@@ -39,7 +34,6 @@ namespace GameMain
             }
 
             BoardFormManager.Instance.Clear();
-            FlyWordManager.Instance.Clear();
 
             m_LuaForms.Clear();
             m_UIPackages.Clear();
@@ -167,6 +161,7 @@ namespace GameMain
         {
             UIObjectFactory.SetPackageItemExtension("ui://Home/Buff", typeof (BuffTip));
             UIObjectFactory.SetPackageItemExtension("ui://Home/Button_Attack", typeof (SkillButton));
+            UIObjectFactory.SetPackageItemExtension("ui://Level/ThreeStar", typeof (ThreeStar));
             UIObjectFactory.SetPackageItemExtension("ui://Level/LevelItem", typeof (LevelItem));
         }
 

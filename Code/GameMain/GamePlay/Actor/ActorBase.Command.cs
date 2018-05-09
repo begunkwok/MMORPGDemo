@@ -418,14 +418,7 @@
                 ShowWarning("300003");
                 return CommandReplyType.NO;
             }
-            int playerId = GameEntry.Database.GetPlayerId();
-            int mountId = GameEntry.Database.GetDBRow<DBPlayer>(playerId).MountId;
 
-            if (mountId == 0)
-            {
-                ShowWarning("300004");
-                return CommandReplyType.NO;
-            }
             OnBeginRide();
             return CommandReplyType.YES;
         }

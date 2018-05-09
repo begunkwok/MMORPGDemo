@@ -41,6 +41,7 @@ namespace GameMain
             base.OnLeave(procedureOwner, isShutdown);
 
             GameEntry.UI.CloseUIForm(UIFormId.HomeForm);
+            GameEntry.UI.CloseUIForm(UIFormId.ControllerForm);
 
             GameEntry.Event.Unsubscribe(EnterLevelEventArgs.EventId, OnEnterLevel);
         }

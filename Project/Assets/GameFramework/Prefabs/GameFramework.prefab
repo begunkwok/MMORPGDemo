@@ -1005,10 +1005,10 @@ MonoBehaviour:
   m_UIGroups:
   - m_Name: Common
     m_Depth: 0
-  - m_Name: Default
-    m_Depth: 1
   - m_Name: Dynamic
     m_Depth: 0
+  - m_Name: Default
+    m_Depth: 1
 --- !u!114 &114967677140151710
 MonoBehaviour:
   m_ObjectHideFlags: 1

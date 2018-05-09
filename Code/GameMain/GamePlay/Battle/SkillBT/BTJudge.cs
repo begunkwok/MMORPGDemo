@@ -38,7 +38,7 @@ namespace BT
             mJudgeTrans = GameEntry.BT.GetData(this, JudgeName) as Transform;
             if (mJudgeTrans == null)
             {
-                Debug.LogError(Owner.Id + "找不到参照物");
+              //  Debug.LogError(Owner.Id + "找不到参照物");
                 return false;
             }
             Scope.Center = mJudgeTrans;

@@ -4,7 +4,7 @@ namespace GameMain
 {
     public class RideCommand : ICommand
     {
-        public RideCommand(float lastTime)
+        public RideCommand()
         {
             CommandType = CommandType.Ride;
         }

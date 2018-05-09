@@ -6,5 +6,7 @@
 3001	Home/ControllerForm	Default	False	False
 3002	Home/HomeForm	Default	False	False
 3003	Level/LevelSelectForm	Default	False	False
+3004	Level/LevelResultForm	Default	False	False
 4001	Dynamic/RoleBoardForm	Dynamic	True	False
 4002	Dynamic/FlyWordForm	Dynamic	True	False
+4003	Dynamic/ComboForm	Dynamic	False	False

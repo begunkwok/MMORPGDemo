@@ -136,9 +136,9 @@ namespace GameMain
                     continue;
                 }
 
-                if (skillTree.CastDistance <= 0)
+                if (skillTree.CastDistance < 0)
                 {
-                    return null;
+                    continue;
                 }
 
                 if (dist < skillTree.CastDistance)

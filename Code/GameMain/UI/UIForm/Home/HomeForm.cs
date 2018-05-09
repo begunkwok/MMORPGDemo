@@ -31,6 +31,7 @@ namespace GameMain
         private GButton m_AiButton    = null;
 
         private HomeFormData m_Data;
+        private bool m_IsAuto = false;
 
         protected override void OnInit(object userData)
         {
@@ -43,7 +44,6 @@ namespace GameMain
             m_Hp = m_HeadPanel.GetChild("bar_Hp").asProgress;
             m_Mp = m_HeadPanel.GetChild("bar_Mp").asProgress;
             m_Exp = m_HeadPanel.GetChild("bar_Exp").asImage;
-            m_Exp.color = Color.green;
             BuffTip m_Buff01 = m_HeadPanel.GetChild("buff_01") as BuffTip;
             BuffTip m_Buff02 = m_HeadPanel.GetChild("buff_02") as BuffTip;
             BuffTip m_Buff03 = m_HeadPanel.GetChild("buff_03") as BuffTip;
@@ -127,6 +127,9 @@ namespace GameMain
             m_Skill03Button.onClick.Add(() => OnBattleSkillClick(SkillPosType.Skill_2));
             m_Skill04Button.onClick.Add(() => OnBattleSkillClick(SkillPosType.Skill_3));
             m_Skill05Button.onClick.Add(() => OnBattleSkillClick(SkillPosType.Skill_4));
+
+            m_AiButton.onClick.Add(OnClickAiButton);
+            m_MountButton.onClick.Add(OnClickMountButton);
         }
 
         private void RemoveListener()
@@ -135,13 +138,41 @@ namespace GameMain
 
             GameEntry.Event.Unsubscribe(RefreshHeroInfoEventArgs.EventId, RefreshHeroInfo);
 
-            m_Skill01Button.onClick.Remove(() => OnBattleSkillClick(SkillPosType.Skill_0));
-            m_Skill02Button.onClick.Remove(() => OnBattleSkillClick(SkillPosType.Skill_1));
-            m_Skill03Button.onClick.Remove(() => OnBattleSkillClick(SkillPosType.Skill_2));
-            m_Skill04Button.onClick.Remove(() => OnBattleSkillClick(SkillPosType.Skill_3));
-            m_Skill05Button.onClick.Remove(() => OnBattleSkillClick(SkillPosType.Skill_4));
+            m_Skill01Button.onClick.Clear();
+            m_Skill02Button.onClick.Clear();
+            m_Skill03Button.onClick.Clear();
+            m_Skill04Button.onClick.Clear();
+            m_Skill05Button.onClick.Clear();
+            m_AiButton.onClick.Clear();
+            m_RoleButton.onClick.Clear();
+            m_BagButton.onClick.Clear();
+            m_PartnerButton.onClick.Clear();
+            m_TaskButton.onClick.Clear();
         }
-        
+
+        private void OnClickAiButton()
+        {
+            m_IsAuto = !m_IsAuto;
+
+            ChangeAiModeEventArgs eventArgs = new ChangeAiModeEventArgs();
+            if (m_IsAuto)
+            {
+                eventArgs.Fill(AIModeType.Auto);
+            }
+            else
+            {
+                eventArgs.Fill(AIModeType.Hand);
+            }
+
+            GameEntry.Event.Fire(this,eventArgs);
+        }
+
+        private void OnClickMountButton()
+        {
+            ChangeVehicleEventArgs eventArgs = new ChangeVehicleEventArgs();
+            GameEntry.Event.Fire(this, eventArgs);
+        }
+
         private void OnBattleSkillClick(SkillPosType skillPos)
         {
             SkillKeyDownEventArgs skillEventArgs = ReferencePool.Acquire<SkillKeyDownEventArgs>();

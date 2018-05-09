@@ -20,7 +20,7 @@ namespace GameMain
         protected ActorBase m_Partner2;
         protected ActorBase m_Partner3;
         protected ActorBase m_Pet;
-        protected ActorBase m_Mount;
+        protected MountRole m_Mount;
         protected ActorBase m_Vehicle;
 
         protected Dictionary<int, EquipAvatar> mEquipAvatars = new Dictionary<int, EquipAvatar>();
@@ -46,13 +46,13 @@ namespace GameMain
             }
         }
 
-        public ActorBase Mount
+        public MountRole Mount
         {
             get { return m_Mount; }
             set
             {
                 m_Mount = value;
-                m_Mount?.SetHost(this);
+                m_Mount.Actor.SetHost(this);
             }
         }
 
@@ -92,8 +92,27 @@ namespace GameMain
             GameEntry.Event.Subscribe(ChangeEquipEventArgs.EventId,ChangeEquipAvatar);
             GameEntry.Event.Subscribe(SkillKeyDownEventArgs.EventId,TryUseSkill);
             GameEntry.Event.Subscribe(KillMonsterEventArgs.EventId,OnKillMonster);
+            GameEntry.Event.Subscribe(ChangeAiModeEventArgs.EventId,OnChangeAiMode);
+            GameEntry.Event.Subscribe(ChangeVehicleEventArgs.EventId,OnChangeVehicle);
 
             BroadcastHeroInfo();
+            m_Vehicle = this;
+        }
+
+        public override void Clear()
+        {
+            base.Clear();
+
+            GameEntry.Event.Unsubscribe(ChangeEquipEventArgs.EventId, ChangeEquipAvatar);
+            GameEntry.Event.Unsubscribe(SkillKeyDownEventArgs.EventId, TryUseSkill);
+            GameEntry.Event.Unsubscribe(KillMonsterEventArgs.EventId, OnKillMonster);
+            GameEntry.Event.Unsubscribe(ChangeAiModeEventArgs.EventId, OnChangeAiMode);
+            GameEntry.Event.Unsubscribe(ChangeVehicleEventArgs.EventId, OnChangeVehicle);
+
+            for (int i = 0; i < 8; i++)
+            {
+                RemoveEquip(i);
+            }
         }
 
         public override void Step()
@@ -117,7 +136,14 @@ namespace GameMain
             m_ActorAI = new ActorFsmAI(this, AIModeType.Hand, atkDist, followDist, waringDist, findEnemyInterval);
             m_ActorAI.Start();
         }
-        
+
+        public override int Attack(IActor defender, int value)
+        {
+            OnPlayerAttackEventArgs args = ReferencePool.Acquire<OnPlayerAttackEventArgs>().Fill(defender);
+            GameEntry.Event.Fire(this, args);
+            return base.Attack(defender, value);
+        }
+
         protected override void CreateBoard()
         {
             BoardFormData data = new BoardFormData
@@ -170,7 +196,7 @@ namespace GameMain
         {
             this.StopPathFinding();
             this.LoadMount();
-            m_Mount.SetHost(this);
+            m_Mount.Actor.SetHost(this);
             m_AnimController.Play("qicheng", null, true);
             m_CharacterController.enabled = false;
             this.SetActorState(ActorStateType.IsRide, true);
@@ -178,12 +204,11 @@ namespace GameMain
 
         public override void OnEndRide()
         {
-            //CacheTransform.parent = ZTLevel.Instance.GetHolder(EMapHolder.Role).transform;
             CachedTransform.localPosition = GlobalTools.NavSamplePosition(Pos);
             m_CharacterController.enabled = true;
             if (m_Mount != null)
             {
-                //ZTLevel.Instance.DelActor(mMount);
+                GameEntry.Level.DelRole(m_Mount);
                 m_Mount = null;
             }
             m_Vehicle = this;
@@ -206,7 +231,7 @@ namespace GameMain
 
         public override void StopPathFinding()
         {
-            if (m_Vehicle != null)
+            if (m_Vehicle != null && m_Vehicle != this)
             {
                 m_Vehicle.StopPathFinding();
             }
@@ -218,7 +243,7 @@ namespace GameMain
 
         public override void OnForceToMove(MoveCommand ev)
         {
-            if (m_Vehicle != null)
+            if (m_Vehicle != null && m_Vehicle != this) 
             {
                 m_Vehicle.OnForceToMove(ev);
                 m_AnimController.Play("qicheng_run", null, true);
@@ -262,27 +287,6 @@ namespace GameMain
             OnPlayerDeadEventArgs args = ReferencePool.Acquire<OnPlayerDeadEventArgs>().Fill(ev.Type);
             GameEntry.Event.Fire(this, args);
         }
-
-        public override void Clear()
-        {
-            base.Clear();
-
-            GameEntry.Event.Unsubscribe(ChangeEquipEventArgs.EventId, ChangeEquipAvatar);
-            GameEntry.Event.Unsubscribe(SkillKeyDownEventArgs.EventId, TryUseSkill);
-            GameEntry.Event.Unsubscribe(KillMonsterEventArgs.EventId, OnKillMonster);
-
-            for (int i = 0; i < 8; i++)
-            {
-                RemoveEquip(i);
-            }
-        }
-
-
-
-
-
-
-
 
 
 
@@ -369,9 +373,10 @@ namespace GameMain
 
         private void LoadMount()
         {
-            //Transform param = Transform.Create(CacheTransform.position, CacheTransform.eulerAngles);
-            //Mount = ZTLevel.Instance.AddActor(mActorCard.GetMountID(), ActorType.Mount, ActorBattleCampType.Neutral, param);
-            m_Vehicle = m_Mount;
+            TransformParam param= TransformParam.Create(CachedTransform.position, CachedTransform.eulerAngles);
+            Mount = GameEntry.Level.AddRole<MountRole>(100001, ActorType.Mount, BattleCampType.Neutral, param);
+            m_Vehicle = m_Mount.Actor;
+
             Transform ridePoint = GetRidePoint();
             if (ridePoint != null)
             {
@@ -407,44 +412,19 @@ namespace GameMain
 
             int maxLevle = GameEntry.DataTable.GetDataTable<DRHeroLevel>().Count;
 
-
-            //if (drActorEntity.KillExp > 0)
-            //{
-            //    int maxExp = 
-            //    RefreshHeroInfoEventArgs args = ReferencePool.Acquire<RefreshHeroInfoEventArgs>().FillHp(drActorEntity.KillExp, maxMp);
-            //    GameEntry.Event.Fire(this, args);
-            //}
+            if (drActorEntity.KillExp > 0)
+            {
+                TryAddExp(drActorEntity.KillExp);
+            }
         }
 
-        private void OnUpgradeLevel()
+        private void OnChangeAiMode(object sender, GameEventArgs e)
         {
-            this.ActorCard.SetLevel();
+            ChangeAiModeEventArgs ne = e as ChangeAiModeEventArgs;
+            if (ne == null)
+                return;
 
-            RefreshBoardEventArgs eventArgs = ReferencePool.Acquire<RefreshBoardEventArgs>();
-            int maxHp = Attrbute.GetValue(AttributeType.MaxHp);
-            int curHp = Attrbute.GetValue(AttributeType.Hp);
-            eventArgs.Fill(EntityId, maxHp, curHp, m_ActorData.Level);
-            GameEntry.Event.Fire(this, eventArgs);
-
-            int id = GameEntry.Entity.GenerateTempSerialId();
-            EffectData data = new EffectData(id, Constant.Define.LevelUpEffect);
-            data.Owner = this;
-            data.KeepTime = 3;
-            data.BindType = EffectBindType.OwnFoot;
-            data.DeadType = FlyObjDeadType.UntilLifeTimeEnd;
-            data.Parent = CachedTransform;
-            data.SetParent = true;
-            GameEntry.Entity.ShowEffect(data);
-        }
-
-        private void OnChangeFightValue()
-        {
-            base.InitAttribute();
-        }
-
-        private Transform GetRidePoint()
-        {
-            return GlobalTools.GetBone(CachedTransform, "Bone026");
+            this.m_ActorAI.ChangeAIMode(ne.AiMode);
         }
 
         private void TryUseSkill(object sender, GameEventArgs e)
@@ -470,6 +450,86 @@ namespace GameMain
             //{
             //    ChangeEquip(pTargetPos - 1, equip.Id);
             //}
+        }
+
+        private void OnChangeVehicle(object sender, GameEventArgs e)
+        {
+            if (m_Vehicle != this)
+            {
+                OnEndRide();
+            }
+
+            ExecuteCommand(new RideCommand());
+        }
+
+        private void TryAddExp(int exp)
+        {
+            if (exp <= 0)
+                return;
+
+            var dt = GameEntry.DataTable.GetDataTable<DRHeroLevel>();
+
+            int maxLevel = dt.Count;
+            if (m_PlayerData.Level == maxLevel)
+            {
+                ShowWarning("100005");
+                return;
+            }
+
+            DRHeroLevel curLevelData = dt.GetDataRow(m_PlayerData.Level);
+            if (curLevelData == null)
+            {
+                Log.Error("Can no get level{0} data.", m_PlayerData.Level);
+                return;
+            }
+
+            int maxExp = curLevelData.RequireExp;
+            m_PlayerData.Exp += exp;
+            int offsetExp = m_PlayerData.Exp - maxExp;
+            if (offsetExp > 0)
+            {
+                m_PlayerData.Exp = offsetExp;
+                m_PlayerData.Level++;
+                OnUpgradeLevel();
+            }
+
+            int curExp = m_PlayerData.Exp;
+
+            RefreshHeroInfoEventArgs args = ReferencePool.Acquire<RefreshHeroInfoEventArgs>().FillExp(curExp, maxExp);
+            GameEntry.Event.Fire(this, args);
+        }
+
+        private void OnUpgradeLevel()
+        {
+            this.ActorCard.SetLevel();
+
+            RefreshBoardEventArgs eventArgs = ReferencePool.Acquire<RefreshBoardEventArgs>();
+            int maxHp = Attrbute.GetValue(AttributeType.MaxHp);
+            int curHp = Attrbute.GetValue(AttributeType.Hp);
+            eventArgs.Fill(EntityId, maxHp, curHp, m_ActorData.Level);
+            GameEntry.Event.Fire(this, eventArgs);
+            RefreshHeroInfoEventArgs args = ReferencePool.Acquire<RefreshHeroInfoEventArgs>().FillLevel(m_ActorData.Level);
+            GameEntry.Event.Fire(this, args);
+
+            int id = GameEntry.Entity.GenerateTempSerialId();
+            EffectData data = new EffectData(id, Constant.Define.LevelUpEffect);
+            data.Owner = this;
+            data.KeepTime = 3;
+            data.BindType = EffectBindType.OwnFoot;
+            data.DeadType = FlyObjDeadType.UntilLifeTimeEnd;
+            data.Parent = CachedTransform;
+            data.SetParent = true;
+            GameEntry.Entity.ShowEffect(data);
+        }
+
+        private void OnChangeFightValue()
+        {
+            base.InitAttribute();
+        }
+
+        private Transform GetRidePoint()
+        {
+            return GlobalTools.GetBone(CachedTransform, "Bone026");
         }
 
         private void BroadcastHeroInfo()
