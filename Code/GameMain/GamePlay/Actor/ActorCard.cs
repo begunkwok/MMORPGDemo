@@ -32,7 +32,6 @@
                 this.SetPartnerByPos(1, m_Role.Partner1Id);
                 this.SetPartnerByPos(2, m_Role.Partner2Id);
                 this.SetPartnerByPos(3, m_Role.Partner3Id);
-
             }
 
             m_Data = GameEntry.DataTable.GetDataTable<DRActorEntity>().GetDataRow(Owner.Id);

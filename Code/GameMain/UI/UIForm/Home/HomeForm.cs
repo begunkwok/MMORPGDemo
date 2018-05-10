@@ -30,6 +30,9 @@ namespace GameMain
         private GButton m_MountButton = null;
         private GButton m_AiButton    = null;
 
+        private GImage m_AiAuto = null;
+        private GImage m_AiHand = null;
+
         private HomeFormData m_Data;
         private bool m_IsAuto = false;
 
@@ -56,6 +59,9 @@ namespace GameMain
             m_TaskButton = UI.GetChild("btn_Task").asButton;
             m_MountButton = UI.GetChild("btn_Mount").asButton;
             m_AiButton = UI.GetChild("btn_Ai").asButton;
+            m_AiAuto = m_AiButton.GetChild("n1").asImage;
+            m_AiHand = m_AiButton.GetChild("n2").asImage;
+            m_AiAuto.visible = false;
 
             m_Skill01Button = UI.GetChild("btn_Skill01") as SkillButton;
             m_Skill02Button = UI.GetChild("btn_Skill02") as SkillButton;
@@ -122,6 +128,8 @@ namespace GameMain
 
             GameEntry.Event.Subscribe(RefreshHeroInfoEventArgs.EventId, RefreshHeroInfo);
     
+            GameEntry.Event.Subscribe(OnPlayerAiModeChangeEventArgs.EventId,OnPlayerAiModeChange);
+
             m_Skill01Button.onClick.Add(() => OnBattleSkillClick(SkillPosType.Skill_0));
             m_Skill02Button.onClick.Add(() => OnBattleSkillClick(SkillPosType.Skill_1));
             m_Skill03Button.onClick.Add(() => OnBattleSkillClick(SkillPosType.Skill_2));
@@ -130,6 +138,7 @@ namespace GameMain
 
             m_AiButton.onClick.Add(OnClickAiButton);
             m_MountButton.onClick.Add(OnClickMountButton);
+            m_PartnerButton.onClick.Add(OnClickPartner);
         }
 
         private void RemoveListener()
@@ -137,6 +146,8 @@ namespace GameMain
             GameEntry.Event.Unsubscribe(RefreshBuffEventArgs.EventId, RefreshBuffItems);
 
             GameEntry.Event.Unsubscribe(RefreshHeroInfoEventArgs.EventId, RefreshHeroInfo);
+
+            GameEntry.Event.Unsubscribe(OnPlayerAiModeChangeEventArgs.EventId, OnPlayerAiModeChange);
 
             m_Skill01Button.onClick.Clear();
             m_Skill02Button.onClick.Clear();
@@ -155,13 +166,18 @@ namespace GameMain
             m_IsAuto = !m_IsAuto;
 
             ChangeAiModeEventArgs eventArgs = new ChangeAiModeEventArgs();
+
             if (m_IsAuto)
             {
                 eventArgs.Fill(AIModeType.Auto);
+                m_AiAuto.visible = false;
+                m_AiHand.visible = true;
             }
             else
             {
                 eventArgs.Fill(AIModeType.Hand);
+                m_AiAuto.visible = true;
+                m_AiHand.visible = false;
             }
 
             GameEntry.Event.Fire(this,eventArgs);
@@ -173,11 +189,20 @@ namespace GameMain
             GameEntry.Event.Fire(this, eventArgs);
         }
 
+        private void OnClickPartner()
+        {
+            ChangePartnerEventArgs eventArgs = new ChangePartnerEventArgs();
+            int partner01Id = UnityEngine.Random.Range(90001, 90006);
+            int partner02Id = UnityEngine.Random.Range(90001, 90006);
+            eventArgs.Fill(partner01Id, partner02Id);
+            GameEntry.Event.Fire(this, eventArgs);
+        }
+
         private void OnBattleSkillClick(SkillPosType skillPos)
         {
             SkillKeyDownEventArgs skillEventArgs = ReferencePool.Acquire<SkillKeyDownEventArgs>();
             skillEventArgs.Fill(skillPos);
-            GameEntry.Event.Fire(skillEventArgs.Id, skillEventArgs);
+            GameEntry.Event.Fire(this, skillEventArgs);
         }
 
         private void RefreshBuffItems(object sender, GameEventArgs e)
@@ -276,6 +301,17 @@ namespace GameMain
                     break;
             }
 
+        }
+
+        private void OnPlayerAiModeChange(object sender, GameEventArgs e)
+        {
+            OnPlayerAiModeChangeEventArgs ne = e as OnPlayerAiModeChangeEventArgs;
+
+            if (ne == null)
+                return;
+
+            m_AiAuto.visible = ne.AiMode == AIModeType.Hand;
+            m_AiHand.visible = ne.AiMode != AIModeType.Hand;
         }
 
         private void HideAll()

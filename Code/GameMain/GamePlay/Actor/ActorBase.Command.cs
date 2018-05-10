@@ -143,6 +143,10 @@
             {
                 m_ActorAI.ChangeAIMode(AIModeType.Hand);
                 ChangeState<ActorRunFsm>(cmd);
+
+                OnPlayerAiModeChangeEventArgs eventArgs = new OnPlayerAiModeChangeEventArgs().Fill(AIModeType.Hand);
+                GameEntry.Event.Fire(this, eventArgs);
+
                 return CommandReplyType.YES;
             }
             return CommandReplyType.NO;

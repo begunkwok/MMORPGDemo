@@ -1,12 +1,20 @@
 <Root Type="MapConfig">
 <Id>9999</Id>
 <Delay>0</Delay>
-<MapName></MapName>
+<MapName>主城</MapName>
 <MapPath></MapPath>
 <AllowRide>True</AllowRide>
 <AllowPK>True</AllowPK>
 <AllowTrade>True</AllowTrade>
 <AllowFight>True</AllowFight>
+<Ally Type="MapBorn">
+<Camp>1</Camp>
+<TransParam Type="MapTransform">
+<Position>(-2.93,-1.89,10.97)</Position>
+<EulerAngles>(0.00,0.00,0.00)</EulerAngles>
+<Scale>(1.00,1.00,1.00)</Scale>
+</TransParam>
+</Ally>
 <Barriers>
 <Item Type="MapBarrier">
 <Id>20001</Id>
@@ -71,7 +79,7 @@
 <Item Type="MapNpc">
 <Id>40002</Id>
 <Position>(0.05,-2.07,-7.66)</Position>
-<Euler>(0.00,-0.374,0.00)</Euler>
+<Euler>(0.00,359.63,0.00)</Euler>
 <Scale>(1.00,1.00,1.00)</Scale>
 </Item>
 <Item Type="MapNpc">
@@ -82,7 +90,7 @@
 </Item>
 <Item Type="MapNpc">
 <Id>40004</Id>
-<Position>(20,-1.64,10.79)</Position>
+<Position>(20.00,-1.64,10.79)</Position>
 <Euler>(0.00,269.60,0.00)</Euler>
 <Scale>(1.00,1.00,1.00)</Scale>
 </Item>

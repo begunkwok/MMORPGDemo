@@ -107,14 +107,15 @@ namespace GameMain
             Camp = camp;
 
             m_ActorData = GameEntry.DataTable.GetDataTable<DRActorEntity>().GetDataRow(Id);
-            m_ActorSkill = new ActorSkill(this);
-            m_ActorCard = new ActorCard(this);
-            m_ActorBuff = new ActorBuff(this);
         }
 
 
         public virtual void Init()
         {
+            m_ActorSkill = new ActorSkill(this);
+            m_ActorCard = new ActorCard(this);
+            m_ActorBuff = new ActorBuff(this);
+
             InitAttribute(true);
             InitLayer();
             InitCommands();
@@ -135,11 +136,11 @@ namespace GameMain
                 return;
             }
 
-            m_ActorAI.Step();
-            m_ActorBuff.Step();
-            m_ActorSkill.Step();
-            m_AnimController.Step();
-            m_ActorPathFinding.Step();
+            m_ActorAI?.Step();
+            m_ActorBuff?.Step();
+            m_ActorSkill?.Step();
+            m_AnimController?.Step();
+            m_ActorPathFinding?.Step();
         }
 
         public virtual void Pause(bool isPause)

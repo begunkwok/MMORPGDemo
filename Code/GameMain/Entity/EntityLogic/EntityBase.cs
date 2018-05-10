@@ -59,7 +59,7 @@ namespace GameMain
                 Log.Error("Entity data is invalid.");
                 return;
             }
-            Name = $"{m_GoName}[{m_EntityData.TypeId}][{Id}]";
+            Name = $"[{m_EntityData.TypeId}][{Id}]";
             m_GoName = Name;
         }
 

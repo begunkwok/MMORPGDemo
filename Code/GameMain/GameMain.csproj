@@ -83,6 +83,8 @@
     <Compile Include="Database\Base\DBRowBase.cs" />
     <Compile Include="Database\Data\DBTask.cs" />
     <Compile Include="DataTable\DRLevel.cs" />
+    <Compile Include="Definition\EventArgs\ChangePartnerEventArgs.cs" />
+    <Compile Include="Definition\EventArgs\OnPlayerAiModeChangeEventArgs.cs" />
     <Compile Include="Definition\EventArgs\ChangeVehicleEventArgs.cs" />
     <Compile Include="Definition\EventArgs\ChangeAiModeEventArgs.cs" />
     <Compile Include="Definition\EventArgs\BackCityEventArgs.cs" />
@@ -121,8 +123,10 @@
     <Compile Include="Entity\EntityData\LevelObjectData.cs" />
     <Compile Include="Entity\EntityLogic\LevelObject.cs" />
     <Compile Include="Entity\EntityLogic\MountRole.cs" />
+    <Compile Include="Entity\EntityLogic\PartnerRole.cs" />
     <Compile Include="Entity\EntityLogic\NpcRole.cs" />
     <Compile Include="GamePlay\Actor\ActorMount.cs" />
+    <Compile Include="GamePlay\Actor\ActorPartner.cs" />
     <Compile Include="GamePlay\Actor\ActorNpc.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIBackState.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIChaseState.cs" />
@@ -132,6 +136,7 @@
     <Compile Include="GamePlay\AI\AIFsm\AIFleeState.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIFollowState.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIFsmStateBase.cs" />
+    <Compile Include="GamePlay\AI\AIFsm\AIEmptyState.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIIdleState.cs" />
     <Compile Include="GamePlay\AI\AIFsm\AIPatrolState.cs" />
     <Compile Include="GamePlay\Attribute\Define\AttackResultType.cs" />

@@ -15,6 +15,7 @@ namespace GameMain
 
             FsmState<ActorBase>[] states =
             {
+                new AIEmptyState(AIStateType.Empty), 
                 new AIIdleState(AIStateType.Idle),
                 new AIFollowState(AIStateType.Follow),
                 new AIFleeState(AIStateType.Flee),
@@ -37,6 +38,7 @@ namespace GameMain
 
             if (m_AIFsm.IsRunning)
             {
+                ChangeAIState(AIStateType.Idle);
                 return;
             }
 
@@ -54,7 +56,7 @@ namespace GameMain
 
         public override void Stop()
         {
-            ChangeAIState(AIStateType.Idle);
+            ChangeAIState(AIStateType.Empty);
         }
 
         public override void Clear()
@@ -73,6 +75,9 @@ namespace GameMain
 
                 switch (stateType)
                 {
+                    case AIStateType.Empty:
+                        curState.ChangeState<AIEmptyState>();
+                        break;
                     case AIStateType.Idle:
                         curState.ChangeState<AIIdleState>();
                         break;

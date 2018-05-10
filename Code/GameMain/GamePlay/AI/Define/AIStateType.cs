@@ -5,7 +5,7 @@
     /// </summary>
     public enum AIStateType
     {
-        None,  //无
+        Empty, //空
         Idle,  //闲逛
         Fight, //战斗
         Follow,//跟随

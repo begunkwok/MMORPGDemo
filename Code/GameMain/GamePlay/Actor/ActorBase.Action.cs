@@ -16,7 +16,7 @@ namespace GameMain
 
             CachedTransform.LookAt(new Vector3(CachedTransform.position.x + delta.x, CachedTransform.position.y,
             CachedTransform.position.z + delta.y));
-            m_CharacterController.SimpleMove(delta * speed);
+            m_CharacterController.SimpleMove(m_CharacterController.transform.forward * speed);
             this.m_AnimController.Play("run", null, true);
         }
 

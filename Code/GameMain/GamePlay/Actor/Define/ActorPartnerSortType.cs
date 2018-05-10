@@ -5,9 +5,9 @@
     /// </summary>
     public enum PartnerSortType
     {
-        Unknown,    //未知
-        Middle,     //中间
-        Left,       //左边
-        Right,      //右边
+        Unknown = 0,    //未知
+        Middle = 1,     //中间
+        Left = 2,       //左边
+        Right = 3,      //右边
     }
 }

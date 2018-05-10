@@ -54,10 +54,11 @@ namespace GameMain
             int playerId = m_ProcedureOwner.GetData<VarInt>(Constant.ProcedureData.PlayerId);
 
             DBPlayer dbPlayer = GameEntry.Database.GetDBRow<DBPlayer>(playerId);
+            GameEntry.Level.CreatePlayer(dbPlayer.Id);
+
             RefreshHeroInfoEventArgs args = ReferencePool.Acquire<RefreshHeroInfoEventArgs>().FillName(dbPlayer.Name);
             GameEntry.Event.Fire(this, args);
 
-            GameEntry.Level.CreatePlayer(dbPlayer.Id);
         }
 
         private void OnEnterLevel(object sender, GameEventArgs e)

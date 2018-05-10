@@ -185,26 +185,20 @@ namespace GameMain
             return levelObject;
         }
 
-        public void AddPartner(PlayerRole host, int pos, int id)
+        public void AddPartner(ActorPlayer host, int pos, int id)
         {
             if (id <= 0)
                 return;
 
-            if (host?.Actor == null)
+            if (host == null)
                 return;
             
             PartnerSortType sort = (PartnerSortType)pos;
-            ActorPlayer actorPlayer = host.Actor as ActorPlayer;
-            if (actorPlayer == null)
-            {
-                return;
-            }
-
-            Vector3 pPos = actorPlayer.GetPartnerPosBySort(sort);
+            Vector3 pPos = host.GetPartnerPosBySort(sort);
 
             TransformParam param = TransformParam.Create(pPos, host.CachedTransform.eulerAngles, Vector3.one * 1.5f);
 
-            ActorBase partner = AddRole<RoleEntityBase>(id, ActorType.Partner, actorPlayer.Camp, param).Actor;
+            ActorBase partner = AddRole<PartnerRole>(id, ActorType.Partner, host.Camp, param).Actor;
             if (partner == null)
             {
                 return;
@@ -213,10 +207,10 @@ namespace GameMain
             switch (sort)
             {
                 case PartnerSortType.Left:
-                    actorPlayer.Partner1 = partner;
+                    host.Partner1 = partner;
                     break;
                 case PartnerSortType.Right:
-                    actorPlayer.Partner2 = partner;
+                    host.Partner2 = partner;
                     break;
             }
             partner.Sort = sort;
@@ -518,11 +512,20 @@ namespace GameMain
                     Scale = Config.Ally.TransParam.Scale
                 };
 
+                ActorPlayer actorPlayer = Player.Actor as ActorPlayer;
+                if (actorPlayer == null)
+                {
+                    return;
+                }
+
+                actorPlayer.BattleState = CurSceneType == SceneType.Battle; 
+
+                Player.CachedTransform.position = Vector3.zero;
                 Player.Actor.SetBornParam(param);
                 Player.UpdateTransform(param);
 
-                AddPartner(Player, 1, Player.Actor.ActorCard.Partners[0]);
-                AddPartner(Player, 2, Player.Actor.ActorCard.Partners[1]);
+                AddPartner(actorPlayer, 2, actorPlayer.ActorCard.Partners[0]);
+                AddPartner(actorPlayer, 3, actorPlayer.ActorCard.Partners[1]);
             }
         }
 
