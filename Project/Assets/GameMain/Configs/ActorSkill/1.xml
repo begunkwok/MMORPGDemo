@@ -8,7 +8,7 @@
                  <Judge  Region="3"  Affect="2"  MaxDis="4.0"  HAngle="180"  Height="2"  JudgeName="Owner">
                      <Parallel>
                          <SuckBlood  Percent="2.15" Rate="1"/>
-                         <AddBuff BuffID="201039" Affect="2" Ratio="0.3"/>
+                         <AddBuff BuffID="201039" Affect="2" Ratio="0.5"/>
                          <BlurScreen/>
                     </Parallel>
                 </Judge>               
@@ -25,7 +25,7 @@
                <Judge  Region="3"  Affect="2"  MaxDis="4.0"  HAngle="180"  Height="2"  JudgeName="Owner">
                     <Parallel>
                         <Hurt   Damage="1"  Percent="1.12"/>
-                        <AddBuff BuffID="201039" Affect="2" Ratio="0.3"/>
+                        <AddBuff BuffID="201039" Affect="2" Ratio="0.5"/>
                         <BlurScreen/>
                     </Parallel>
               </Judge>
@@ -42,7 +42,7 @@
                <Judge  Region="3"  Affect="2"  MaxDis="4.0"  HAngle="180"  Height="2"  JudgeName="Owner">
                 <Parallel>
                    <Hurt   Damage="1"  Percent="1.14"/>
-                   <AddBuff BuffID="201039" Affect="2" Ratio="0.3"/>
+                   <AddBuff BuffID="201039" Affect="2" Ratio="0.5"/>
                    <BlurScreen/>
                 </Parallel>
               </Judge>
@@ -70,12 +70,12 @@
   <Skill Id="1005"   Name="半月斩"  StateTime="2.333"  CostType="1"  CostNum="10"  CD="12"   CastDistance="3.0" Pos="1">
     <Sequence>
        <Parallel>
-            <Anim   AnimName="xuli_01"  Sound="sound_roar_shengwushi_01"/>
+            <Anim   AnimName="xuli_01"  Sound="10008"/>
             <Effect Id="61020" LastTime="1.233"  Bind="3"  Sound=""/>
       </Parallel>
        <Parallel>
-            <Anim   AnimName="xuli_02"  Sound="sound_roar_shengwushi_02"/>
-            <Effect Id="64054" LastTime="1.133"  Bind="3"  Sound="sound_explosion" JudgeName="Owner"/>
+            <Anim   AnimName="xuli_02"  Sound="10009"/>
+            <Effect Id="64054" LastTime="1.133"  Bind="3"  Sound="10010" JudgeName="Owner"/>
             <Sequence>
                  <Judge  Region="3"  Affect="2"  MaxDis="5.0"  HAngle="360"  Height="2"  JudgeName="Owner"/>
                  <Hurt   Damage="1"  Percent="1.70"/>

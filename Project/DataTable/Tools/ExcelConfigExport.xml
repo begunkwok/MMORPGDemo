@@ -30,7 +30,7 @@
   </ConfigItem>
   <ConfigItem ExcelFile="../Excel/背景音乐配置表.xlsx" SheetName="背景音乐配置表">
     <ConfigInfo>
-      <Client>../DataTableOutput/Music.txt</Client>
+      <Client>../../Assets/GameMain/DataTables/Music.txt</Client>
       <Server />
     </ConfigInfo>
     <SourceInfo>

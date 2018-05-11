@@ -61,6 +61,10 @@ namespace GameMain
             m_AiButton = UI.GetChild("btn_Ai").asButton;
             m_AiAuto = m_AiButton.GetChild("n1").asImage;
             m_AiHand = m_AiButton.GetChild("n2").asImage;
+
+            m_RoleButton.visible = false;
+            m_BagButton.visible = false;
+            m_TaskButton.visible = false;
             m_AiAuto.visible = false;
 
             m_Skill01Button = UI.GetChild("btn_Skill01") as SkillButton;
@@ -278,7 +282,7 @@ namespace GameMain
                 case RefreshType.Exp:
                     if (ne.MaxExp != 0)
                     {
-                        m_Exp.fillAmount = 100 * (float) ne.CurExp/ne.MaxExp;
+                        m_Exp.fillAmount =  (float) ne.CurExp/ne.MaxExp;
                     }
                     break;
                 case RefreshType.All:
@@ -296,7 +300,7 @@ namespace GameMain
                     }
                     if (ne.MaxExp != 0)
                     {
-                        m_Exp.fillAmount = 100 * (float)ne.CurExp / ne.MaxExp;
+                        m_Exp.fillAmount =  (float)ne.CurExp / ne.MaxExp;
                     }
                     break;
             }

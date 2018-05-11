@@ -11,6 +11,7 @@ namespace GameMain
 
         public override void Init()
         {
+            InitAttribute(true);
             InitLayer();
             InitCommands();
             InitAnim();
@@ -21,6 +22,12 @@ namespace GameMain
 
             CreateBoard();
             ApplyCharacterCtrl(true);
+        }
+
+        protected override void InitAttribute(bool init = false)
+        {
+            m_CurAttribute = new ActorAttribute();
+            m_CurAttribute.UpdateValue(AttributeType.Speed, (int)m_ActorData.Speed);
         }
 
         protected override void CreateBoard()

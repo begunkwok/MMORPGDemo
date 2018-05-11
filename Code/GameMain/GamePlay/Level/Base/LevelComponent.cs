@@ -107,7 +107,7 @@ namespace GameMain
             }
         }
 
-        public void EnterLevel(int levelId,SceneId sceneId)
+        public void EnterLevel(int levelId,SceneId sceneId,int playerId)
         {
             this.LevelID = levelId;
             this.CurSceneId = sceneId;
@@ -124,7 +124,7 @@ namespace GameMain
             Config = new MapConfig();
             Config.Load(assetName);
 
-            this.OnLevelStart();
+            this.OnLevelStart(playerId);
         }
 
         public void LeaveCurrentLevel()
@@ -185,35 +185,39 @@ namespace GameMain
             return levelObject;
         }
 
-        public void AddPartner(ActorPlayer host, int pos, int id)
+        public PartnerRole AddPartner(ActorPlayer host, int pos, int id)
         {
             if (id <= 0)
-                return;
+                return null;
 
             if (host == null)
-                return;
+                return null;
             
             PartnerSortType sort = (PartnerSortType)pos;
             Vector3 pPos = host.GetPartnerPosBySort(sort);
 
             TransformParam param = TransformParam.Create(pPos, host.CachedTransform.eulerAngles, Vector3.one * 1.5f);
 
-            ActorBase partner = AddRole<PartnerRole>(id, ActorType.Partner, host.Camp, param).Actor;
+            PartnerRole partner = AddRole<PartnerRole>(id, ActorType.Partner, host.Camp, param) as PartnerRole;
             if (partner == null)
             {
-                return;
+                return null;
             }
+
+            ActorBase partnerActor = partner.Actor;
 
             switch (sort)
             {
                 case PartnerSortType.Left:
-                    host.Partner1 = partner;
+                    host.Partner1 = partnerActor;
                     break;
                 case PartnerSortType.Right:
-                    host.Partner2 = partner;
+                    host.Partner2 = partnerActor;
                     break;
             }
-            partner.Sort = sort;
+            partnerActor.Sort = sort;
+
+            return partner;
         }
 
         public bool GetPortalByDestMapId(int id, ref Vector3 pos)
@@ -418,7 +422,7 @@ namespace GameMain
             }
         }
 
-        private void OnLevelStart()
+        private void OnLevelStart(int playerId)
         {
             GameEntry.Camera.HideAllEffect();
 
@@ -429,7 +433,7 @@ namespace GameMain
                 OnBattleStart();
             }
 
-            InitPlayer();
+            InitPlayer(playerId);
 
             InitNpc();
 
@@ -491,36 +495,38 @@ namespace GameMain
             GameEntry.UI.CloseUIForm(UIFormId.HomeForm);
            
             m_EndTime = Time.realtimeSinceStartup - m_StartTime;
-
-            m_Victory = !Player.Actor.IsDead;
             CalcResult();
         }
 
-        private void InitPlayer()
+        private void InitPlayer(int playerId)
         {
             if (Config.Ally == null)
             {
                 return;
             }
 
+            DBPlayer dbPlayer = GameEntry.Database.GetDBRow<DBPlayer>(playerId);
+           this.Player = GameEntry.Level.CreatePlayer(dbPlayer.Id);
+
+            RefreshHeroInfoEventArgs args = ReferencePool.Acquire<RefreshHeroInfoEventArgs>().FillName(dbPlayer.Name);
+            GameEntry.Event.Fire(this, args);
+
             if (Player != null)
             {
-                TransformParam param = new TransformParam
-                {
-                    Position = Config.Ally.TransParam.Position,
-                    EulerAngles = Config.Ally.TransParam.EulerAngles,
-                    Scale = Config.Ally.TransParam.Scale
-                };
-
                 ActorPlayer actorPlayer = Player.Actor as ActorPlayer;
                 if (actorPlayer == null)
                 {
                     return;
                 }
 
-                actorPlayer.BattleState = CurSceneType == SceneType.Battle; 
+                TransformParam param = new TransformParam
+                {
+                    Position = Config.Ally.TransParam.Position,
+                    EulerAngles = Config.Ally.TransParam.EulerAngles,
+                    Scale = Config.Ally.TransParam.Scale
+                };
+                actorPlayer.BattleState = CurSceneType == SceneType.Battle;
 
-                Player.CachedTransform.position = Vector3.zero;
                 Player.Actor.SetBornParam(param);
                 Player.UpdateTransform(param);
 
@@ -688,15 +694,15 @@ namespace GameMain
                 pList[i].Actor.SetTarget(null);
             }
 
-            this.LeaveCurrentLevel();
-
+            this.Player.CachedTransform.localPosition = Vector3.zero;
             this.Player = null;
-
-            GameEntry.Camera.ShowEffect(CameraEffectType.ScreenGray);
+            this.m_Victory = false;
+            this.LeaveCurrentLevel();
         }
 
         private void OnPassLevel(object sender, GameEventArgs e)
         {
+            this.m_Victory = true;
             LeaveCurrentLevel();
         }
     }

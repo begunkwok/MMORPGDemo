@@ -120,7 +120,10 @@ namespace GameMain
 
                 if (TriggerResult)
                 {
-                    GameEntry.Event.Fire(this,new PassLevelEventArgs());
+                    GameEntry.Timer.Register(2, () =>
+                    {
+                        GameEntry.Event.Fire(this, new PassLevelEventArgs());
+                    });
                 }
             }
         }

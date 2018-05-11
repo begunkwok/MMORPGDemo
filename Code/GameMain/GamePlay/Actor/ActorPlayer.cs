@@ -84,6 +84,8 @@ namespace GameMain
             set;
         }
 
+        private PartnerRole m_Partner01Entity;
+        private PartnerRole m_Partner02Entity;
 
         public ActorPlayer(RoleEntityBase entity, ActorType type, BattleCampType camp, CharacterController cc,Animator anim) : base(entity, type, camp, cc,anim)
         {
@@ -179,6 +181,18 @@ namespace GameMain
             Dictionary<PropertyType, int> propertys = AttributeTools.GetPlayerPropertys(m_PlayerData);
             m_BaseAttribute.CopyFrom(propertys);
             UpdateCurAttribute(init);
+
+            ActorCard.SetName(m_PlayerData.Name);
+            ActorCard.SetLevel(m_PlayerData.Level);
+            ActorCard.SetMount(m_PlayerData.MountId);
+            ActorCard.SetPartnerByPos(2,m_PlayerData.Partner1Id);
+            ActorCard.SetPartnerByPos(3, m_PlayerData.Partner2Id);
+
+            RefreshBoardEventArgs eventArgs = ReferencePool.Acquire<RefreshBoardEventArgs>();
+            int maxHp = Attrbute.GetValue(AttributeType.MaxHp);
+            int curHp = Attrbute.GetValue(AttributeType.Hp);
+            eventArgs.Fill(EntityId, maxHp, curHp, ActorCard.Level);
+            GameEntry.Event.Fire(this, eventArgs);
         }
 
         public override void UpdateCurAttribute(bool init = false)
@@ -217,7 +231,6 @@ namespace GameMain
             m_AnimController.Play("qicheng", null, true);
             m_CharacterController.enabled = false;
             this.SetActorState(ActorStateType.IsRide, true);
-            m_Mount.CachedTransform.localRotation = Quaternion.identity;
         }
 
         public override void OnEndRide()
@@ -303,8 +316,12 @@ namespace GameMain
         {
             base.OnDead(ev);
 
-            OnPlayerDeadEventArgs args = ReferencePool.Acquire<OnPlayerDeadEventArgs>().Fill(ev.Type);
-            GameEntry.Event.Fire(this, args);
+            GameEntry.Camera.ShowEffect(CameraEffectType.ScreenGray);
+            GameEntry.Timer.Register(4, () =>
+            {
+                OnPlayerDeadEventArgs args = ReferencePool.Acquire<OnPlayerDeadEventArgs>().Fill(ev.Type);
+                GameEntry.Event.Fire(this, args);
+            });
         }
 
 
@@ -485,11 +502,31 @@ namespace GameMain
             if (ne == null)
                 return;
 
-            m_PlayerData.Partner1Id = ne.Partner01ID;
-            m_PlayerData.Partner2Id = ne.Partner02ID;
+            m_PlayerData.Partner1Id = ne.Partner01ID == 0 ? m_PlayerData.Partner1Id : ne.Partner01ID;
+            m_PlayerData.Partner2Id = ne.Partner02ID == 0 ? m_PlayerData.Partner2Id : ne.Partner02ID;
 
-            GameEntry.Level.AddPartner(this, 2, ne.Partner01ID);
-            GameEntry.Level.AddPartner(this, 3, ne.Partner02ID);
+            if (ne.Partner01ID != 0)
+            {
+                if (m_Partner01Entity != null)
+                {
+                    GameEntry.Level.DelRole(m_Partner01Entity);
+                    m_Partner01Entity = null;
+                }
+
+                m_Partner01Entity = GameEntry.Level.AddPartner(this, 2, ne.Partner01ID);
+            }
+
+            if (ne.Partner02ID != 0)
+            {
+                if (m_Partner02Entity != null)
+                {
+                    GameEntry.Level.DelRole(m_Partner02Entity);
+                    m_Partner02Entity = null;
+                }
+
+                m_Partner02Entity = GameEntry.Level.AddPartner(this, 3, ne.Partner02ID);
+            }
+
         }
 
         private void TryAddExp(int exp)

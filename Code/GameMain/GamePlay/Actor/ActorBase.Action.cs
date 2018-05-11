@@ -12,7 +12,7 @@ namespace GameMain
         {
             StopPathFinding();
             Vector3 delta = ev.Delta;
-            int speed = 5; //Attrbute.GetValue(ActorAttributeType.Speed);
+            int speed = Attrbute.GetValue(AttributeType.Speed);
 
             CachedTransform.LookAt(new Vector3(CachedTransform.position.x + delta.x, CachedTransform.position.y,
             CachedTransform.position.z + delta.y));

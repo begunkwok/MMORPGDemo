@@ -1,4 +1,5 @@
 ﻿using GameFramework;
+using UnityEngine;
 
 namespace GameMain
 {
@@ -10,6 +11,7 @@ namespace GameMain
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
+            CachedTransform.rotation = Quaternion.identity;
 
             m_EnemyEntityData = userData as RoleEntityData;
             if (m_EnemyEntityData == null)
@@ -25,5 +27,13 @@ namespace GameMain
             Actor.Init();
         }
 
+        protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
+        {
+            base.OnUpdate(elapseSeconds, realElapseSeconds);
+            if (CachedTransform.eulerAngles.x != 0|| CachedTransform.eulerAngles.z != 0)
+            {
+                CachedTransform.eulerAngles = Vector3.zero;
+            }
+        }
     }
 }

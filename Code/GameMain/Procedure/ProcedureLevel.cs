@@ -24,8 +24,9 @@ namespace GameMain
             int levelId = m_ProcedureOwner.GetData<VarInt>(Constant.ProcedureData.NextLevelId);
             int sceneId = m_ProcedureOwner.GetData<VarInt>(Constant.ProcedureData.NextSceneId);
 
-            CreatePlayer();
-            GameEntry.Level.EnterLevel(levelId, (SceneId) sceneId);
+
+            int playerId = m_ProcedureOwner.GetData<VarInt>(Constant.ProcedureData.PlayerId);
+            GameEntry.Level.EnterLevel(levelId, (SceneId) sceneId, playerId);
 
             GameEntry.Event.Subscribe(BackCityEventArgs.EventId,OnBackCity);
         }
@@ -41,21 +42,6 @@ namespace GameMain
         {
             m_ProcedureOwner.SetData<VarInt>(Constant.ProcedureData.NextSceneId, (int)SceneId.MainCity);
             ChangeState<ProcedureChangeScene>(m_ProcedureOwner);
-        }
-
-        private void CreatePlayer()
-        {
-            if (m_ProcedureOwner == null)
-                return;
-
-            int playerId = m_ProcedureOwner.GetData<VarInt>(Constant.ProcedureData.PlayerId);
-
-            DBPlayer dbPlayer = GameEntry.Database.GetDBRow<DBPlayer>(playerId);
-
-            GameEntry.Level.CreatePlayer(dbPlayer.Id);
-            RefreshHeroInfoEventArgs args = ReferencePool.Acquire<RefreshHeroInfoEventArgs>().FillName(dbPlayer.Name);
-            GameEntry.Event.Fire(this, args);
-
         }
     }
 }

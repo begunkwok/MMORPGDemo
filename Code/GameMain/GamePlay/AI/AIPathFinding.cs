@@ -82,7 +82,7 @@ namespace GameMain
 
         public void StopPathFinding()
         {
-            if (m_NavMeshAgent.enabled == true)
+            if (m_NavMeshAgent.enabled == true && m_NavMeshAgent.isOnNavMesh)
             {
                 m_NavMeshAgent.isStopped = true;
                 SetAgentEnable(false);

@@ -25,9 +25,9 @@ namespace GameMain
 
             GameEntry.Event.Subscribe(EnterLevelEventArgs.EventId, OnEnterLevel);
 
-            CreatePlayer();
+            int playerId = m_ProcedureOwner.GetData<VarInt>(Constant.ProcedureData.PlayerId);
 
-            GameEntry.Level.EnterLevel(Constant.Define.MainCityLevelId, SceneId.MainCity);
+            GameEntry.Level.EnterLevel(Constant.Define.MainCityLevelId, SceneId.MainCity, playerId);
 
             GameEntry.UI.OpenUIForm(UIFormId.ControllerForm);
 
@@ -44,21 +44,6 @@ namespace GameMain
             GameEntry.UI.CloseUIForm(UIFormId.ControllerForm);
 
             GameEntry.Event.Unsubscribe(EnterLevelEventArgs.EventId, OnEnterLevel);
-        }
-
-        private void CreatePlayer()
-        {
-            if (m_ProcedureOwner == null)
-                return;
-
-            int playerId = m_ProcedureOwner.GetData<VarInt>(Constant.ProcedureData.PlayerId);
-
-            DBPlayer dbPlayer = GameEntry.Database.GetDBRow<DBPlayer>(playerId);
-            GameEntry.Level.CreatePlayer(dbPlayer.Id);
-
-            RefreshHeroInfoEventArgs args = ReferencePool.Acquire<RefreshHeroInfoEventArgs>().FillName(dbPlayer.Name);
-            GameEntry.Event.Fire(this, args);
-
         }
 
         private void OnEnterLevel(object sender, GameEventArgs e)

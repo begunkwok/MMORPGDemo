@@ -102,6 +102,7 @@ namespace GameMain
             CachedTransform = EntityGo.transform;
 
             m_CharacterController = cc;
+            m_CharacterController.enabled = true;
             m_Animator = anim;
             ActorType = type;
             Camp = camp;

@@ -35,7 +35,7 @@ namespace GameMain
                     break;
                 case ActorType.Partner:
                 {
-                    if (m_Owner.Target == null)
+                    if (m_Owner.Target?.CachedTransform == null)
                     {
                         ChangeState<AIIdleState>();
                         return;
