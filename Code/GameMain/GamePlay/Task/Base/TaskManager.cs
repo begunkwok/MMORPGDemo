@@ -27,25 +27,6 @@ namespace GameMain
             CurFindLocation = new TaskFindLocation();
             m_TaskDB = GameEntry.Database.GetDBTable<DBTask>().GetDBRow(GameEntry.Database.GetUserId());
 
-            //Dictionary<int, DBTask>.Enumerator em = ZTConfig.Instance.DictTask.GetEnumerator();
-            //while (em.MoveNext())
-            //{
-            //    int key = em.Current.Key;
-            //    ETaskType type = em.Current.Value.Type;
-            //    switch (type)
-            //    {
-            //        case ETaskType.THREAD:
-            //            mThreadTaskList.Add(key);
-            //            break;
-            //        case ETaskType.BRANCH:
-            //            mBranchTaskList.Add(key);
-            //            break;
-            //        case ETaskType.DAILY:
-            //            mDailyTaskList.Add(key);
-            //            break;
-            //    }
-            //}
-
         }
 
         public void InitData()

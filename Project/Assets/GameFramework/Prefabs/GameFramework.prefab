@@ -185,7 +185,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 401796}
-  - component: {fileID: 11457798}
+  - component: {fileID: 114154970719003860}
   m_Layer: 0
   m_Name: Event
   m_TagString: Untagged
@@ -724,17 +724,6 @@ MonoBehaviour:
   m_EnableLoadDataTableDependencyAssetEvent: 0
   m_DataTableHelperTypeName: UnityGameFramework.Runtime.DefaultDataTableHelper
   m_CustomDataTableHelper: {fileID: 0}
---- !u!114 &11457798
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 151938}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1534434627, guid: c6060e8ed8f5f144886c7196d8145370, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11461470
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -802,12 +791,12 @@ MonoBehaviour:
     m_InstanceExpireTime: 60
     m_InstancePriority: 0
   - m_Name: Effect
-    m_InstanceAutoReleaseInterval: 60
+    m_InstanceAutoReleaseInterval: 120
     m_InstanceCapacity: 10
     m_InstanceExpireTime: 60
     m_InstancePriority: 0
   - m_Name: Actor
-    m_InstanceAutoReleaseInterval: 60
+    m_InstanceAutoReleaseInterval: 300
     m_InstanceCapacity: 10
     m_InstanceExpireTime: 60
     m_InstancePriority: 0
@@ -857,7 +846,7 @@ MonoBehaviour:
   m_Script: {fileID: -1209855857, guid: c6060e8ed8f5f144886c7196d8145370, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EditorResourceMode: 1
+  m_EditorResourceMode: 0
   m_EditorLanguage: 8
   m_LogHelperTypeName: UnityGameFramework.Runtime.LogHelper
   m_ZipHelperTypeName: UnityGameFramework.Runtime.ZipHelper
@@ -945,6 +934,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -169512783, guid: c6060e8ed8f5f144886c7196d8145370, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114154970719003860
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 151938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1534434627, guid: c6060e8ed8f5f144886c7196d8145370, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114291100782501596

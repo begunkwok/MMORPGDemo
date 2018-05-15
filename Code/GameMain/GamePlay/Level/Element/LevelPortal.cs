@@ -1,5 +1,7 @@
 ﻿using GameFramework;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.WSA;
 using Application = UnityEngine.Application;
@@ -56,11 +58,13 @@ namespace GameMain
                 }
                 else
                 {
+#if UNITY_EDITOR
                     m_PortalObj = LevelComponent.CreateLevelEditorObject(MapHolderType.Portal);
                     m_PortalObj.transform.parent = transform;
                     m_PortalObj.transform.localPosition = Vector3.zero;
                     m_PortalObj.transform.localEulerAngles = Vector3.zero;
                     m_PortalObj.transform.localScale = Vector3.one;
+#endif
                 }
             }
         }

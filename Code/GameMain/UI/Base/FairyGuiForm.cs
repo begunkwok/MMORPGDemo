@@ -512,13 +512,13 @@ namespace GameMain
 				HandleScreenSizeChanged();
 			}
 #else
-            PackageItem pi = UIPackage.GetByName(packageName).GetItemByName(componentName);
-            if (pi != null)
-            {
-                cachedUISize = new Vector2(pi.width, pi.height);
-                uiBounds.size = cachedUISize;
-                HandleScreenSizeChanged();
-            }
+            //PackageItem pi = UIPackage.GetByName(packageName).GetItemByName(componentName);
+            //if (pi != null)
+            //{
+            //    cachedUISize = new Vector2(pi.width, pi.height);
+            //    uiBounds.size = cachedUISize;
+            //    HandleScreenSizeChanged();
+            //}
 #endif
         }
 

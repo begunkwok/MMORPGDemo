@@ -124,6 +124,9 @@ namespace GameMain
 
         public void Load()
         {
+            if(m_Owner?.CachedTransform == null)
+                return;
+
             switch (m_EffectData.BindType)
             {
                 case EffectBindType.World:
@@ -203,7 +206,7 @@ namespace GameMain
                     break;
                 case EffectBindType.OwnVTar:
                     {
-                        if (m_Owner != null && m_Target != null)
+                        if (m_Owner?.CachedTransform != null && m_Target != null)
                         {
                             Vector3 pos1 = m_Target.GetBind(ActorBindPosType.Body, Vector3.zero);
                             Vector3 pos2 = m_Owner.GetBind(ActorBindPosType.Body, Vector3.zero);
@@ -211,7 +214,7 @@ namespace GameMain
                         }
                         else
                         {
-                            if (m_Owner != null)
+                            if (m_Owner?.CachedTransform != null)
                                 CachedTransform.position = m_Owner.GetBind(ActorBindPosType.Body, Vector3.zero) + m_Owner.Dir * 10;
                         }
                     }

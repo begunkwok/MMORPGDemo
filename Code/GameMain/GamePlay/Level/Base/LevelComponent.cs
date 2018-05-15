@@ -530,8 +530,9 @@ namespace GameMain
                 Player.Actor.SetBornParam(param);
                 Player.UpdateTransform(param);
 
-                AddPartner(actorPlayer, 2, actorPlayer.ActorCard.Partners[0]);
-                AddPartner(actorPlayer, 3, actorPlayer.ActorCard.Partners[1]);
+                ChangePartnerEventArgs eventArgs = new ChangePartnerEventArgs();
+                eventArgs.Fill(actorPlayer.ActorCard.Partners[1], actorPlayer.ActorCard.Partners[2]);
+                GameEntry.Event.Fire(this, eventArgs);
             }
         }
 

@@ -1,5 +1,9 @@
 ﻿using GameFramework;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
+
 using UnityEngine;
 using UnityGameFramework.Runtime;
 
@@ -56,6 +60,9 @@ namespace GameMain
                 }
                 else
                 {
+
+#if UNITY_EDITOR
+
                     GameObject barrier = LevelComponent.CreateLevelEditorObject(MapHolderType.Barrier);
                     barrier.transform.parent = transform;
                     Vector3 localPosition = Vector3.right*(i - halfCount + 0.5f)*m_DefaultWidth;
@@ -63,6 +70,7 @@ namespace GameMain
                     barrier.transform.localPosition = localPosition;
                     barrier.transform.localEulerAngles = Vector3.zero;
                     barrier.transform.localScale = Vector3.one;
+#endif
                 }
             }
 

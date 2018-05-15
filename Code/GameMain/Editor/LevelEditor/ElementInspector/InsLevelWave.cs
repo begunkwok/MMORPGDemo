@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+
+using UnityEditor;
 using UnityEngine;
 
 namespace GameMain
@@ -54,3 +56,5 @@ namespace GameMain
         }
     }
 }
+
+#endif

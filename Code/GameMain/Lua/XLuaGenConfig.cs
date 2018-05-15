@@ -152,7 +152,9 @@ public static class XLuaGenConfig
                 typeof(Action<string>),
                 typeof(Action<double>),
                 typeof(Action<double,double>),
+                typeof(Func<string,string,bool>),
                 typeof(Func<double, double, double>),
+                typeof(Func<string,string,Action,bool>),
                 typeof(UnityEngine.Events.UnityAction),
                 typeof(System.Collections.IEnumerator),
         #endregion

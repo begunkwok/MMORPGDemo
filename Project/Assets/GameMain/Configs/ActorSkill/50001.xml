@@ -7,7 +7,7 @@
                <Anim   AnimName="attack_02"/>
                <Clone>
                     <Parallel>                    
-                         <Effect Id="62024" LastTime="1.5"  Dead="1" Bind="1" Fly="2"  FlySpeed="30" Sound="sound_firebomb"  Offset="(0,-0.2,0)" JudgeName="Owner"/>
+                         <Effect Id="62024" LastTime="1.5"  Dead="1" Bind="1" Fly="2"  FlySpeed="30" Sound="10017"  Offset="(0,-0.2,0)" JudgeName="Owner"/>
                          <Judge  Region="1"  Affect="2"  Radius="0.5"  MaxCount="1"  JudgeName="Owner"  LifeTime="1.5">
                             <Parallel>
                                <Hurt    Damage="1"  Percent="1.08"/>

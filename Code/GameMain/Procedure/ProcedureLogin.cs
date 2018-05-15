@@ -59,21 +59,21 @@ namespace GameMain
             GameEntry.UI.CloseUIForm(UIFormId.LoginForm);
         }
 
-        private void OnLoginClick(string accountInput,string passwordInput)
+        private bool OnLoginClick(string accountInput,string passwordInput)
         {
             int account;
             int password;
 
             if (!int.TryParse(accountInput, out account))
             {
-                Log.Error("Account must be number！");
-                return;
+                //Log.Error("Account must be number！");
+                return false;
             }
 
             if (!int.TryParse(passwordInput, out password))
             {
-                Log.Error("Password must be number！");
-                return;
+                //Log.Error("Password must be number！");
+                return false;
             }
 
             if (GameEntry.Database.TryLogin(account, password))
@@ -92,37 +92,42 @@ namespace GameMain
                     m_ProcedureOwner.SetData<VarInt>(Constant.ProcedureData.PlayerId, drUser.Player);
                     m_GetPlayerSuccess = true;
                 }
+
+                return true;
             }
             else
             {
-                Log.Error("账号密码不存在！");
+                //Log.Error("账号密码不存在！");
+                return false;
             }
         }
 
-        private void OnRegisterClick(string account, string password,Action callback)
+        private bool OnRegisterClick(string account, string password,Action callback)
         {
             int pAccount = 0;
             int pPassword = 0;
 
             if (!int.TryParse(account,out pAccount))
             {
-                Log.Error("Account is invalid.");
-                return;
+                //Log.Error("Account is invalid.");
+                return false;
             }
 
             if (!int.TryParse(password, out pPassword))
             {
-                Log.Error("Password is invalid.");
-                return;
+                //Log.Error("Password is invalid.");
+                return false;
             }
 
             if (GameEntry.Database.TryRegister(pAccount, pPassword))
             {
                 callback?.Invoke();
+                return true;
             }
             else
             {
                 Log.Error("账号已存在！");
+                return false;
             }
             
         }

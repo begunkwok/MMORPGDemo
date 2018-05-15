@@ -58,7 +58,6 @@ namespace GameMain
         {
             //退出游戏前，保存数据
             SaveDatabase();
-            CloseSqlConnection();
         }
 
         public bool TryLogin(int account, int password)
@@ -152,10 +151,9 @@ namespace GameMain
         /// </summary>
         public void SaveDatabase()
         {
-            //OpenDB("URI=file:" + appDBPath);
-            //m_DBTableManager.SaveAllToDB();
-            //CloseSqlConnection();
-            //Log.Info("Save Database...");
+            m_DBTableManager.SaveAllToDB();
+            CloseSqlConnection();
+            Log.Info("Save Database...");
         }
 
         /// <summary>

@@ -2,7 +2,6 @@
 
 namespace GameMain
 {
-    [DatabaseRow]
     public class DBTask : DBRowBase
     {
         public DBTask(int id, int userId) : base(id, userId)

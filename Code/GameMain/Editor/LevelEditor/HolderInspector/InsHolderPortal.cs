@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+
+using UnityEditor;
 using UnityEngine;
 
 namespace GameMain.Editor
@@ -16,3 +18,5 @@ namespace GameMain.Editor
         }
     }
 }
+
+#endif

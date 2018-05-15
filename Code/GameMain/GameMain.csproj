@@ -27,12 +27,14 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UNITY_5_3_OR_NEWER;HOTFIX_ENABLE;UNITY_STANDALONE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DOTween, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="DOTween">
+      <HintPath>..\Libs\DOTween.dll</HintPath>
+    </Reference>
     <Reference Include="LitJson">
       <HintPath>..\Libs\LitJson.dll</HintPath>
     </Reference>
@@ -43,8 +45,7 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UnityEditor, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="UnityEditor">
       <HintPath>..\Libs\UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
@@ -259,6 +260,7 @@
     <Compile Include="GamePlay\AI\Base\IAIPathFinding.cs" />
     <Compile Include="GamePlay\Battle\Define\BattleCampType.cs" />
     <Compile Include="GamePlay\Actor\Define\ActorBindPosType.cs" />
+    <Compile Include="Procedure\ProcedureInitLua.cs" />
     <Compile Include="UI\Define\FlyWordType.cs" />
     <Compile Include="GamePlay\Actor\Define\ActorStateType.cs" />
     <Compile Include="GamePlay\AI\ActorFsmAI.cs" />
@@ -365,7 +367,6 @@
     <Compile Include="Editor\ClearMissComponent.cs" />
     <Compile Include="Editor\DeviceModelConfigEditorWindow.cs" />
     <Compile Include="Editor\DeviceModelConfigInspector.cs" />
-    <Compile Include="Editor\MMORPGDemoBuildEventHandler.cs" />
     <Compile Include="Config\PathConfigs.cs" />
     <Compile Include="Editor\ProjectSaver.cs" />
     <Compile Include="Entity\EntityComponent\PlayerController.cs" />
@@ -547,7 +548,7 @@
       <Name>GUISystem</Name>
     </ProjectReference>
     <ProjectReference Include="..\UnityEditorExtension\UnityEditorExtension.csproj">
-      <Project>{28FF7B3E-B34F-4839-9761-EA444B609EE8}</Project>
+      <Project>{28ff7b3e-b34f-4839-9761-ea444b609ee8}</Project>
       <Name>UnityEditorExtension</Name>
     </ProjectReference>
     <ProjectReference Include="..\UnityRuntimeFramework\UnityRuntimeFramework.csproj">

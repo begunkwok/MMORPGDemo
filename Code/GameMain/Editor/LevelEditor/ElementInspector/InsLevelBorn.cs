@@ -1,4 +1,7 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+
+
+using UnityEditor;
 
 namespace GameMain
 {
@@ -18,3 +21,5 @@ namespace GameMain
         }
     }
 }
+
+#endif

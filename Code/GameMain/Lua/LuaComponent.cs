@@ -40,7 +40,6 @@ namespace GameMain
             //初始化自定义加载器
             InitCustomLoader();
 
-            //开始lua入口
             StartLuaMain();
         }
 
@@ -79,6 +78,7 @@ namespace GameMain
                         return null;
                     }
                     data = asset.text;
+                    GameEntry.Resource.UnloadAsset(asset);
                 }
 
                 if (string.IsNullOrEmpty(data))
@@ -110,7 +110,7 @@ namespace GameMain
         /// </summary>
         public void ReloadMain()
         {
-            m_luaEnv.DoString("package.loaded['Common/GameMain.lua'] = nil");
+            m_luaEnv?.DoString("package.loaded['Common/GameMain.lua'] = nil");
             StartLuaMain();
             GameEntry.FairyGui.ReloadLuaForm();
         }
@@ -126,7 +126,7 @@ namespace GameMain
 
             if (Time.time - lastGCTime > GCInterval)
             {
-                m_luaEnv.Tick();
+                m_luaEnv?.Tick();
                 lastGCTime = Time.time;
             }
         }

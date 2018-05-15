@@ -65,6 +65,7 @@ namespace GameMain
             m_RoleButton.visible = false;
             m_BagButton.visible = false;
             m_TaskButton.visible = false;
+            m_AiButton.visible = false;
             m_AiAuto.visible = false;
 
             m_Skill01Button = UI.GetChild("btn_Skill01") as SkillButton;

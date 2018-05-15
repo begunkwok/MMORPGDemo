@@ -1,4 +1,7 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 using UnityEngine;
 
 namespace GameMain
@@ -56,11 +59,13 @@ namespace GameMain
             }
             else
             {
+#if UNITY_EDITOR
                 GameObject mine = LevelComponent.CreateLevelEditorObject(MapHolderType.MineGroup);
                 mine.transform.SetParent(transform, false);
                 mine.transform.localPosition = Vector3.zero;
                 mine.transform.localScale = Vector3.one;
                 mine.transform.localRotation = Quaternion.identity;
+#endif
             }
 
         }

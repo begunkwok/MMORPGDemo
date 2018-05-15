@@ -10,7 +10,7 @@
                   <Wait Seconds="1.200"/>
                   <Clone>
                      <Parallel>
-                         <Effect Id="62025" LastTime="2"  Dead="1" Bind="1" Fly="2"  FlySpeed="30" Sound="sound_firebomb"  JudgeName="Owner"/>
+                         <Effect Id="62025" LastTime="2"  Dead="1" Bind="1" Fly="2"  FlySpeed="30" Sound="10017"  JudgeName="Owner"/>
                          <Judge  Region="1"  Affect="2"  Radius="0.5"  MaxCount="1"  JudgeName="Owner"  LifeTime="2">
                              <Parallel>
                                 <Hurt    Damage="1"  Percent="1.89"/>

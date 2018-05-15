@@ -29,7 +29,7 @@ namespace GameMain
         /// <summary>
         /// 点击登陆(返回账号和密码)
         /// </summary>
-        public GameFrameworkAction<string,string> OnClickLogin
+        public Func<string,string,bool> OnClickLogin
         {
             get;
             set;
@@ -38,7 +38,7 @@ namespace GameMain
         /// <summary>
         /// 点击注册(返回账号和密码)
         /// </summary>
-        public GameFrameworkAction<string,string,Action> OnClickRegister
+        public Func<string,string,Action,bool> OnClickRegister
         {
             get;
             set;

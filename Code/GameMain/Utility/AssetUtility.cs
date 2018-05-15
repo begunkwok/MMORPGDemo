@@ -62,7 +62,7 @@ namespace GameMain
 
         public static string GetLuaAsset(string assetName)
         {
-            return GlobalTools.Format("Assets/GameMain/Lua/{0}", assetName);
+            return GlobalTools.Format("Assets/GameMain/Lua/{0}.txt", assetName);
         }
 
         public static string GetSkillScriptAsset(string assetName)

@@ -106,10 +106,18 @@ namespace GameMain
             GameEntry.Event.Subscribe(ChangeVehicleEventArgs.EventId,OnChangeVehicle);
             GameEntry.Event.Subscribe(ChangePartnerEventArgs.EventId,OnChangePartner);
 
-            BroadcastHeroInfo();
+
             m_OriginalParent = CachedTransform.parent;
             m_Vehicle = this;
             BattleState = false;
+
+            RefreshBoardEventArgs eventArgs = ReferencePool.Acquire<RefreshBoardEventArgs>();
+            int maxHp = Attrbute.GetValue(AttributeType.MaxHp);
+            int curHp = Attrbute.GetValue(AttributeType.Hp);
+            eventArgs.Fill(EntityId, maxHp, curHp, ActorCard.Level);
+            GameEntry.Event.Fire(this, eventArgs);
+
+            BroadcastHeroInfo();
         }
 
         public override void Clear()
@@ -187,12 +195,6 @@ namespace GameMain
             ActorCard.SetMount(m_PlayerData.MountId);
             ActorCard.SetPartnerByPos(2,m_PlayerData.Partner1Id);
             ActorCard.SetPartnerByPos(3, m_PlayerData.Partner2Id);
-
-            RefreshBoardEventArgs eventArgs = ReferencePool.Acquire<RefreshBoardEventArgs>();
-            int maxHp = Attrbute.GetValue(AttributeType.MaxHp);
-            int curHp = Attrbute.GetValue(AttributeType.Hp);
-            eventArgs.Fill(EntityId, maxHp, curHp, ActorCard.Level);
-            GameEntry.Event.Fire(this, eventArgs);
         }
 
         public override void UpdateCurAttribute(bool init = false)
@@ -322,6 +324,9 @@ namespace GameMain
                 OnPlayerDeadEventArgs args = ReferencePool.Acquire<OnPlayerDeadEventArgs>().Fill(ev.Type);
                 GameEntry.Event.Fire(this, args);
             });
+
+            HidePartner();
+ 
         }
 
 
@@ -425,19 +430,17 @@ namespace GameMain
             }
         }
 
-        private void OnChangePartner(int pos, int id)
+        private void HidePartner()
         {
-            //mActorCard.SetPartnerByPos(pos, id);
-            //switch (pos)
-            //{
-            //    case 1:
-            //        ZTLevel.Instance.DelActor(this.Partner1);
-            //        break;
-            //    case 2:
-            //        ZTLevel.Instance.DelActor(this.Partner2);
-            //        break;
-            //}
-            //ZTLevel.Instance.AddPartner(this, pos, id);
+            if (m_Partner01Entity != null)
+            {
+                GameEntry.Level.DelRole(m_Partner01Entity);
+            }
+
+            if (m_Partner02Entity != null)
+            {
+                GameEntry.Level.DelRole(m_Partner02Entity);
+            }
         }
 
         private void OnKillMonster(object sender, GameEventArgs e)

@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+
+using UnityEditor;
 using UnityEngine;
 
 namespace GameMain.Editor
@@ -15,9 +17,11 @@ namespace GameMain.Editor
 #if UNITY_5_5_OR_NEWER
             AssetDatabase.SaveAssets();
 #else
-            EditorApplication.SaveAssets();
+            AssetDatabase.SaveAssets();
 #endif
             Debug.Log("You have saved the serializable assets in the project.");
         }
     }
 }
+
+#endif

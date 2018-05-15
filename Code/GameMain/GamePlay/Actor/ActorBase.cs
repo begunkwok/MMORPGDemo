@@ -198,7 +198,7 @@ namespace GameMain
                 }
             }
 
-            int maxHp = (m_BaseAttribute.MaxHp + bfAttr.MaxHp) * (1 + bpAttr.MaxHp / Constant.Define.PerBase);
+            int maxHp = m_BaseAttribute.MaxHp;//(m_BaseAttribute.MaxHp + bfAttr.MaxHp) * (1 + bpAttr.MaxHp / Constant.Define.PerBase);
             m_CurAttribute.UpdateValue(AttributeType.MaxHp, maxHp);
 
             int maxMp = (m_BaseAttribute.MaxMp + bfAttr.MaxMp) * (1 + bpAttr.MaxMp / Constant.Define.PerBase);
@@ -867,7 +867,6 @@ namespace GameMain
             m_BaseAttribute.UpdateValue(AttributeType.Absorb, m_ActorData.BAF);
             m_BaseAttribute.UpdateValue(AttributeType.Speed, (int)m_ActorData.Speed);
 
-            m_CurAttribute += m_BaseAttribute;
             UpdateCurAttribute(init);
         }
 

@@ -24,7 +24,7 @@ namespace GameMain
             {
                 case ActorType.Monster:
                     {
-                        if (pTarget != null)
+                        if (pTarget?.CachedTransform != null)
                         {
                             float dist = GlobalTools.GetHorizontalDistance(m_Owner.Pos, pTarget.Pos);
                             if (dist < AI.WaringDist)
@@ -36,7 +36,7 @@ namespace GameMain
                     break;
                 case ActorType.Partner:
                     {
-                        if (pTarget != null)
+                        if (pTarget?.CachedTransform != null)
                         {
                             float dist = GlobalTools.GetHorizontalDistance(m_Owner.Pos, pTarget.Pos);
                             if (dist < AI.WaringDist)
@@ -45,7 +45,7 @@ namespace GameMain
                             }
                         }
                         ActorBase pHost = m_Owner.Host;
-                        if (pHost != null)
+                        if (pHost?.CachedTransform != null)
                         {
                             float dist = GlobalTools.GetHorizontalDistance(m_Owner.Pos, m_Owner.Host.Pos);
                             if (dist > AI.FollowDist)
@@ -58,7 +58,7 @@ namespace GameMain
                     break;
                 case ActorType.Player:
                     {
-                        if (pTarget != null)
+                        if (pTarget?.CachedTransform != null)
                         {
                             float dist = GlobalTools.GetHorizontalDistance(m_Owner.Pos, pTarget.Pos);
                             if (dist < AI.WaringDist)

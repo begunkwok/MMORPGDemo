@@ -1,5 +1,7 @@
-﻿using System.Threading;
+﻿#if UNITY_EDITOR
 using UnityEditor;
+#endif
+
 using UnityEngine;
 
 namespace GameMain
@@ -57,12 +59,15 @@ namespace GameMain
                     assetPath = AssetUtility.GetLevelObjectAsset(MineAsset);
                     break;
             }
-
+#if UNITY_EDITOR
             Object asset = AssetDatabase.LoadMainAssetAtPath(assetPath);
             GameObject portalPrefab = asset as GameObject;
             levelGo = Instantiate(portalPrefab);
+#endif
             return levelGo;
         }
 
     }
 }
+
+

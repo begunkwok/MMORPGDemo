@@ -22,7 +22,6 @@ namespace GameMain
 
             Database.Init();
             FairyGui.Init();
-            Lua.Init();
             AppConfig.Init();
             Camera.Init();
             Input.Init();
