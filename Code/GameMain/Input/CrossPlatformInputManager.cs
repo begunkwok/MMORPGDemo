@@ -17,27 +17,17 @@ namespace GameMain
 		private static VirtualInput s_TouchInput;
 		private static VirtualInput s_HardwareInput;
 
-
-		static CrossPlatformInputManager()
-		{
-			s_TouchInput = new MobileInput();
-			s_HardwareInput = new StandaloneInput();
-#if MOBILE_INPUT
-            activeInput = s_TouchInput;
-#else
-			activeInput = s_HardwareInput;
-#endif
-		}
-
 		public static void SwitchActiveInputMethod(ActiveInputMethod activeInputMethod)
 		{
 			switch (activeInputMethod)
 			{
 				case ActiveInputMethod.Hardware:
-					activeInput = s_HardwareInput;
+                    s_HardwareInput = new StandaloneInput();
+                    activeInput = s_HardwareInput;
 					break;
 
 				case ActiveInputMethod.Touch:
+                    s_TouchInput = new MobileInput();
 					activeInput = s_TouchInput;
 					break;
 			}
@@ -104,6 +94,9 @@ namespace GameMain
 		// private function handles both types of axis (raw and not raw)
 		private static float GetAxis(string name, bool raw)
 		{
+		    if (activeInput == null)
+		        return 0;
+
 			return activeInput.GetAxis(name, raw);
 		}
 

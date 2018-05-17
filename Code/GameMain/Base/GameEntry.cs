@@ -8,13 +8,10 @@ namespace GameMain
     /// </summary>
     public partial class GameEntry : MonoBehaviour
     {
-        private void Awake()
-        {
-            InitBuiltinComponents();
-        }
 
         private void Start()
         {
+            InitBuiltinComponents();
             InitCustomComponents();
         }
 

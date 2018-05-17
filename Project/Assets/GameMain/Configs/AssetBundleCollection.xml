@@ -23,6 +23,7 @@
       <AssetBundle Name="Entities/Effect/62024" LoadType="0" Packed="True" />
       <AssetBundle Name="Entities/Effect/64029" LoadType="0" Packed="True" />
       <AssetBundle Name="Entities/Effect/64043" LoadType="0" Packed="True" />
+      <AssetBundle Name="Entities/Effect/64054" LoadType="0" Packed="True" />
       <AssetBundle Name="Entities/Effect/65006" LoadType="0" Packed="True" />
       <AssetBundle Name="Entities/Effect/68002" LoadType="0" Packed="True" />
       <AssetBundle Name="Entities/Effect/68003" LoadType="0" Packed="True" />
@@ -118,6 +119,7 @@
       <Asset Guid="26ad7728996d42649b9a534542fbbd1f" AssetBundleName="SkillConfig" />
       <Asset Guid="2a37c39d397897a49b3c1c9e92899d79" AssetBundleName="Entities/Model/RoleCreate/Pose_Master" />
       <Asset Guid="2c855518252a24f45ae36c1ca73103ad" AssetBundleName="Entities/Effect/61027" />
+      <Asset Guid="2cc39b7047730644a80f58f089dab32d" AssetBundleName="Entities/Effect/64054" />
       <Asset Guid="2cfde50214ebbd346b6bccc80683d73e" AssetBundleName="Entities/Model/Monster/50011" />
       <Asset Guid="2d46e13e53de10a458fcb66d852041eb" AssetBundleName="SceneDatas" />
       <Asset Guid="2d813a150d3fd404789947fe4ebea2c9" AssetBundleName="Entities/Model/RoleCreate/Pose_Warrior" />
@@ -264,6 +266,7 @@
       <Asset Guid="e340ca569c8d4a6468ea2442fd5986d4" AssetBundleName="Entities/Effect/65006" />
       <Asset Guid="e73c5a572ed33c84380331665b670b34" AssetBundleName="Entities/Effect/RoleCreate/Warrior/TrailOrder_Sword" />
       <Asset Guid="e77aff4674812a4438f910e1fd22a6a9" AssetBundleName="Entities/Model/Partner/90002" />
+      <Asset Guid="e887d17329d99f349bd1204276cec1be" AssetBundleName="LuaScript" />
       <Asset Guid="ea31839eaaf456c4c89d257402b0662d" AssetBundleName="DataTables" />
       <Asset Guid="eaf6afd414718a044b05888c426c4afb" AssetBundleName="FormPrefab" />
       <Asset Guid="ed95a06316ab991409e8a7764149af95" AssetBundleName="Entities/Model/RoleCreate/Pose_Shooter" />

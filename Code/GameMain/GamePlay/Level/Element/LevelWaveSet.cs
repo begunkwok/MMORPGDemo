@@ -84,11 +84,10 @@ namespace GameMain
             Vector3 bornEulerAngles = data.EulerAngles;
             Vector3 bornPosition = GlobalTools.NavSamplePosition(data.Position);
             TransformParam param = TransformParam.Create(bornPosition, bornEulerAngles);
-            RoleEntityBase pActor = GameEntry.Level.AddRole<RoleEntityBase>(data.Id, ActorType.Monster, BattleCampType.Enemy, param);
-            if (pActor != null)
-            {
-                mMonsterGUIDSet.Add(pActor.Id);
-            }
+
+            int serialId = GameEntry.Level.CreateEnemy(data.Id, param);
+            mMonsterGUIDSet.Add(serialId);
+            
         }
 
         private IEnumerator CreateMonsterDelay(MapMonsterCall data, float delay, bool isDone)

@@ -61,6 +61,10 @@ namespace GameMain
             }
             Name = $"[{m_EntityData.TypeId}][{Id}]";
             m_GoName = Name;
+
+            CachedTransform.position = m_EntityData.Position;
+            CachedTransform.rotation = m_EntityData.Rotation;
+            CachedTransform.localScale = m_EntityData.Scale;
         }
 
         protected override void OnHide(object userData)

@@ -65,7 +65,7 @@ namespace GameMain
                 }
             }
 
-            ChangeState<ProcedureChangeScene>(procedureOwner);
+            ChangeState<ProcedureInitLua>(procedureOwner);
         }
 
         private void PreloadResources()

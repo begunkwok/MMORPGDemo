@@ -16,7 +16,7 @@ namespace GameMain
         private BoxCollider m_Collider;
         private Vector3 m_Size;
 
-        private LevelObject m_Barrier;
+        private int m_SerialId = 0;
         private float m_DefaultWidth = 18;
 
         public override void Build()
@@ -47,16 +47,13 @@ namespace GameMain
             {
                 if (Application.isPlaying)
                 {
-                    m_Barrier = GameEntry.Level.CreateLevelObject(Constant.Define.Barrier);
-                    if (m_Barrier == null)
-                    {
-                        Log.Error("Create barrier failure.ID:{0}", Constant.Define.Barrier);
-                        return;
-                    }
+                    TransformParam param = new TransformParam();
+                    param.Position = transform.position;
+                    param.EulerAngles = transform.rotation.eulerAngles;
+                    param.Scale = transform.localScale;
 
-                    m_Barrier.CachedTransform.position = transform.position;
-                    m_Barrier.CachedTransform.rotation = transform.rotation;
-                    m_Barrier.CachedTransform.localScale = transform.localScale;
+                   m_SerialId = GameEntry.Level.CreateLevelObject(Constant.Define.Barrier, param);
+
                 }
                 else
                 {
@@ -82,7 +79,7 @@ namespace GameMain
 
         public override void Hide()
         {
-            GameEntry.Entity.HideEntity(m_Barrier);
+            GameEntry.Entity.CheckHideEntity(m_SerialId);
             transform.gameObject.SetActive(false);
         }
 

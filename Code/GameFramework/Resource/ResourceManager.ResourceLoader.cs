@@ -353,10 +353,13 @@ namespace GameFramework.Resource
                     return asset;
                 }
 
+                string readOnlyPath = m_ResourceManager.m_ReadOnlyPath;
+                string readWritePath = m_ResourceManager.m_ReadWritePath;
                 string fullPath =
                     Utility.Path.GetCombinePath(
-                        resourceInfo.Value.StorageInReadOnly ? m_ReadOnlyPath : m_ReadWritePath,
+                        resourceInfo.Value.StorageInReadOnly ? readOnlyPath : readWritePath,
                         Utility.Path.GetResourceNameWithSuffix(resourceInfo.Value.ResourceName.FullName));
+
                 object resourceObj = null;
                 if (resourceInfo.Value.LoadType == LoadType.LoadFromFile)
                 {

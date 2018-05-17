@@ -23,7 +23,7 @@ namespace GameMain
         {
             if (!m_VirtualAxes.ContainsKey(name))
             {
-                AddAxes(name);
+                return 0;
             }
             return m_VirtualAxes[name].GetValue;
         }

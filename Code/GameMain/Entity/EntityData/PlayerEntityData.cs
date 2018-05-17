@@ -1,14 +1,12 @@
 ﻿namespace GameMain
 {
-    public class RoleEntityData : EntityData
+    public class PlayerEntityData : RoleEntityData
     {
-        public ActorType ActorType { get; }
-        public BattleCampType CampType { get; }
+        public bool BattleState { get; }
 
-        public RoleEntityData(int entityId, int typeId, ActorType actorType, BattleCampType campType) : base(entityId, typeId)
+        public PlayerEntityData(int entityId, int typeId, ActorType actorType, BattleCampType campType, bool battleState) : base(entityId, typeId, actorType, campType)
         {
-            ActorType = actorType;
-            CampType = campType;
+            BattleState = battleState;
         }
     }
 }

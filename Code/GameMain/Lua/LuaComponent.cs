@@ -55,7 +55,7 @@ namespace GameMain
             luaOnSceneLoaded = null;
             luaOnDestroy = null;
 
-            m_luaEnv.Dispose();
+            m_luaEnv?.Dispose();
         }
 
         private void InitCustomLoader()

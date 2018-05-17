@@ -12,6 +12,7 @@ namespace GameMain
         private GList m_LeveList;
         private GTextField m_SelectText;
         private GButton m_EnterButton;
+        private GButton m_CloseButton;
 
         private LevelItem[] m_LevelItems = null;
         private int m_CurSelectLevelId = 0;
@@ -24,6 +25,7 @@ namespace GameMain
             m_LeveList = UI.GetChild("list_Level").asList;
             m_SelectText = UI.GetChild("tf_Select").asTextField;
             m_EnterButton = UI.GetChild("btn_Enter").asButton;
+            m_CloseButton = UI.GetChild("n1").asCom.GetChild("btn_Close").asButton;
 
             m_LeveList.RemoveChildrenToPool();
 
@@ -66,12 +68,17 @@ namespace GameMain
                 });
             }
           
-            m_EnterButton.onClick.Add(() =>
+            m_EnterButton?.onClick.Add(() =>
             {
                 EnterLevelEventArgs eventArgs = ReferencePool.Acquire<EnterLevelEventArgs>();
                 eventArgs.Fill(m_CurSelectLevelId, m_LevelScene);
                 GameEntry.Event.Fire(this, eventArgs);
 
+                GameEntry.UI.CloseUIForm(UIFormId.LevelSelectForm);
+            });
+
+            m_CloseButton?.onClick.Add(() =>
+            {
                 GameEntry.UI.CloseUIForm(UIFormId.LevelSelectForm);
             });
         }
@@ -82,10 +89,11 @@ namespace GameMain
 
             for (int i = 0; i < m_LevelItems.Length; i++)
             {
-                m_LevelItems[i].onClick.Clear();
+                m_LevelItems[i]?.onClick.Clear();
             }
 
-            m_EnterButton.onClick.Clear();
+            m_EnterButton?.onClick.Clear();
+            m_CloseButton?.onClick.Clear();
         }
 
     }

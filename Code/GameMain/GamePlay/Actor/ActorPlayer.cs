@@ -16,11 +16,8 @@ namespace GameMain
     /// </summary>
     public class ActorPlayer : ActorBase
     {
-        protected ActorBase m_Partner1;
-        protected ActorBase m_Partner2;
-        protected ActorBase m_Partner3;
-        protected ActorBase m_Pet;
-        protected MountRole m_Mount;
+        protected int m_Partner1;
+        protected int m_Partner2;
         protected ActorBase m_Vehicle;
 
         protected Dictionary<int, EquipAvatar> mEquipAvatars = new Dictionary<int, EquipAvatar>();
@@ -28,44 +25,29 @@ namespace GameMain
 
         private Transform m_OriginalParent;
 
-        public ActorBase Partner1
+
+        public int Mount
         {
-            get { return m_Partner1; }
-            set
-            {
-                m_Partner1 = value;
-                m_Partner1?.SetHost(this);
-            }
+            get;
+            private set;
         }
 
-        public ActorBase Partner2
+        public int Partner1
         {
-            get { return m_Partner2; }
-            set
-            {
-                m_Partner2 = value;
-                m_Partner2?.SetHost(this);
-            }
+            get; 
+            private set;
         }
 
-        public MountRole Mount
+        public int Partner2
         {
-            get { return m_Mount; }
-            set
-            {
-                m_Mount = value;
-                m_Mount.Actor.SetHost(this);
-            }
+            get;
+            private set;
         }
 
-        public ActorBase Pet
+        public int Pet
         {
-            get { return m_Pet; }
-            set
-            {
-                m_Pet = value;
-                m_Pet?.SetHost(this);
-            }
+            get;
+            private set;
         }
 
         public ActorBase Vehicle
@@ -83,9 +65,6 @@ namespace GameMain
             get;
             set;
         }
-
-        private PartnerRole m_Partner01Entity;
-        private PartnerRole m_Partner02Entity;
 
         public ActorPlayer(RoleEntityBase entity, ActorType type, BattleCampType camp, CharacterController cc,Animator anim) : base(entity, type, camp, cc,anim)
         {
@@ -118,6 +97,8 @@ namespace GameMain
             GameEntry.Event.Fire(this, eventArgs);
 
             BroadcastHeroInfo();
+            InitPartner();
+            GameEntry.Level.SetPlayerActor(this);
         }
 
         public override void Clear()
@@ -161,6 +142,11 @@ namespace GameMain
             m_ActorAI.Start();
         }
 
+        public void InitPartner()
+        {
+            LoadPartner();
+        }
+
         public override int Attack(IActor defender, int value)
         {
             OnPlayerAttackEventArgs args = ReferencePool.Acquire<OnPlayerAttackEventArgs>().Fill(defender);
@@ -176,7 +162,7 @@ namespace GameMain
                 ActorType = ActorType,
                 CacheTransform = CachedTransform,
                 Name = m_PlayerData.Name,
-                Level = m_ActorData.Level,
+                Level = m_PlayerData.Level,
                 Height = Height
             };
             BoardFormManager.Instance.Create(data);
@@ -229,7 +215,6 @@ namespace GameMain
         {
             this.StopPathFinding();
             this.LoadMount();
-            m_Mount.Actor.SetHost(this);
             m_AnimController.Play("qicheng", null, true);
             m_CharacterController.enabled = false;
             this.SetActorState(ActorStateType.IsRide, true);
@@ -240,11 +225,9 @@ namespace GameMain
             this.CachedTransform.parent = m_OriginalParent;
             CachedTransform.localPosition = GlobalTools.NavSamplePosition(Pos);
             m_CharacterController.enabled = true;
-            if (m_Mount != null)
-            {
-                GameEntry.Level.DelRole(m_Mount);
-                m_Mount = null;
-            }
+
+            GameEntry.Level.DelRole(BattleCampType.Ally, Mount);
+
             m_Vehicle = this;
             this.SetActorState(ActorStateType.IsRide, false);
             ChangeState<ActorIdleFsm>();
@@ -360,27 +343,7 @@ namespace GameMain
 
         public void ChangeEquip(int pDressPos, int pEquipID)
         {
-            //DBItem itemDB = ZTConfig.Instance.GetDBItem(pEquipID);
-            //string[] modelPaths = { itemDB.Model_R, itemDB.Model_L };
-            //EquipAvatar pModel = GetEquipModelsByPos(pDressPos);
-            //for (int i = 0; i < 2; i++)
-            //{
-            //    string path = modelPaths[i];
-            //    string bone = Define.EQUIP_BONES[pDressPos, i];
-            //    if (string.IsNullOrEmpty(path)) { continue; }
-            //    Transform boneTrans = GTTools.GetBone(CacheTransform, bone);
-            //    if (boneTrans == null) { continue; }
-            //    pModel.Models[i] = ZTResource.Instance.Load<GameObject>(path, true);
-            //    if (pModel.Models[i] != null)
-            //    {
-            //        GameObject model = pModel.Models[i];
-            //        model.transform.parent = boneTrans;
-            //        NGUITools.SetLayer(pModel.Models[i], Obj.layer);
-            //        model.transform.localPosition = Vector3.zero;
-            //        model.transform.localEulerAngles = Vector3.zero;
-            //        model.transform.localScale = Vector3.one;
-            //    }
-            //}
+
         }
 
         public void RemoveEquip(int pos)
@@ -414,33 +377,41 @@ namespace GameMain
 
         private void LoadMount()
         {
-            int mountID = UnityEngine.Random.Range(100001, 100003);
+            int mountId = UnityEngine.Random.Range(100001, 100003);
 
             TransformParam param= TransformParam.Create(CachedTransform.position, CachedTransform.eulerAngles);
-            Mount = GameEntry.Level.AddRole<MountRole>(mountID, ActorType.Mount, BattleCampType.Neutral, param);
-            m_Vehicle = m_Mount.Actor;
 
-            var mountActor = Mount.Actor as ActorMount;
-            Transform ridePoint = mountActor?.GetRidePoint();
-            if (ridePoint != null)
+            int entityId = GameEntry.Entity.GenerateSerialId();
+            MountEntityData data = new MountEntityData(entityId, mountId, ActorType.Mount, BattleCampType.Ally,this)
             {
-                CachedTransform.parent = ridePoint;
-                CachedTransform.localPosition = Vector3.zero;
-                CachedTransform.localRotation = Quaternion.identity;
+                Position = param.Position,
+                Rotation = Quaternion.Euler(param.EulerAngles),
+                Scale = param.Scale
+            };
+            GameEntry.Level.AddRole<MountRole>(data);
+            this.Mount = entityId;
+        }
+
+        private void LoadPartner()
+        {
+            HidePartner();
+            if (m_PlayerData.Partner1Id != 0)
+            {
+                Partner1 = GameEntry.Level.AddPartner(this, PartnerSortType.Left, m_PlayerData.Partner1Id);
+            }
+            if (m_PlayerData.Partner2Id != 0)
+            {
+                Partner2 = GameEntry.Level.AddPartner(this, PartnerSortType.Right, m_PlayerData.Partner2Id);
             }
         }
 
         private void HidePartner()
         {
-            if (m_Partner01Entity != null)
-            {
-                GameEntry.Level.DelRole(m_Partner01Entity);
-            }
+            if (Partner1 != 0)
+                GameEntry.Level.DelRole(BattleCampType.Ally, Partner1);
 
-            if (m_Partner02Entity != null)
-            {
-                GameEntry.Level.DelRole(m_Partner02Entity);
-            }
+            if (Partner2 != 0)
+                GameEntry.Level.DelRole(BattleCampType.Ally, Partner2);
         }
 
         private void OnKillMonster(object sender, GameEventArgs e)
@@ -507,29 +478,7 @@ namespace GameMain
 
             m_PlayerData.Partner1Id = ne.Partner01ID == 0 ? m_PlayerData.Partner1Id : ne.Partner01ID;
             m_PlayerData.Partner2Id = ne.Partner02ID == 0 ? m_PlayerData.Partner2Id : ne.Partner02ID;
-
-            if (ne.Partner01ID != 0)
-            {
-                if (m_Partner01Entity != null)
-                {
-                    GameEntry.Level.DelRole(m_Partner01Entity);
-                    m_Partner01Entity = null;
-                }
-
-                m_Partner01Entity = GameEntry.Level.AddPartner(this, 2, ne.Partner01ID);
-            }
-
-            if (ne.Partner02ID != 0)
-            {
-                if (m_Partner02Entity != null)
-                {
-                    GameEntry.Level.DelRole(m_Partner02Entity);
-                    m_Partner02Entity = null;
-                }
-
-                m_Partner02Entity = GameEntry.Level.AddPartner(this, 3, ne.Partner02ID);
-            }
-
+            LoadPartner();
         }
 
         private void TryAddExp(int exp)
@@ -604,5 +553,6 @@ namespace GameMain
             RefreshHeroInfoEventArgs args = ReferencePool.Acquire<RefreshHeroInfoEventArgs>().Fill(m_PlayerData.Name, m_PlayerData.Level, m_PlayerData.Exp, maxExp, m_CurAttribute);
             GameEntry.Event.Fire(this, args);
         }
+
     }
 }

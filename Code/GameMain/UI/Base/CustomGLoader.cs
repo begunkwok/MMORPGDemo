@@ -29,7 +29,7 @@ namespace GameMain
         protected override void FreeExternal(NTexture texAsset)
         {
             if(texAsset != null)
-                GameEntry.Resource.UnloadAsset(texAsset);
+               Resources.UnloadAsset(texAsset.nativeTexture);
         }
 
         private void LoadTextureFailureCallback(string assetName, LoadResourceStatus status, string errorMessage, object userData)

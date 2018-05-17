@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using GameFramework;
 using GameFramework.Event;
+using UnityGameFramework.Runtime;
 
 namespace GameMain
 {
     public class BoardFormManager : Singleton<BoardFormManager>
     {
-        private readonly Dictionary<int,RoleBoardForm> m_BoardForms = new Dictionary<int, RoleBoardForm>();
+        private readonly Dictionary<int,int> m_BoardForms = new Dictionary<int, int>();
 
         public override void Init()
         {
@@ -31,23 +32,23 @@ namespace GameMain
                 return;
             }
 
-            RoleBoardForm board = GameEntry.UI.OpenAndGetForm(UIFormId.RoleBoardForm, data) as RoleBoardForm;
-
-            if (board == null)
+            int? serialId = GameEntry.UI.OpenUIForm(UIFormId.RoleBoardForm, data);
+            if (!serialId.HasValue)
             {
-                Log.Error("Conver Fail");
+                Log.Error("Open form fail.");
                 return;
             }
 
-            m_BoardForms.Add(data.OwnerId, board);
+            m_BoardForms.Add(data.OwnerId, serialId.Value);
         }
 
         public void Release(int ownerId)
         {
-            RoleBoardForm board;
-            if (m_BoardForms.TryGetValue(ownerId, out board))
+            int boardId;
+            if (m_BoardForms.TryGetValue(ownerId, out boardId))
             {
-               GameEntry.UI.CloseUIForm(board);
+                if (GameEntry.UI.HasUIForm(boardId))
+                    GameEntry.UI.CloseUIForm(boardId);
             }
             else
             {
@@ -61,10 +62,13 @@ namespace GameMain
             if (ne == null)
                 return;
 
-            RoleBoardForm board;
-            if(m_BoardForms.TryGetValue(ne.OwnerId,out board))
+            int boardId;
+            if(m_BoardForms.TryGetValue(ne.OwnerId,out boardId))
             {
-                board.Refresh(ne.CurHp, ne.MaxHp, ne.Level);
+                UIForm uiform = GameEntry.UI.GetUIForm(boardId);
+                RoleBoardForm borderForm = uiform?.Logic as RoleBoardForm;
+
+                borderForm?.Refresh(ne.CurHp, ne.MaxHp, ne.Level);
             }
         }
 

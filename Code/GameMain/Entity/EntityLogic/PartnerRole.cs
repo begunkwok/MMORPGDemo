@@ -5,24 +5,25 @@ namespace GameMain
 
     public class PartnerRole : RoleEntityBase
     {
-        private RoleEntityData m_EnemyEntityData;
+        private PartnerEntityData m_EntityData;
 
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
 
-            m_EnemyEntityData = userData as RoleEntityData;
-            if (m_EnemyEntityData == null)
+            m_EntityData = userData as PartnerEntityData;
+            if (m_EntityData == null)
             {
                 Log.Error("playerEntityData is null");
                 return;
             }
 
-            ActorType actorType = m_EnemyEntityData.ActorType;
-            BattleCampType campType = m_EnemyEntityData.CampType;
+            ActorType actorType = m_EntityData.ActorType;
+            BattleCampType campType = m_EntityData.CampType;
             Actor = new ActorPartner(this, actorType, campType, m_CharacterController,
                 m_Animator);
             Actor.Init();
+            Actor.SetHost(m_EntityData.Host);
         }
 
     }

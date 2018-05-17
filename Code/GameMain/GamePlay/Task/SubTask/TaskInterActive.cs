@@ -30,7 +30,7 @@ namespace GameMain
             if (mProgress < 0)
             {
                 mProgress = 0;
-                float length = GameEntry.Level.Player.Actor.GetAnimController().GetAnimLength(Data.Cmd);   
+                float length = GameEntry.Level.PlayerActor.GetAnimController().GetAnimLength(Data.Cmd);   
                 if (length == 0)
                 {
                     length = 1;

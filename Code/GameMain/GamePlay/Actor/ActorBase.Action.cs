@@ -73,7 +73,7 @@ namespace GameMain
             //播放死亡动画后删除
             GameEntry.Timer.Register(3f, () =>
             {
-                GameEntry.Level.DelRole(this.Entity);
+                GameEntry.Level.DelRole(this.Camp, this.EntityId);
             });
         }
 
@@ -244,7 +244,7 @@ namespace GameMain
         protected void OnDeadEnd()
         {
             m_ActorAI.Clear();
-            GameEntry.Entity.HideEntity(EntityId);
+            GameEntry.Entity.CheckHideEntity(EntityId);
         }
 
     }

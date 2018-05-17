@@ -27,6 +27,8 @@ namespace GameMain
                 m_Animator);
             Actor.Init();
 
+            GameEntry.Camera.SwitchCameraBehaviour(CameraBehaviourType.LockLook);
+
             AddEventListener();
         }
 
@@ -35,6 +37,8 @@ namespace GameMain
             base.OnHide(userData);
 
             RemoveEventListener();
+
+            GameEntry.Camera.SwitchCameraBehaviour(CameraBehaviourType.Default);
         }
 
         private void AddEventListener()

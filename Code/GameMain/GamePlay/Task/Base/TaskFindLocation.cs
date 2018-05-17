@@ -33,7 +33,7 @@ namespace GameMain
         {
             if (mLocation.MapID == (int)GameEntry.Level.CurSceneId)
             {
-                GameEntry.Level.Player.Actor.ExecuteCommand(new AutoMoveCommand(mLocation.Pos, mOnFinish));
+                GameEntry.Level.PlayerActor.ExecuteCommand(new AutoMoveCommand(mLocation.Pos, mOnFinish));
                 return;
             }
 
@@ -46,10 +46,10 @@ namespace GameMain
             //    return;
             //}
 
-            GameEntry.Level.Player.Actor.ExecuteCommand(new AutoMoveCommand(pPortalPos, null));
+            GameEntry.Level.PlayerActor.ExecuteCommand(new AutoMoveCommand(pPortalPos, null));
             mOnLoadSceneCallback = delegate
             {
-                GameEntry.Level.Player.Actor.ExecuteCommand(new AutoMoveCommand(mLocation.Pos, mOnFinish));
+                GameEntry.Level.PlayerActor.ExecuteCommand(new AutoMoveCommand(mLocation.Pos, mOnFinish));
                 //ZTLevel.Instance.RegisterLoadSceneCallback(mOnLoadSceneCallback);
             };
         }

@@ -242,12 +242,12 @@ namespace GameMain
 
         private void RefreshSkillItems()
         {
-            if (GameEntry.Level.Player?.Actor == null)
+            if (GameEntry.Level.PlayerActor == null)
             {
                 return;
             }
 
-            IActorSkill skill = GameEntry.Level.Player.Actor.ActorSkill;
+            IActorSkill skill = GameEntry.Level.PlayerActor.ActorSkill;
 
             for (int i = 0; i < m_SkillItems.Length; i++)
             {

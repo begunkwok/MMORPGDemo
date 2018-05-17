@@ -108,6 +108,8 @@ namespace GameMain
             Camp = camp;
 
             m_ActorData = GameEntry.DataTable.GetDataTable<DRActorEntity>().GetDataRow(Id);
+
+
         }
 
 
@@ -118,8 +120,9 @@ namespace GameMain
             m_ActorBuff = new ActorBuff(this);
 
             InitAttribute(true);
-            InitLayer();
+            InitBornParam();
             InitCommands();
+            InitLayer();
             InitAnim();
             InitAi();
             InitFeature();
@@ -467,13 +470,13 @@ namespace GameMain
         }
 
 
-        public void SetBornParam(TransformParam param)
+        public void InitBornParam()
         {
             BornParam = new TransformParam
             {
-                Position = param.Position,
-                EulerAngles = param.EulerAngles,
-                Scale = param.Scale
+                Position = CachedTransform.position,
+                EulerAngles = CachedTransform.eulerAngles,
+                Scale = CachedTransform.localScale
             };
         }
 

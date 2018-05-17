@@ -36,7 +36,7 @@ namespace GameMain
             }
 
             EditorGUILayout.Space();
-            EditorGUILayout.ObjectField("特效", pElem.PortalObj, typeof(GameObject),true);
+            EditorGUILayout.IntField("特效ID", pElem.SerialId);
 
             EditorGUILayout.Space();
             EditorGUILayout.BeginVertical();

@@ -23,11 +23,12 @@ namespace GameMain
         private float m_InputX = 0;
         private float m_InputY = 0;
         private bool m_LastInputEnable = false;
+        private bool m_Inited = false;
 
         public void Init()
         {
             SwitchActiveInput();
-        
+            m_Inited = true;
         }
 
         public void Clear()
@@ -37,6 +38,9 @@ namespace GameMain
 
         void Update()
         {
+            if(!m_Inited)
+                return;
+            
             m_InputX = GetAxis(Constant.Input.HorizontalAxis);
             m_InputY = GetAxis(Constant.Input.VerticalAxis);
             

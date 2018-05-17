@@ -122,6 +122,8 @@
     <Compile Include="Editor\LevelEditor\InsLevelComponent.cs" />
     <Compile Include="Editor\LevelEditor\LevelEditor.cs" />
     <Compile Include="Entity\EntityData\LevelObjectData.cs" />
+    <Compile Include="Entity\EntityData\MountEntityData.cs" />
+    <Compile Include="Entity\EntityData\PlayerEntityData.cs" />
     <Compile Include="Entity\EntityLogic\LevelObject.cs" />
     <Compile Include="Entity\EntityLogic\MountRole.cs" />
     <Compile Include="Entity\EntityLogic\PartnerRole.cs" />
@@ -272,7 +274,7 @@
     <Compile Include="GamePlay\Attribute\Define\AttributeType.cs" />
     <Compile Include="Camera\CameraActionType.cs" />
     <Compile Include="Camera\CameraEffectType.cs" />
-    <Compile Include="Entity\EntityData\ActorDataBase.cs" />
+    <Compile Include="Entity\EntityData\PartnerEntityData.cs" />
     <Compile Include="GamePlay\Actor\ActorBase.cs" />
     <Compile Include="GamePlay\Actor\ActorManager.cs" />
     <Compile Include="GamePlay\AI\Base\ActorAIBase.cs" />
@@ -370,7 +372,7 @@
     <Compile Include="Config\PathConfigs.cs" />
     <Compile Include="Editor\ProjectSaver.cs" />
     <Compile Include="Entity\EntityComponent\PlayerController.cs" />
-    <Compile Include="Entity\EntityData\PlayerEntityData.cs" />
+    <Compile Include="Entity\EntityData\RoleEntityData.cs" />
     <Compile Include="Entity\EntityLogic\PlayerRole.cs" />
     <Compile Include="GamePlay\Command\Abstract\ICommand.cs" />
     <Compile Include="GamePlay\Command\Abstract\ICommandReceiver.cs" />

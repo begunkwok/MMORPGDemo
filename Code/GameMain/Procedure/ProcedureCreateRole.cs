@@ -81,29 +81,20 @@ namespace GameMain
                 case ProfessionType.Warrior:
                     GameEntry.Entity.ShowPoseRole(m_WarriorData);
                     m_SelectRoleTypeId = m_WarriorTypeId;
-
-                    if (GameEntry.Entity.HasEntity(m_MasterData.Id))
-                        GameEntry.Entity.HideEntity(m_MasterData.Id);
-                    if (GameEntry.Entity.HasEntity(m_ShooterData.Id))
-                        GameEntry.Entity.HideEntity(m_ShooterData.Id);
+                    GameEntry.Entity.CheckHideEntity(m_MasterData.Id);             
+                    GameEntry.Entity.CheckHideEntity(m_ShooterData.Id);
                     break;
                 case ProfessionType.Master:
                     GameEntry.Entity.ShowPoseRole(m_MasterData);
                     m_SelectRoleTypeId = m_MasterTypeId;
-
-                    if (GameEntry.Entity.HasEntity(m_WarriorData.Id))
-                        GameEntry.Entity.HideEntity(m_WarriorData.Id);
-                    if (GameEntry.Entity.HasEntity(m_ShooterData.Id))
-                        GameEntry.Entity.HideEntity(m_ShooterData.Id);
+                    GameEntry.Entity.CheckHideEntity(m_WarriorData.Id);
+                    GameEntry.Entity.CheckHideEntity(m_ShooterData.Id);
                     break;
                 case ProfessionType.Shoooter:
                     GameEntry.Entity.ShowPoseRole(m_ShooterData);
                     m_SelectRoleTypeId = m_ShooterTypeId;
-
-                    if (GameEntry.Entity.HasEntity(m_MasterData.Id))
-                        GameEntry.Entity.HideEntity(m_MasterData.Id);
-                    if (GameEntry.Entity.HasEntity(m_WarriorData.Id))
-                        GameEntry.Entity.HideEntity(m_WarriorData.Id);
+                    GameEntry.Entity.CheckHideEntity(m_MasterData.Id);
+                    GameEntry.Entity.CheckHideEntity(m_WarriorData.Id);
                     break;
             }
         }

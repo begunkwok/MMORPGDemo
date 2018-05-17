@@ -11,7 +11,7 @@ namespace BT
 
         private int m_EffectTypeId = 0;
         private Transform  m_CacheTransform = null;
-        private EffectBase m_EffectEntiny = null;
+        private int m_EffectEntinyId = 0;
 
         protected override void ReadAttribute(string key, string value)
         {
@@ -65,10 +65,12 @@ namespace BT
                 return false;
             }
                        
+            this.m_EffectEntinyId = Data.Id;
+
             Data.Owner = Owner;
             Data.Target = Owner.Target;
             Data.Parent = Owner.CachedTransform;
-            this.m_EffectEntiny = GameEntry.Entity.ShowEffect(Data);
+            GameEntry.Entity.ShowEffect(Data);
 
             if (Data.SoundId != 0)
                 GameEntry.Sound.PlaySound(Data.SoundId);
@@ -77,12 +79,19 @@ namespace BT
 
         protected override BTStatus Execute()
         {
-            if (m_EffectEntiny == null)
+            if (m_EffectEntinyId == 0)
             {
                 return BTStatus.Failure;
             }
 
-            EffectStateType pState = m_EffectEntiny.State;
+            EffectBase effect = GameEntry.Entity.GetEntity(m_EffectEntinyId)?.Logic as EffectBase;
+
+            if (effect == null)
+            {
+                return BTStatus.Failure;
+            }
+
+            EffectStateType pState = effect.State;
             switch (pState)
             {
                 case EffectStateType.Error:
@@ -91,16 +100,16 @@ namespace BT
                 }
                 case EffectStateType.Update:
                 {
-                    if (m_CacheTransform == null && m_EffectEntiny.CachedTransform != null)
+                    if (m_CacheTransform == null && effect.CachedTransform != null)
                     {
-                        m_CacheTransform = m_EffectEntiny.CachedTransform;
+                        m_CacheTransform = effect.CachedTransform;
                         GameEntry.BT.SaveData(this, JudgeName, m_CacheTransform);
                     }
 
                     object var = GameEntry.BT.GetData(this, Constant.Define.BTJudgeList);
                     if (var != null && Data.DeadType == FlyObjDeadType.UntilColliderTar)
                     {
-                        m_EffectEntiny.SwitchState(EffectStateType.Dead);
+                        effect.SwitchState(EffectStateType.Dead);
                     }
                     return BTStatus.Running;
                 }
@@ -110,7 +119,7 @@ namespace BT
                 }
                 case EffectStateType.Dead:
                 {
-                    m_EffectEntiny = null;
+                    Clear();
                     return BTStatus.Success;
                 }
                 default:
@@ -123,7 +132,7 @@ namespace BT
         public override void Clear()
         {
             base.Clear();
-            m_EffectEntiny = null;
+            GameEntry.Entity.CheckHideEntity(m_EffectEntinyId);
             m_CacheTransform = null;
         }
 

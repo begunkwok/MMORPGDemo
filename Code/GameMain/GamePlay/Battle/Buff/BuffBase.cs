@@ -31,11 +31,11 @@ namespace GameMain
         public bool IsDead { get; private set; }
         public List<BuffAttrData> AttrList { get; private set; }
 
+        protected int m_EntityId;
         protected float m_StartTimer;
         protected float m_IntervalTimer;
         protected ActorBase m_Owner;
         protected ActorBase m_Caster;
-        protected EffectBase m_Effect;
         protected DRBuffAttr m_BuffAttr;
 
         public BuffBase(int id, ActorBase owner, ActorBase caster)
@@ -105,7 +105,9 @@ namespace GameMain
             {
                 m_Owner.CachedTransform.DOScale(size, 1);
             }
-            m_Effect?.Clear();
+
+            EffectBase effect = GameEntry.Entity.GetEntity(m_EntityId)?.Logic as EffectBase;
+            effect?.Clear();
         }
 
         public float GetLeftTime()
@@ -133,17 +135,21 @@ namespace GameMain
             {
                 return;
             }
-            m_Effect?.Reset();
+               
+            EffectBase effect = GameEntry.Entity.GetEntity(m_EntityId)?.Logic as EffectBase;
+            effect?.Reset();
+
             m_StartTimer = Time.realtimeSinceStartup;
         }
 
         public void SetEffectEnable(bool enable)
         {
-            if (m_Effect?.CachedTransform == null)
+            EffectBase effect = GameEntry.Entity.GetEntity(m_EntityId)?.Logic as EffectBase;
+            if (effect?.CachedTransform == null)
             {
                 return;
             }
-            GameEntry.Entity.HideEntity(m_Effect.Id);
+            GameEntry.Entity.CheckHideEntity(m_EntityId);
         }
 
         private bool IsDotOrHot()
@@ -266,16 +272,18 @@ namespace GameMain
                 return;
             }
 
-            int entityId = GameEntry.Entity.GenerateTempSerialId();
-            EffectData effectdata = new EffectData(entityId, Data.EffectID);
-            effectdata.BindType = (EffectBindType)Data.EffectBind;
-            effectdata.DeadType = (FlyObjDeadType)Data.DestroyType;
-            effectdata.FlyType = FlyObjFlyType.Stay;
-            effectdata.KeepTime = Data.LifeTime;
-            effectdata.Owner = m_Owner;
-            effectdata.Parent = m_Owner.CachedTransform;
-            effectdata.SetParent = true;
-            m_Effect = GameEntry.Entity.ShowEffect(effectdata);
+            m_EntityId = GameEntry.Entity.GenerateTempSerialId();
+            EffectData effectdata = new EffectData(m_EntityId, Data.EffectID)
+            {
+                BindType = (EffectBindType) Data.EffectBind,
+                DeadType = (FlyObjDeadType) Data.DestroyType,
+                FlyType = FlyObjFlyType.Stay,
+                KeepTime = Data.LifeTime,
+                Owner = m_Owner,
+                Parent = m_Owner.CachedTransform,
+                SetParent = true
+            };
+            GameEntry.Entity.ShowEffect(effectdata);
         }
     }
 }

@@ -34,14 +34,14 @@ namespace GameMain
             //InitQualitySettings();
 
             // 声音配置：根据用户配置数据，设置即将使用的声音选项。
-            InitSoundSettings();
+            //InitSoundSettings();
 
             // 默认字典：加载默认字典文件 Assets/GameMain/Configs/DefaultDictionary.xml。
             // 此字典文件记录了资源更新前使用的各种语言的字符串，会随 App 一起发布，故不可更新。
-            GameEntry.AppConfig.InitDefaultDictionary();
+            //GameEntry.AppConfig.InitDefaultDictionary();
 
             // 初始化调试窗口
-            InitDebuggerWindow();
+            //InitDebuggerWindow();
 
             procedureOwner.SetData<VarInt>(Constant.ProcedureData.NextSceneId,(int)SceneId.Login);
         }

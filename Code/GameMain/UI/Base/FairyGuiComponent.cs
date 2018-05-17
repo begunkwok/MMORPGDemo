@@ -30,7 +30,11 @@ namespace GameMain
                 IDataTable<DRUIForm> dt = GameEntry.DataTable.GetDataTable<DRUIForm>();
                 string formGroup = dt.GetDataRow(luaFormInfo.Key).UIGroupName;
                 FairyGuiLuaForm luaForm = GameEntry.UI.GetUIForm(luaFormInfo.Key, formGroup) as FairyGuiLuaForm;
-                GameEntry.UI.CloseUIForm(luaForm);
+                if (luaForm != null)
+                {
+                    luaForm.Clear();
+                    GameEntry.UI.CloseUIForm(luaForm);
+                }
             }
 
             BoardFormManager.Instance.Clear();

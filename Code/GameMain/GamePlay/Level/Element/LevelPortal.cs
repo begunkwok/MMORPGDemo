@@ -19,7 +19,7 @@ namespace GameMain
         public int OpenItemID;
         public int OpenVIP;
 
-        private GameObject m_PortalObj;
+        private int m_SerialId;
 
         public LevelRegion Region
         {
@@ -31,39 +31,33 @@ namespace GameMain
             get { return Region == null ? 0 : Region.Id; }
         }
 
-        public GameObject PortalObj
+        public int SerialId
         {
-            get { return m_PortalObj; }
-            set { m_PortalObj = value; }
+            get { return Id; }
+            set { Id = value; }
         }
 
         public override void Build()
         {
-            if (m_PortalObj == null)
+            if (m_SerialId == 0)
             {
                 if (Application.isPlaying)
                 {
-                    LevelObject portal = GameEntry.Level.CreateLevelObject(Constant.Define.Portal);
-                    if (portal == null)
-                    {
-                        Log.Error("Create portal failure.ID:{0}", Constant.Define.Portal);
-                        return;
-                    }
+                    TransformParam param = new TransformParam();
+                    param.Position = transform.position;
+                    param.EulerAngles = transform.rotation.eulerAngles;
+                    param.Scale = transform.localScale;
 
-
-                    m_PortalObj = portal.gameObject;
-                    portal.CachedTransform.position = transform.position;
-                    portal.CachedTransform.rotation = transform.rotation;
-                    portal.CachedTransform.localScale = transform.localScale;
+                    m_SerialId = GameEntry.Level.CreateLevelObject(Constant.Define.Portal, param);
                 }
                 else
                 {
 #if UNITY_EDITOR
-                    m_PortalObj = LevelComponent.CreateLevelEditorObject(MapHolderType.Portal);
-                    m_PortalObj.transform.parent = transform;
-                    m_PortalObj.transform.localPosition = Vector3.zero;
-                    m_PortalObj.transform.localEulerAngles = Vector3.zero;
-                    m_PortalObj.transform.localScale = Vector3.one;
+                    GameObject portal = LevelComponent.CreateLevelEditorObject(MapHolderType.Portal);
+                    portal.transform.parent = transform;
+                    portal.transform.localPosition = Vector3.zero;
+                    portal.transform.localEulerAngles = Vector3.zero;
+                    portal.transform.localScale = Vector3.one;
 #endif
                 }
             }

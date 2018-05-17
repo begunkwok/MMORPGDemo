@@ -1,6 +1,7 @@
 ﻿using System;
 using FairyGUI;
 using FairyGUI.Utils;
+using UnityEngine;
 
 namespace GameMain
 {
@@ -23,6 +24,7 @@ namespace GameMain
 
             m_Title.visible = false;
             m_Mask.visible = false;
+            m_Icon.texture = null;
         }
 
         public void ShowSkill(SkillTree skill)
@@ -62,7 +64,7 @@ namespace GameMain
         {
             if (m_Icon.texture != null)
             {
-                GameEntry.Resource.UnloadAsset(m_Icon.texture);
+                Resources.UnloadAsset(m_Icon.texture.nativeTexture);
                 m_Icon.texture = null;
             }
         }

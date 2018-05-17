@@ -204,7 +204,7 @@ namespace GameMain
         /// <summary>
         /// 界面销毁
         /// </summary>
-        protected override void OnDestroy()
+        public override void Clear()
         {
             luaOnDestroy?.Invoke();
 
@@ -219,9 +219,9 @@ namespace GameMain
             luaOnUpdate = null;
             luaOnDepthChanged = null;
             luaOnDestroy = null;
-            m_luaForm.Dispose();
+            m_luaForm?.Dispose();
 
-            base.OnDestroy();
+            base.Clear();
         }
     }
 }

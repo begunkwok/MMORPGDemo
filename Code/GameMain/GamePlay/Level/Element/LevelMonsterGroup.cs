@@ -89,10 +89,8 @@ namespace GameMain
             Vector3 pos = GlobalTools.RandomOnCircle(5)+Region.Position;
             Vector3 angle = new Vector3(0, UnityEngine.Random.Range(0, 360), 0);
             TransformParam param = TransformParam.Create(pos, angle);
-            EnemyRole monster = GameEntry.Level.CreateEnemy(MonsterID, param);
-            monster.Actor.SetBornParam(param);
-
-            m_Monsters.Add(monster.Id);
+            int serialId = GameEntry.Level.CreateEnemy(MonsterID, param);
+            m_Monsters.Add(serialId);
         }
 
         private void OnKillMonster(object sender,GameEventArgs e)

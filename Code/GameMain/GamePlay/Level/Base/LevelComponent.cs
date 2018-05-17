@@ -18,23 +18,27 @@ namespace GameMain
         public SceneId CurSceneId { get; private set; }
         public SceneType CurSceneType { get; private set; }
         public MapConfig Config { get; private set; }
-        public PlayerRole Player { get; private set; }
-        public float CurTime => Time.realtimeSinceStartup - m_StartTime;
 
-        private List<LevelTask> m_OnLoadNewSceneTasks = new List<LevelTask>();
-        private Dictionary<MapHolderType, LevelElement> m_Holders = new Dictionary<MapHolderType, LevelElement>();
-        private List<RoleEntityBase> m_AllRoles = new List<RoleEntityBase>();
-        private Dictionary<BattleCampType, List<RoleEntityBase>> m_CampActors = new Dictionary<BattleCampType, List<RoleEntityBase>>
+        public int PlayerEntityId { get; private set; }
+        public ActorPlayer PlayerActor { get; private set; }
+
+        private readonly List<int> m_AllRoles = new List<int>();
+        private readonly List<LevelTask> m_OnLoadNewSceneTasks = new List<LevelTask>();
+
+        private readonly Dictionary<MapHolderType, LevelElement> m_Holders = new Dictionary<MapHolderType, LevelElement>();
+        private readonly Dictionary<BattleCampType, List<int>> m_CampActors = new Dictionary<BattleCampType, List<int>>
         {
-            {BattleCampType.Ally, new List<RoleEntityBase>()},
-            {BattleCampType.Enemy, new List<RoleEntityBase>()},
-            {BattleCampType.Neutral, new List<RoleEntityBase>()},
-            {BattleCampType.Other, new List<RoleEntityBase>()}
+            {BattleCampType.Ally, new List<int>()},
+            {BattleCampType.Enemy, new List<int>()},
+            {BattleCampType.Neutral, new List<int>()},
+            {BattleCampType.Other, new List<int>()}
         };
 
         private float m_StartTime;
         private float m_EndTime;
         private bool m_Victory;
+
+        private float CurTime => Time.realtimeSinceStartup - m_StartTime;
 
         public void Init()
         {
@@ -60,12 +64,11 @@ namespace GameMain
 
             for (int i = m_AllRoles.Count - 1; i >= 0; i--)
             {
-                RoleEntityBase role = m_AllRoles[i];
-                m_AllRoles.RemoveAt(i);
-                GameEntry.Entity.HideEntity(role.Id);
+                GameEntry.Entity.CheckHideEntity(m_AllRoles[i]);
             }
+            m_AllRoles.Clear();
 
-            Player = null;
+            GameEntry.Entity.CheckHideEntity(PlayerEntityId);
 
             foreach (KeyValuePair<MapHolderType, LevelElement> current in m_Holders)
             {
@@ -137,6 +140,15 @@ namespace GameMain
             Clear();
         }
 
+        public void SetPlayerActor(ActorPlayer player)
+        {
+            if(player == null)
+                throw new GameFrameworkException("Create Player Fail!");
+
+            this.PlayerActor = player;
+            this.PlayerEntityId = player.EntityId;
+        }
+
         public LevelElement GetHolder(MapHolderType type)
         {
             LevelElement holder = null;
@@ -155,69 +167,57 @@ namespace GameMain
             }
         }
 
-        public PlayerRole CreatePlayer(int id)
+        public int CreateEnemy(int typeId, TransformParam param)
         {
-            Player = AddRole<PlayerRole>(id, ActorType.Player, BattleCampType.Ally, TransformParam.Default);
-            Player = Player;
-            GameEntry.Camera.SwitchCameraBehaviour(CameraBehaviourType.LockLook);
-            return Player;
+            if (typeId <= 0 || param == null)
+                return 0;
+
+            int entityId = GameEntry.Entity.GenerateSerialId();
+            RoleEntityData data = new RoleEntityData(entityId, typeId, ActorType.Monster, BattleCampType.Enemy)
+            {
+                Position = param.Position,
+                Rotation = Quaternion.Euler(param.EulerAngles),
+                Scale = param.Scale
+            };
+
+            AddRole<EnemyRole>(data);
+            return entityId;
         }
 
-        public EnemyRole CreateEnemy(int id, TransformParam param)
+        public int CreateLevelObject(int id, TransformParam param)
         {
-            EnemyRole enemy = AddRole<EnemyRole>(id, ActorType.Monster, BattleCampType.Enemy, param);
-            return enemy;
-        }
+            if(param == null)
+                return 0;
 
-        public LevelObject CreateLevelObject(int id, TransformParam param = null)
-        {
             int entityId = GameEntry.Entity.GenerateSerialId();
             LevelObjectData levelObjectData = new LevelObjectData(entityId, id);
-            LevelObject levelObject = GameEntry.Entity.ShowEntity<LevelObject>(levelObjectData);
+            levelObjectData.Position = param.Position;
+            levelObjectData.Rotation = Quaternion.Euler(param.EulerAngles);
+            levelObjectData.Scale = param.Scale;
 
-            if (param != null && levelObject != null)
-            {
-                levelObject.CachedTransform.position = param.Position;
-                levelObject.CachedTransform.eulerAngles = param.EulerAngles;
-                levelObject.CachedTransform.localScale = param.Scale;
-            }
-
-            return levelObject;
+            GameEntry.Entity.ShowEntity(typeof (LevelObject), levelObjectData);
+            return entityId;
         }
 
-        public PartnerRole AddPartner(ActorPlayer host, int pos, int id)
+        public int AddPartner(ActorPlayer host, PartnerSortType sortPos, int typeId)
         {
-            if (id <= 0)
-                return null;
+            if (typeId <= 0)
+                return 0;
 
             if (host == null)
-                return null;
-            
-            PartnerSortType sort = (PartnerSortType)pos;
-            Vector3 pPos = host.GetPartnerPosBySort(sort);
+                return 0;
 
-            TransformParam param = TransformParam.Create(pPos, host.CachedTransform.eulerAngles, Vector3.one * 1.5f);
+            int entityId = GameEntry.Entity.GenerateSerialId();
+            PartnerEntityData data = new PartnerEntityData(entityId,typeId,ActorType.Partner, BattleCampType.Ally, host, sortPos);
 
-            PartnerRole partner = AddRole<PartnerRole>(id, ActorType.Partner, host.Camp, param) as PartnerRole;
-            if (partner == null)
-            {
-                return null;
-            }
+            Vector3 pPos = host.GetPartnerPosBySort(sortPos);
+            data.Position = pPos;
+            data.Rotation = host.CachedTransform.rotation;
+            data.Scale = Vector3.one*1.5f;
 
-            ActorBase partnerActor = partner.Actor;
+            AddRole<PartnerRole>(data);
 
-            switch (sort)
-            {
-                case PartnerSortType.Left:
-                    host.Partner1 = partnerActor;
-                    break;
-                case PartnerSortType.Right:
-                    host.Partner2 = partnerActor;
-                    break;
-            }
-            partnerActor.Sort = sort;
-
-            return partner;
+            return entityId;
         }
 
         public bool GetPortalByDestMapId(int id, ref Vector3 pos)
@@ -235,48 +235,29 @@ namespace GameMain
             return false;
         }
 
-        public T AddRole<T>(int id, ActorType type, BattleCampType camp, Vector3 pos, Vector3 angle) where T : RoleEntityBase
-        {
-            return AddRole<T>(id, type, camp, TransformParam.Create(pos, angle));
-        }
-
-        public T AddRole<T>(int id, ActorType type, BattleCampType camp, Vector3 pos, Vector3 angle, Vector3 scale) where T : RoleEntityBase
-        {
-            return AddRole<T>(id, type, camp, TransformParam.Create(pos, angle, scale));
-        }
-
-        public T AddRole<T>(int entityTypeId, ActorType type, BattleCampType camp, TransformParam param)
+        public void AddRole<T>(RoleEntityData data)
             where T : RoleEntityBase
         {
-            int entityId = GameEntry.Entity.GenerateSerialId();
-            RoleEntityData roleData = new RoleEntityData(entityId, entityTypeId, type, camp);
-            RoleEntityBase role = GameEntry.Entity.ShowRole<T>(roleData);
-
-            if (role != null)
+            if (data == null || data.ActorType == ActorType.Unknown || data.CampType == BattleCampType.None)
             {
-                param.Position = GlobalTools.NavSamplePosition(param.Position);
-
-                if (role.CachedTransform != null)
-                {
-                    m_AllRoles.Add(role);
-                    m_CampActors[camp].Add(role);
-                    role.CachedTransform.position = param.Position;
-                    role.CachedTransform.eulerAngles = param.EulerAngles;
-                    role.CachedTransform.localScale = param.Scale;
-                }
+                return;
             }
 
-            return role as T;
+            data.Position = GlobalTools.NavSamplePosition(data.Position);
+
+            GameEntry.Entity.ShowRole<T>(data);
+            m_AllRoles.Add(data.Id);
+            m_CampActors[data.CampType].Add(data.Id);
         }
 
-        public bool DelRole(RoleEntityBase role)
+        public bool DelRole(BattleCampType roleCamp, int roleEntityId)
         {
-            if (role?.Actor == null)
+            if (roleEntityId == 0 || roleCamp == BattleCampType.None)
                 return false;
 
-            m_AllRoles.Remove(role);
-            m_CampActors[role.Actor.Camp].Remove(role);
-            GameEntry.Entity.HideEntity(role.Id);
+            m_AllRoles.Remove(roleEntityId);
+            m_CampActors[roleCamp].Remove(roleEntityId);
+            GameEntry.Entity.CheckHideEntity(roleEntityId);
             return true;
         }
 
@@ -381,9 +362,17 @@ namespace GameMain
             List<RoleEntityBase> pList = new List<RoleEntityBase>();
             for (int i = 0; i < m_AllRoles.Count; i++)
             {
-                if (m_AllRoles[i].Actor.ActorType == pType)
+                var role = GameEntry.Entity.GetRole<RoleEntityBase>(m_AllRoles[i]);
+
+                if (role == null)
                 {
-                    pList.Add(m_AllRoles[i]);
+                    Log.Error("Can no get role.ID:{0}", m_AllRoles[i]);
+                    continue;
+                }
+
+                if (role.Actor.ActorType == pType)
+                {
+                    pList.Add(role);
                 }
             }
             return pList;
@@ -394,7 +383,15 @@ namespace GameMain
             List<ActorBase> all = new List<ActorBase>();
             for (int i = 0; i < m_AllRoles.Count; i++)
             {
-                all.Add(m_AllRoles[i].Actor);
+                var role = GameEntry.Entity.GetRole<RoleEntityBase>(m_AllRoles[i]);
+
+                if (role == null)
+                {
+                    Log.Error("Can no get role.ID:{0}", m_AllRoles[i]);
+                    continue;
+                }
+
+                all.Add(role.Actor);
             }
 
             return all;
@@ -404,7 +401,14 @@ namespace GameMain
         {
             for (int i = 0; i < m_AllRoles.Count; i++)
             {
-                ActorBase actor = m_AllRoles[i].Actor;
+                var role = GameEntry.Entity.GetRole<RoleEntityBase>(m_AllRoles[i]);
+
+                if (role == null)
+                {
+                    continue;
+                }
+
+                ActorBase actor = role.Actor;
                 if (actor.Camp == actorCamp && actor.IsDead == false)
                 {
                     if (ignoreStealth == false)
@@ -506,43 +510,32 @@ namespace GameMain
             }
 
             DBPlayer dbPlayer = GameEntry.Database.GetDBRow<DBPlayer>(playerId);
-           this.Player = GameEntry.Level.CreatePlayer(dbPlayer.Id);
 
-            RefreshHeroInfoEventArgs args = ReferencePool.Acquire<RefreshHeroInfoEventArgs>().FillName(dbPlayer.Name);
-            GameEntry.Event.Fire(this, args);
-
-            if (Player != null)
+            int entityId = GameEntry.Entity.GenerateSerialId();
+            bool battleState = CurSceneType == SceneType.Battle;
+            PlayerEntityData data = new PlayerEntityData(entityId, dbPlayer.Id, ActorType.Player, BattleCampType.Ally, battleState)
             {
-                ActorPlayer actorPlayer = Player.Actor as ActorPlayer;
-                if (actorPlayer == null)
-                {
-                    return;
-                }
-
-                TransformParam param = new TransformParam
-                {
-                    Position = Config.Ally.TransParam.Position,
-                    EulerAngles = Config.Ally.TransParam.EulerAngles,
-                    Scale = Config.Ally.TransParam.Scale
-                };
-                actorPlayer.BattleState = CurSceneType == SceneType.Battle;
-
-                Player.Actor.SetBornParam(param);
-                Player.UpdateTransform(param);
-
-                ChangePartnerEventArgs eventArgs = new ChangePartnerEventArgs();
-                eventArgs.Fill(actorPlayer.ActorCard.Partners[1], actorPlayer.ActorCard.Partners[2]);
-                GameEntry.Event.Fire(this, eventArgs);
-            }
+                Position = Config.Ally.TransParam.Position,
+                Rotation = Quaternion.Euler(Config.Ally.TransParam.EulerAngles),
+                Scale = Config.Ally.TransParam.Scale
+            };
+            GameEntry.Entity.ShowRole<PlayerRole>(data);
         }
 
         private void InitNpc()
         {
             for (int i = 0; i < Config.Npcs.Count; i++)
             {
-                MapNpc data = Config.Npcs[i];
+                MapNpc mapdata = Config.Npcs[i];
 
-                AddRole<NpcRole>(data.Id, ActorType.Npc, BattleCampType.Ally, data.Position, data.Euler, data.Scale);
+                int entityId = GameEntry.Entity.GenerateSerialId();
+                RoleEntityData data = new RoleEntityData(entityId, mapdata.Id, ActorType.Npc, BattleCampType.Neutral)
+                {
+                    Position = mapdata.Position,
+                    Rotation = Quaternion.Euler(mapdata.Euler),
+                    Scale = mapdata.Scale
+                };
+                GameEntry.Entity.ShowRole<NpcRole>(data);
             }
         }
 
@@ -644,10 +637,10 @@ namespace GameMain
                 {
                     case StarConditionType.Health:
                         {
-                            if (Player != null)
+                            if (PlayerActor != null)
                             {
-                                int maxHealth = Player.Actor.Attrbute.GetValue(AttributeType.MaxHp);
-                                int curHealth = Player.Actor.Attrbute.GetValue(AttributeType.Hp);
+                                int maxHealth = PlayerActor.Attrbute.GetValue(AttributeType.MaxHp);
+                                int curHealth = PlayerActor.Attrbute.GetValue(AttributeType.Hp);
                                 float ratio = curHealth / (maxHealth * 1f);
                                 if (ratio >= v / 100f)
                                 {
@@ -695,8 +688,8 @@ namespace GameMain
                 pList[i].Actor.SetTarget(null);
             }
 
-            this.Player.CachedTransform.localPosition = Vector3.zero;
-            this.Player = null;
+            PlayerActor.CachedTransform.localPosition = Vector3.zero;
+            this.PlayerActor = null;
             this.m_Victory = false;
             this.LeaveCurrentLevel();
         }

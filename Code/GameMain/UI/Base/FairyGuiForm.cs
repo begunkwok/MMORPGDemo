@@ -110,7 +110,7 @@ namespace GameMain
                 //不在播放状态时我们不在OnEnable创建，因为Prefab也会调用OnEnable，延迟到Update里创建（Prefab不调用Update)
                 //每次播放前都会disable/enable一次。。。
                 if (m_Container != null)//如果不为null，可能是因为Prefab revert， 而不是因为Assembly reload，
-                    OnDestroy();
+                    Clear();
 
                 EMRenderSupport.Add(this);
                 screenSizeVer = 0;
@@ -249,10 +249,8 @@ namespace GameMain
         /// <summary>
         /// 界面销毁
         /// </summary>
-        protected override void OnDestroy()
+        public virtual void Clear()
         {
-            base.OnDestroy();
-
             if (m_Container != null)
             {
                 if (!Application.isPlaying)

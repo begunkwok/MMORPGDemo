@@ -42,17 +42,21 @@ namespace GameMain
             entityComponent.HideEntity(entity.Entity);
         }
 
+        public static void CheckHideEntity(this EntityComponent entityComponent, int entityId)
+        {
+            if (entityId == 0)
+            {
+                return;
+            }
+
+            if(entityComponent.HasEntity(entityId))
+                entityComponent.HideEntity(entityId);
+        }
+
         public static void AttachEntity(this EntityComponent entityComponent, EntityBase entity, int ownerId,
             string parentTransformPath = null, object userData = null)
         {
             entityComponent.AttachEntity(entity.Entity, ownerId, parentTransformPath, userData);
-        }
-
-        public static T ShowEntity<T>(this EntityComponent entityComponent, EntityData data)
-            where T : EntityBase
-        {
-            entityComponent.ShowEntity(typeof (T), data);
-            return GetGameEntity(entityComponent, data.Id) as T;
         }
 
         public static void ShowEntity(this EntityComponent entityComponent, Type logicType, EntityData data)
@@ -78,7 +82,7 @@ namespace GameMain
             }
 
             entityComponent.ShowEntity(data.Id, logicType, AssetUtility.GetEntityAsset(drEntity.AssetName),
-                drEntity.Group, data);         
+                drEntity.Group, data);        
         }
 
         public static void ShowActorEntity(this EntityComponent entityComponent, Type logicType, EntityData data)
@@ -108,16 +112,23 @@ namespace GameMain
         
 
         //-----------------简化使用函数----------------
-        public static RoleEntityBase ShowRole<T>(this EntityComponent entityComponent, RoleEntityData data)
+        public static void ShowRole<T>(this EntityComponent entityComponent, RoleEntityData data) where  T:RoleEntityBase
         {
             entityComponent.ShowActorEntity(typeof (T), data);
-            return GetGameEntity(entityComponent, data.Id) as RoleEntityBase;
         }
 
-        public static EffectBase ShowEffect(this EntityComponent entityComponent, EffectData data)
+        public static T GetRole<T>(this EntityComponent entityComponent, int entityId) where T : RoleEntityBase
+        {
+            if (entityId == 0)
+                return default(T);
+
+            T role = entityComponent.GetEntity(entityId)?.Logic as T;
+            return role;
+        }
+
+        public static void ShowEffect(this EntityComponent entityComponent, EffectData data)
         {
             entityComponent.ShowEntity(typeof (EffectBase), data);
-            return GetGameEntity(entityComponent, data.Id) as EffectBase;
         }
 
         public static void ShowPoseRole(this EntityComponent entityComponent, PoseRoleData data)

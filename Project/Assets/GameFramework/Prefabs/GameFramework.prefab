@@ -603,6 +603,7 @@ MonoBehaviour:
   - GameMain.ProcedureChangeScene
   - GameMain.ProcedureCheckVersion
   - GameMain.ProcedureCreateRole
+  - GameMain.ProcedureInitLua
   - GameMain.ProcedureLaunch
   - GameMain.ProcedureLevel
   - GameMain.ProcedureLogin
@@ -638,7 +639,7 @@ MonoBehaviour:
   m_SoundGroups:
   - m_Name: Music
     m_AvoidBeingReplacedBySamePriority: 0
-    m_Mute: 1
+    m_Mute: 0
     m_Volume: 1
     m_AgentHelperCount: 2
   - m_Name: Sound
@@ -834,7 +835,7 @@ MonoBehaviour:
   m_CustomResourceHelper: {fileID: 0}
   m_LoadResourceAgentHelperTypeName: UnityGameFramework.Runtime.DefaultLoadResourceAgentHelper
   m_CustomLoadResourceAgentHelper: {fileID: 0}
-  m_LoadResourceAgentHelperCount: 3
+  m_LoadResourceAgentHelperCount: 10
 --- !u!114 &11499388
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -846,7 +847,7 @@ MonoBehaviour:
   m_Script: {fileID: -1209855857, guid: c6060e8ed8f5f144886c7196d8145370, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EditorResourceMode: 0
+  m_EditorResourceMode: 1
   m_EditorLanguage: 8
   m_LogHelperTypeName: UnityGameFramework.Runtime.LogHelper
   m_ZipHelperTypeName: UnityGameFramework.Runtime.ZipHelper

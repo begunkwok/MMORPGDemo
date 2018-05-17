@@ -13,7 +13,7 @@ namespace GameMain
         private VirtualAxisBase m_TouchPadXAxis;
         private VirtualAxisBase m_TouchPadYAxis;
 
-        protected override void OnInit(object userData)
+        protected override void OnOpen(object userData)
         {
             base.OnInit(userData);
 

@@ -11,7 +11,7 @@ namespace GameMain
         public float RebornCD = 5;
         public int DropItemCount = 1;
 
-        private LevelObject m_Mine;
+        private int m_SerialId;
 
         
         public override void Import(XmlObject pData, bool pBuild)
@@ -52,10 +52,12 @@ namespace GameMain
             transform.DestroyChildren();
             if (Application.isPlaying)
             {
-                m_Mine = GameEntry.Level.CreateLevelObject(Id);
-                m_Mine.CachedTransform.position = transform.position;
-                m_Mine.CachedTransform.rotation = transform.rotation;
-                m_Mine.CachedTransform.localScale = transform.localScale;
+                TransformParam param = new TransformParam();
+                param.Position = transform.position;
+                param.EulerAngles = transform.rotation.eulerAngles;
+                param.Scale = transform.localScale;
+
+                m_SerialId = GameEntry.Level.CreateLevelObject(Id, param);
             }
             else
             {
