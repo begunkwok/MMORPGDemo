@@ -9,8 +9,8 @@ MMORPGDemo是个人用于业余时间学习的一个游戏项目，美术用的�
 
 - **Lua热更新**
 -Lua使用的是腾讯的XLua，除了将XLua集成到项目中之外，整合了Lua的Common模块，主要包括cjson库，socket库，Lua实现的Vector3
-Quaternion等结构体，常用工具类，常用集合类，字符串操作类，以及全局变量检测和类实现等公共模块。
-因为是个人学习Demo，没有大量使用Lua做业务，目前用到Lua写的只有一个登陆界面LoginForm.lua和一个用于Hotfix测试的HotfixTest.lua。
+Quaternion等结构体，常用工具类，常用集合类，字符串操作类，以及全局变量检测和类实现等公共模块。另外还做了简单的Reload功能，可以快速
+调试Lua。因为是个人学习Demo，没有大量使用Lua做业务，目前用到Lua写的只有一个登陆界面LoginForm.lua和一个用于Hotfix测试的HotfixTest.lua。
 
 - **UI**
 -UI没有使用Unity原生的UGUI，为了快速开发使用的是[FairyGUI](http://www.fairygui.com/)，集成到项目中没有大修改，就遵循框架
