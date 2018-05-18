@@ -27,13 +27,14 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;UNITY_5_3_OR_NEWER;HOTFIX_ENABLE;UNITY_STANDALONE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;UNITY_5_3_OR_NEWER;UNITY_STANDALONE;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DOTween">
-      <HintPath>..\Libs\DOTween.dll</HintPath>
+    <Reference Include="DOTween, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\_Unity3D项目\MMORPGDemo\Code\Libs\DOTween.dll</HintPath>
     </Reference>
     <Reference Include="LitJson">
       <HintPath>..\Libs\LitJson.dll</HintPath>
@@ -45,7 +46,8 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UnityEditor">
+    <Reference Include="UnityEditor, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libs\UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
@@ -262,6 +264,121 @@
     <Compile Include="GamePlay\AI\Base\IAIPathFinding.cs" />
     <Compile Include="GamePlay\Battle\Define\BattleCampType.cs" />
     <Compile Include="GamePlay\Actor\Define\ActorBindPosType.cs" />
+    <Compile Include="Lua\Gen\CoroutineRunnerWrap.cs" />
+    <Compile Include="Lua\Gen\DelegatesGensBridge.cs" />
+    <Compile Include="Lua\Gen\EnumWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIContainerWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIControllerWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIDisplayObjectWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIEventContextWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIEventDispatcherWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIEventListenerWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGButtonWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGComboBoxWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGComponentWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGGraphWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGGroupWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGImageWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGLabelWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGListWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGLoaderWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGMovieClipWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGObjectPoolWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGObjectWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGProgressBarWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGRichTextFieldWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGRootWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGSliderWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGTextFieldWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIGTextInputWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIInputEventWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIPlayStateWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIPopupMenuWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIRelationsWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIScrollPaneWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIStageWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUITextFormatWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUITransitionWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIUIPackageWrap.cs" />
+    <Compile Include="Lua\Gen\FairyGUIWindowWrap.cs" />
+    <Compile Include="Lua\Gen\GameFrameworkLogWrap.cs" />
+    <Compile Include="Lua\Gen\GameMainDatabaseComponentWrap.cs" />
+    <Compile Include="Lua\Gen\GameMainFairyGuiComponentWrap.cs" />
+    <Compile Include="Lua\Gen\GameMainFairyGuiLuaFormWrap.cs" />
+    <Compile Include="Lua\Gen\PackUnpack.cs" />
+    <Compile Include="Lua\Gen\SystemActivatorWrap.cs" />
+    <Compile Include="Lua\Gen\SystemArrayWrap.cs" />
+    <Compile Include="Lua\Gen\SystemCollectionsGenericList1SystemInt32Wrap.cs" />
+    <Compile Include="Lua\Gen\SystemCollectionsIDictionaryWrap.cs" />
+    <Compile Include="Lua\Gen\SystemCollectionsIEnumeratorBridge.cs" />
+    <Compile Include="Lua\Gen\SystemCollectionsIListWrap.cs" />
+    <Compile Include="Lua\Gen\SystemObjectWrap.cs" />
+    <Compile Include="Lua\Gen\SystemTypeWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineAnimationClipWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineAnimationCurveWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineBehaviourWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineBoundsWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineColorWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineComponentWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineDebugWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineGameObjectWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineKeyframeWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineMonoBehaviourWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineObjectWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineParticleSystemWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineQuaternionWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineRay2DWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineRayWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineRendererWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineResourcesWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineSkinnedMeshRendererWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineTextAssetWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineTimeWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineTransformWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineVector2Wrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineVector3Wrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineVector4Wrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineWaitForEndOfFrameWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineWaitForFixedUpdateWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineWaitForSecondsWrap.cs" />
+    <Compile Include="Lua\Gen\UnityEngineWWWWrap.cs" />
+    <Compile Include="Lua\Gen\UnityGameFrameworkRuntimeDataTableComponentWrap.cs" />
+    <Compile Include="Lua\Gen\UnityGameFrameworkRuntimeEntityComponentWrap.cs" />
+    <Compile Include="Lua\Gen\UnityGameFrameworkRuntimeEventComponentWrap.cs" />
+    <Compile Include="Lua\Gen\UnityGameFrameworkRuntimeLoadSceneFailureEventArgsWrap.cs" />
+    <Compile Include="Lua\Gen\UnityGameFrameworkRuntimeLoadSceneSuccessEventArgsWrap.cs" />
+    <Compile Include="Lua\Gen\UnityGameFrameworkRuntimeLocalizationComponentWrap.cs" />
+    <Compile Include="Lua\Gen\UnityGameFrameworkRuntimeProcedureComponentWrap.cs" />
+    <Compile Include="Lua\Gen\UnityGameFrameworkRuntimeSceneComponentWrap.cs" />
+    <Compile Include="Lua\Gen\UnityGameFrameworkRuntimeSettingComponentWrap.cs" />
+    <Compile Include="Lua\Gen\UnityGameFrameworkRuntimeSoundComponentWrap.cs" />
+    <Compile Include="Lua\Gen\UnityGameFrameworkRuntimeUIComponentWrap.cs" />
+    <Compile Include="Lua\Gen\WrapPusher.cs" />
+    <Compile Include="Lua\Gen\XLuaGenAutoRegister.cs" />
+    <Compile Include="Lua\Gen\XLuaHelperWrap.cs" />
+    <Compile Include="Lua\XluaSrc\CodeEmit.cs" />
+    <Compile Include="Lua\XluaSrc\CopyByValue.cs" />
+    <Compile Include="Lua\XluaSrc\DelegateBridge.cs" />
+    <Compile Include="Lua\XluaSrc\Extension\LuaFunction.cs" />
+    <Compile Include="Lua\XluaSrc\GenAttributes.cs" />
+    <Compile Include="Lua\XluaSrc\InternalGlobals.cs" />
+    <Compile Include="Lua\XluaSrc\LuaBase.cs" />
+    <Compile Include="Lua\XluaSrc\LuaDLL.cs" />
+    <Compile Include="Lua\XluaSrc\LuaEnv.cs" />
+    <Compile Include="Lua\XluaSrc\LuaException.cs" />
+    <Compile Include="Lua\XluaSrc\LuaFunction.cs" />
+    <Compile Include="Lua\XluaSrc\LuaTable.cs" />
+    <Compile Include="Lua\XluaSrc\MethodWarpsCache.cs" />
+    <Compile Include="Lua\XluaSrc\ObjectCasters.cs" />
+    <Compile Include="Lua\XluaSrc\ObjectPool.cs" />
+    <Compile Include="Lua\XluaSrc\ObjectTranslator.cs" />
+    <Compile Include="Lua\XluaSrc\ObjectTranslatorPool.cs" />
+    <Compile Include="Lua\XluaSrc\RawObject.cs" />
+    <Compile Include="Lua\XluaSrc\SignatureLoader.cs" />
+    <Compile Include="Lua\XluaSrc\StaticLuaCallbacks.cs" />
+    <Compile Include="Lua\XluaSrc\TemplateEngine\TemplateEngine.cs" />
+    <Compile Include="Lua\XluaSrc\TypeExtensions.cs" />
+    <Compile Include="Lua\XluaSrc\Utils.cs" />
     <Compile Include="Procedure\ProcedureInitLua.cs" />
     <Compile Include="UI\Define\FlyWordType.cs" />
     <Compile Include="GamePlay\Actor\Define\ActorStateType.cs" />
@@ -556,10 +673,6 @@
     <ProjectReference Include="..\UnityRuntimeFramework\UnityRuntimeFramework.csproj">
       <Project>{cf43f590-3900-4231-8f1c-62b788c20455}</Project>
       <Name>UnityRuntimeFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XLuaSrc\XLuaSrc.csproj">
-      <Project>{bd14b82a-311e-46cf-8684-788f4d2760df}</Project>
-      <Name>XLuaSrc</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

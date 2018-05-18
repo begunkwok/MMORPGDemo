@@ -41,9 +41,6 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UnityEditor">
-      <HintPath>..\Libs\UnityEditor.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\Libs\UnityEngine.dll</HintPath>
     </Reference>
@@ -92,13 +89,6 @@
     <Compile Include="FairyGUI\Core\Text\TouchScreenKeyboard.cs" />
     <Compile Include="FairyGUI\Core\Text\TypingEffect.cs" />
     <Compile Include="FairyGUI\Core\UpdateContext.cs" />
-    <Compile Include="FairyGUI\Editor\EditorToolSet.cs" />
-    <Compile Include="FairyGUI\Editor\PackagesWindow.cs" />
-    <Compile Include="FairyGUI\Editor\StageCameraEditor.cs" />
-    <Compile Include="FairyGUI\Editor\UIConfigEditor.cs" />
-    <Compile Include="FairyGUI\Editor\UIContentScalerEditor.cs" />
-    <Compile Include="FairyGUI\Editor\UIPainterEditor.cs" />
-    <Compile Include="FairyGUI\Editor\UIPanelEditor.cs" />
     <Compile Include="FairyGUI\Event\EventBridge.cs" />
     <Compile Include="FairyGUI\Event\EventContext.cs" />
     <Compile Include="FairyGUI\Event\EventDispatcher.cs" />

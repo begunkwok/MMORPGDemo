@@ -328,6 +328,9 @@ namespace FairyGUI
 		/// <param name="zv"></param>
 		public void SetPosition(float xv, float yv, float zv)
 		{
+            if(cachedTransform == null)
+                return;
+
 			Vector3 v = cachedTransform.localPosition;
 			v.x = xv;
 			v.y = -yv;

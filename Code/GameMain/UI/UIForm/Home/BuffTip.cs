@@ -60,7 +60,7 @@ namespace GameMain
             this.visible = false;
             if (m_Icon.texture != null)
             {
-                GameEntry.Resource.UnloadAsset(m_Icon.texture);
+                //GameEntry.Resource.UnloadAsset(m_Icon.texture);
                 m_Icon.texture = null;
             }
         }

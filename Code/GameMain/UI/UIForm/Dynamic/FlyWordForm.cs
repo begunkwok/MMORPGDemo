@@ -67,14 +67,17 @@ namespace GameMain
                     break;
             }
 
-            m_Transition.Play();
+            m_Transition.Stop();
+
+            if (UI != null && UI.visible)
+                m_Transition.Play();
         }
 
         protected override void OnUpdate(float elapseSeconds, float realElapseSeconds)
         {
             base.OnUpdate(elapseSeconds, realElapseSeconds);
 
-            if(m_Data == null || m_Data.Target == null)
+            if(m_Data?.Target == null)
                 return;
 
             Vector3 wordPos = m_Data.Target.position + new Vector3(0, m_Data.Height/2, 0);

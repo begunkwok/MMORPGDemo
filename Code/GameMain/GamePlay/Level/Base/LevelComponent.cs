@@ -18,8 +18,6 @@ namespace GameMain
         public SceneId CurSceneId { get; private set; }
         public SceneType CurSceneType { get; private set; }
         public MapConfig Config { get; private set; }
-
-        public int PlayerEntityId { get; private set; }
         public ActorPlayer PlayerActor { get; private set; }
 
         private readonly List<int> m_AllRoles = new List<int>();
@@ -68,7 +66,7 @@ namespace GameMain
             }
             m_AllRoles.Clear();
 
-            GameEntry.Entity.CheckHideEntity(PlayerEntityId);
+            GameEntry.Entity.CheckHideEntity(PlayerActor.EntityId);
 
             foreach (KeyValuePair<MapHolderType, LevelElement> current in m_Holders)
             {
@@ -140,13 +138,12 @@ namespace GameMain
             Clear();
         }
 
-        public void SetPlayerActor(ActorPlayer player)
+        public void CreatePlayerActor(ActorPlayer player)
         {
             if(player == null)
                 throw new GameFrameworkException("Create Player Fail!");
 
             this.PlayerActor = player;
-            this.PlayerEntityId = player.EntityId;
         }
 
         public LevelElement GetHolder(MapHolderType type)
@@ -519,7 +516,7 @@ namespace GameMain
                 Rotation = Quaternion.Euler(Config.Ally.TransParam.EulerAngles),
                 Scale = Config.Ally.TransParam.Scale
             };
-            GameEntry.Entity.ShowRole<PlayerRole>(data);
+            AddRole<PlayerRole>(data);
         }
 
         private void InitNpc()

@@ -248,6 +248,8 @@ namespace GameMain
             }
 
             IActorSkill skill = GameEntry.Level.PlayerActor.ActorSkill;
+            if(skill == null)
+                return;
 
             for (int i = 0; i < m_SkillItems.Length; i++)
             {

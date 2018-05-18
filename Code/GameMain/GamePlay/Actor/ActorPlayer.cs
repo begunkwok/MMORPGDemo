@@ -98,7 +98,7 @@ namespace GameMain
 
             BroadcastHeroInfo();
             InitPartner();
-            GameEntry.Level.SetPlayerActor(this);
+            GameEntry.Level.CreatePlayerActor(this);
         }
 
         public override void Clear()

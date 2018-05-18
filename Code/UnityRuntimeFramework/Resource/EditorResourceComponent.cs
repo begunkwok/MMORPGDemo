@@ -709,6 +709,7 @@ namespace UnityGameFramework.Runtime
                 return null;
             }
 #endif
+            return null;
         }
 
         /// <summary>

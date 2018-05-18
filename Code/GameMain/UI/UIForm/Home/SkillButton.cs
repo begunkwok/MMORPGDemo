@@ -64,7 +64,7 @@ namespace GameMain
         {
             if (m_Icon.texture != null)
             {
-                Resources.UnloadAsset(m_Icon.texture.nativeTexture);
+                //Resources.UnloadAsset(m_Icon.texture.nativeTexture);
                 m_Icon.texture = null;
             }
         }

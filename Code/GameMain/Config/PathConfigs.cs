@@ -1,6 +1,8 @@
 ﻿using GameFramework;
 using UnityEngine;
 
+#if UNITY_EDITOR 
+
 using UnityGameFramework.Editor;
 using UnityGameFramework.Editor.AssetBundleTools;
 
@@ -21,3 +23,4 @@ namespace GameMain
         public static string AssetBundleCollectionConfig = Utility.Path.GetCombinePath(Application.dataPath, "GameMain/Configs/AssetBundleCollection.xml");
     }
 }
+#endif

@@ -8,24 +8,26 @@ namespace GameMain
     /// </summary>
     public class PlayerRole : RoleEntityBase
     {
+        private PlayerEntityData m_EntityData;
 
         protected override void OnShow(object userData)
         {
             base.OnShow(userData);
 
-            RoleEntityData playerEntityData = userData as RoleEntityData;
-            if (playerEntityData == null)
+            m_EntityData = userData as PlayerEntityData;
+            if (m_EntityData == null)
             {
                 Log.Error("playerEntityData is null");
                 return;
             }
 
             //创建Actor
-            ActorType actorType = playerEntityData.ActorType;
-            BattleCampType campType = playerEntityData.CampType;
+            ActorType actorType = m_EntityData.ActorType;
+            BattleCampType campType = m_EntityData.CampType;
             Actor = new ActorPlayer(this, actorType, campType, m_CharacterController,
                 m_Animator);
             Actor.Init();
+            ((ActorPlayer) Actor).BattleState = m_EntityData.BattleState;
 
             GameEntry.Camera.SwitchCameraBehaviour(CameraBehaviourType.LockLook);
 
