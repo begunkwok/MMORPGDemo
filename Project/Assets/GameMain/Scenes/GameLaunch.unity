@@ -258,16 +258,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114374437683837680, guid: 173de2660dc72d74fb7f59f000fcf712,
-        type: 2}
-      propertyPath: InputType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114109079502266630, guid: 173de2660dc72d74fb7f59f000fcf712,
-        type: 2}
-      propertyPath: DBName
-      value: userData1.db
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 173de2660dc72d74fb7f59f000fcf712, type: 2}
   m_IsPrefabParent: 0
