@@ -1,6 +1,6 @@
 # MMORPGDemo 简介
 MMORPGDemo是个人用于业余时间学习的一个游戏项目，美术用的是网上资源，不可用于商业用途。使用Unity版本：2017.2.0f3
-目前最新的版本在Dev分支中，简单介绍用到到框架和技术等。
+目前最新的版本在Dev分支中，简单介绍用到的框架和技术等。
 
 - **框架**
 -底层框架使用的是[GameFramework](https://github.com/EllanJiang/GameFramework.git)。
